@@ -1,0 +1,2 @@
+/Users/jiehuang/Desktop/boc/boc/android/app/.cxx/RelWithDebInfo/6d4s4y2b/x86_64/CMakeFiles/edit_cache.dir
+/Users/jiehuang/Desktop/boc/boc/android/app/.cxx/RelWithDebInfo/6d4s4y2b/x86_64/CMakeFiles/rebuild_cache.dir
