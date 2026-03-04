@@ -73,6 +73,9 @@ class WebViewPage extends StatelessWidget {
             },
             onLoadStart: (controller, url) {
               debugPrint('开始加载：$url');
+              if (url.toString().contains('index.html')) {
+                logic.resetRouterStatus();
+              }
             },
             onLoadStop: (controller, url) async {
               debugPrint('加载完成：$url');

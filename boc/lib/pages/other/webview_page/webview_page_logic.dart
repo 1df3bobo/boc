@@ -11,53 +11,66 @@ class WebViewLogic extends GetxController {
   final WebViewState state = WebViewState();
 
 
+  // 1. 增加一个标记位，防止重复初始化路由
+  bool _isRouterInitialized = false;
+
   Future<void> injectBridge() async {
     if (state.webViewController == null) return;
-
+    // ... 原有 injectBridge 逻辑不变
     await state.webViewController!.evaluateJavascript(source: '''
       (function() {
-        if (window.FlutterBridge) return; // 避免重复注入
-
+        if (window.FlutterBridge) return;
         window.FlutterBridge = {
           postMessage: function(message) {
             if (window.flutter_inappwebview && window.flutter_inappwebview.callHandler) {
               window.flutter_inappwebview.callHandler('FlutterChannel', JSON.stringify(message));
             }
           },
-
           _dispatch: function(action, data) {
-            console.log('Action from Flutter:', action, data);
             window.dispatchEvent(new CustomEvent('flutter_' + action, { detail: data }));
           }
         };
-        console.log('FlutterBridge Initialized');
       })();
     ''');
   }
 
   Future initRouter() async {
-    if (state.webViewController == null) return;
+    // 2. 如果已经初始化过，且控制器不为空，则不再执行
+    if (state.webViewController == null || _isRouterInitialized) return;
+    _isRouterInitialized = true;
 
     String targetRoute = state.routeName;
 
     await state.webViewController!.evaluateJavascript(source: '''
     (function() {
-      var route = '$targetRoute';
-      // 确保路径以 / 开头
-      var formattedRoute = route.startsWith('/') ? route : '/' + route;
+      var target = '$targetRoute';
+      var formatted = target.startsWith('/') ? target : '/' + target;
+      
+      // 3. 获取当前 Web 端的 Hash 路径
+      var currentHash = window.location.hash.replace('#', '');
+      
+      // 4. 关键判断：
+      // 如果当前 Hash 已经不是空的，且不是根目录，说明用户可能已经处于某个子页面中
+      // 或者当前已经在我们要去的 target 路径了，这时不需要执行 push
+      if (currentHash && currentHash !== '/' && currentHash !== '' && currentHash === formatted) {
+         console.log('Already at target route, skipping.');
+         return; 
+      }
       
       if (window.vueRouter) {
-        // 如果 Vue 已经准备好，使用路由实例跳转
-        window.vueRouter.push(formattedRoute).catch(err => {
+        window.vueRouter.push(formatted).catch(err => {
           console.error('VueRouter 跳转失败:', err);
         });
       } else {
-        // 如果 Vue 还没加载完，直接修改 Hash，WebView 不会触发文件系统查找
-        // 这样 Vue 加载完成后会自动识别 Hash 并显示对应组件
-        window.location.hash = '#' + formattedRoute;
+        window.location.hash = '#' + formatted;
       }
     })();
   ''');
+  }
+
+  // 5. 如果页面发生了真实的重载（reload），需要重置标记位
+  void resetRouterStatus() {
+    _isRouterInitialized = false;
   }
 
   // Future initRouter() async {
