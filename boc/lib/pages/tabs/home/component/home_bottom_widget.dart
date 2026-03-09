@@ -18,24 +18,30 @@ class _HomeBottomWidgetState extends State<HomeBottomWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image(image: 'home_bottom1'.png3x, fit: BoxFit.fitWidth, width: 1.sw,).withOnTap(onTap: () {
+        Image(
+          image: 'home_bottom1'.png3x,
+          fit: BoxFit.fitWidth,
+          width: 1.sw,
+        ).withOnTap(onTap: () {
           Get.to(() => GestureDetector(
                 onTap: () => Get.back(),
-                child: Scaffold(
-                  backgroundColor: Colors.white,
-                  body: SizedBox(
-                    width: 1.sw,
-                    height: 1.sh,
-                    child: Image(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Image(
                       image: 'home_bottom1_bg'.png3x,
                       fit: BoxFit.fitWidth,
                       width: 1.sw,
                     ),
-                  ),
+                  ],
                 ),
               ));
         }),
-        Image(image: 'home_bottom2'.png3x, fit: BoxFit.fitWidth, width: 1.sw,).withOnTap(onTap: () {
+        Image(
+          image: 'home_bottom2'.png3x,
+          fit: BoxFit.fitWidth,
+          width: 1.sw,
+        ).withOnTap(onTap: () {
           Get.to(() => FixedNavPage(), arguments: {
             'image': 'home_bottom2_bg',
             'title': '热门活动',
@@ -47,24 +53,30 @@ class _HomeBottomWidgetState extends State<HomeBottomWidget> {
             ],
           });
         }),
-        Image(image: 'home_bottom3'.png3x, fit: BoxFit.fitWidth, width: 1.sw,).withOnTap(onTap: () {
+        Image(
+          image: 'home_bottom3'.png3x,
+          fit: BoxFit.fitWidth,
+          width: 1.sw,
+        ).withOnTap(onTap: () {
           Get.to(() => GestureDetector(
                 onTap: () => Get.back(),
-                child: Scaffold(
-                  backgroundColor: Colors.white,
-                  body: SizedBox(
-                    width: 1.sw,
-                    height: 1.sh,
-                    child: Image(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Image(
                       image: 'home_bottom3_bg'.png3x,
                       fit: BoxFit.fitWidth,
                       width: 1.sw,
                     ),
-                  ),
+                  ],
                 ),
               ));
         }),
-        Image(image: 'home_bottom4'.png3x, fit: BoxFit.fitWidth, width: 1.sw,),
+        Image(
+          image: 'home_bottom4'.png3x,
+          fit: BoxFit.fitWidth,
+          width: 1.sw,
+        ),
       ],
     );
   }

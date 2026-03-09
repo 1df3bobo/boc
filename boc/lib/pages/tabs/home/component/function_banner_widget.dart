@@ -90,14 +90,16 @@ class _FunctionBannerWidgetState extends State<FunctionBannerWidget> {
         });
         break;
       case 7: // 活钱宝
-        Get.to(() => ChangeNavPage(), arguments: {
-          'image': 'hqb',
-          'title': '',
-          'leftWidget':Container(width: 90.w,height: 45.w,).withOnTap(onTap: (){
-            Get.back();
-          })
-
-        });        break;
+        Get.to(() => Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              Image(image: "hqb".png3x, width: 1.sw, fit: BoxFit.fitWidth,).withOnTap(onTap: () {
+                Get.back();
+              }),
+            ],
+          ),
+        ));        break;
       case 8: // 养老金融专区
         Get.to(() => FixedNavPage(), arguments: {
           'image': 'yljr',
