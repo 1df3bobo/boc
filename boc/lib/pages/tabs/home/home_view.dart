@@ -2,13 +2,12 @@ import 'package:boc/pages/tabs/home/component/ad_banner_widget.dart';
 import 'package:boc/pages/tabs/home/component/function_banner_widget.dart';
 import 'package:boc/pages/tabs/home/component/home_bottom_widget.dart';
 import 'package:boc/pages/tabs/home/component/home_top_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
-
+import 'package:flutter/material.dart';
 import '../../component/placeholder_search_widget.dart';
 import '../../other/fixed_nav/fixed_nav_view.dart';
 import '../../other/webview_page/webview_page_view.dart';
@@ -80,9 +79,15 @@ class HomePage extends BaseStateless {
   Widget initBody(BuildContext context) {
     return ListView(
       padding: EdgeInsets.zero,
-      children: const [
+      children: [
         HomeTopWidget(),
         FunctionBannerWidget(),
+        Image(image: 'home_tip'.png3x, fit: BoxFit.fitWidth,).withOnTap(onTap: () {
+          Get.to(() => FixedNavPage(), arguments: {
+            'image': 'home_tip_bg',
+            'title': '文章详情',
+          });
+        }),
         AdBannerWidget(),
         HomeBottomWidget(),
       ],

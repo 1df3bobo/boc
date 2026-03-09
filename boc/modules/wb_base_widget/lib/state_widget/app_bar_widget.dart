@@ -25,6 +25,7 @@ class AppBarWidget extends StatefulWidget {
   final double navHeight;
   final bool? showBackgroundColor;
   final Function(bool change)? onNotificationNavChange;
+  final bool centerTitle;
 
   const AppBarWidget({
     super.key,
@@ -44,6 +45,7 @@ class AppBarWidget extends StatefulWidget {
     this.controller,
     this.navHeight = 44,
     this.showBackgroundColor,
+    this.centerTitle = true,
   });
 
   @override
@@ -149,7 +151,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                         color: widget.titleColor ?? Colors.white,
                         fontWeight: FontWeight.w600
                     ),),
-              centerTitle: true,
+              centerTitle: widget.centerTitle,
               titleSpacing: 0,
               titleTextStyle:
               TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),

@@ -1,10 +1,12 @@
+import 'package:boc/config/app_config.dart';
+import 'package:boc/pages/other/change_nav/change_nav_view.dart';
 import 'package:boc/pages/tabs/home/transfer/gjs/gjs_view.dart';
+import 'package:boc/pages/tabs/home/transfer/transfer_view.dart';
+import 'package:boc/utils/common_right_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/wb_base_widget.dart';
-import 'package:get/get.dart';
-import '../../../../utils/customButton.dart';
 import '../../../other/fixed_nav/fixed_nav_view.dart';
 import 'home_more/home_more_view.dart';
 
@@ -19,66 +21,101 @@ class _FunctionBannerWidgetState extends State<FunctionBannerWidget> {
 
 
   void jumpPage(String tag) {
-    print(tag);
     int index = int.tryParse(tag) ?? -1;
-    switch (index){
-      case 0:
+    switch (index) {
+      case 0: // 账号转账
+        Get.to(() => TransferPage());
         break;
-      case 1:
-       Get.to(() => GjsPage());
+      case 1: // 我的理财
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'home_lc',
+          'title': '我的理财',
+        });
         break;
-      case 2:
+      case 2: // 存款管理
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'xkgl',
+          'title': '存款管理',
+          'rightWidget': [
+            CommonNavButtonUtil.image(
+              imgPath: 'ic_ke',
+              rightPadding: 12.w,
+            ),
+          ],
+        });
         break;
-      case 3:
+      case 3: // 话费充值
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'home_hfcz',
+          'title': '话费充值',
+          'top': 10.w,
+        });
         break;
-      case 4:
+      case 4: // 贷款
         Get.to(() => FixedNavPage(), arguments: {
           'image': 'jieqian',
-          'title': '随借随还',
+          'title': '贷款',
         });
         break;
-      case 5:
-        break;
-      case 6:
-        Get.to(()=>FixedNavPage(),arguments: {
-          'image':'home_lc',
-          'title':'理财',
-          'rightWidget':[
-            CustomButton.rightServiceButton(
-              color: Colors.grey,
-              size: 24.w,
-              icon: Icons.phone,
-              onPressed:()=>print('点击了'),
-            ),
-            CustomButton.rightSearchButton(
-              color: Colors.grey,
-              size: 24.w, icon: Icons.search,
-            ),
-          ]
+      case 5: // 马拉松专区
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'mlszq',
+          'title': '马拉松专区',
+          'rightWidget': [
+            CommonNavButtonUtil.xcxButton(),
+          ],
         });
         break;
-      case 7:
-        Get.to(()=>FixedNavPage(),arguments: {
-          'image':'home_hfcz',
-          'title':'话费充值',
-          'top':10.w,
-          'rightWidget':[
-            CustomButton.rightServiceButton(
-              color: Colors.grey,
-              size: 24.w,
-              icon: Icons.phone,
+      case 6: // 薪酬管家
+        Get.to(() => ChangeNavPage(), arguments: {
+          'image': 'xzgj',
+          'title': '薪酬管家',
+          'rightWidget': [
+            CommonNavButtonUtil.iconTag(
+              iconData: Icons.location_on_outlined,
+              name: AppConfig.config.abcLogic.memberInfo.city,
+              rightPadding: 12.w,
             ),
-            CustomButton.rightSearchButton(
-              color: Colors.grey,
-              size: 24.w,
-              icon: Icons.share,
+            CommonNavButtonUtil.tag(
+              imgPath: 'ic_ke',
+              name: '客服',
+              rightPadding: 12.w,
             ),
-          ]
+            CommonNavButtonUtil.iconTag(
+              iconData: Icons.share_outlined,
+              name: '分享',
+              rightPadding: 12.w,
+            ),
+          ],
         });
         break;
-      case 8:
+      case 7: // 活钱宝
+        Get.to(() => ChangeNavPage(), arguments: {
+          'image': 'hqb',
+          'title': '',
+          'leftWidget':Container(width: 90.w,height: 45.w,).withOnTap(onTap: (){
+            Get.back();
+          })
+
+        });        break;
+      case 8: // 养老金融专区
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'yljr',
+          'title': '养老金融',
+          'rightWidget': [
+            CommonNavButtonUtil.icon(
+              iconData: Icons.share_outlined,
+              rightPadding: 12.w,
+            ),
+            CommonNavButtonUtil.image(
+              imgPath: 'ic_ke',
+              rightPadding: 12.w,
+              color: Colors.black
+            ),
+          ],
+        });
         break;
-      case 9:
+      case 9: // 更多
         Get.to(() => HomeMorePage());
         break;
     }

@@ -40,6 +40,8 @@ mixin StateWidgetConfig {
 
   bool get isChangeNav => false;
 
+  bool get centerTitle => true;
+
   bool get noBackGround1 => true;
 
   bool get showBackgroundColor => true;
