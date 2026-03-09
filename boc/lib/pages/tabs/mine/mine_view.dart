@@ -1,6 +1,7 @@
 import 'package:boc/config/app_config.dart';
 import 'package:boc/pages/other/fuzai/fuzai_view.dart';
 import 'package:boc/pages/tabs/mine/account_preview/account_preview_view.dart';
+import 'package:boc/pages/tabs/mine/qyzx/qyzx_view.dart';
 import 'package:boc/pages/tabs/mine/component/mine_zc_widget.dart';
 import 'package:boc/pages/tabs/mine/wdjf/wdjf_view.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +129,17 @@ class MinePage extends BaseStateless {
                 ).withOnTap(onTap: () {
                   Get.to(() => WebViewPage(),
                       arguments: {'routeName': '/userInfo'});
-                }))
+                })),
+              Positioned(
+                bottom: 60.w,
+                right: 22.w,
+                child: Container(
+                  width: 1.sw- 44.w,
+                  height: 40.w,
+                ).withOnTap(onTap: () {
+                  Get.to(() => QyzxPage());
+                })
+              ),
           ],
         ),
         Stack(
@@ -157,11 +168,7 @@ class MinePage extends BaseStateless {
                   Get.to(() => AccountPreviewPage());
                 }),
                 Container().expanded(onTap: () {
-                  Get.to(() => ChangeNavPage(),
-                      arguments: {
-                        'image': 'zxqy',
-                        'title': '尊享权益'
-                      });
+                  Get.to(() => QyzxPage());
                 }),
                 Container().expanded(onTap: () {
                   Get.to(() => WdjfPage());
@@ -316,7 +323,20 @@ class MinePage extends BaseStateless {
                     ],
                   )
                 ],
-              ),)
+              ),),
+
+            Positioned(
+              top: 265.w,
+              left: 12.w, right: 1.sw / 2,
+              child: Container(
+                width: 1.sw / 2,
+                height: 220.w,
+              ).withOnTap(onTap: () {
+                Get.to(() => FixedNavPage(), arguments: {
+                  'image': 'zxzx',
+                  'title': '自选中心',
+                });
+              }))
           ],
         )
       ],
