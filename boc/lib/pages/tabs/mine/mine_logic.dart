@@ -7,6 +7,7 @@ import 'mine_state.dart';
 class MineLogic extends GetxController {
   final MineState state = MineState();
   var navActionColor = Colors.white.obs;
+  var eyeOpen = true.obs;
 
   String maskName() {
     String name = AppConfig.config.abcLogic.memberInfo.realName;

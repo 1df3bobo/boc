@@ -93,17 +93,10 @@ class MinePage extends BaseStateless {
           children: [
             Image(image: 'main_bg1'.png3x),
             Positioned(
-                bottom: 115.w,
-                left: 22.w,
+                bottom: 70.w,
+                left: 89.w,
                 child: Row(
                   children: [
-                    Image(
-                      image: 'mine_head'.png3x,
-                      width: 60.w,
-                    ),
-                    SizedBox(
-                      width: 11.w,
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -130,18 +123,11 @@ class MinePage extends BaseStateless {
                   Get.to(() => WebViewPage(),
                       arguments: {'routeName': '/userInfo'});
                 })),
-              Positioned(
-                bottom: 60.w,
-                right: 22.w,
-                child: Container(
-                  width: 1.sw- 44.w,
-                  height: 40.w,
-                ).withOnTap(onTap: () {
-                  Get.to(() => QyzxPage());
-                })
-              ),
           ],
         ),
+        Image(image: 'main_bg1_1'.png3x).withOnTap(onTap: () {
+          Get.to(() => QyzxPage());
+        }),
         Stack(
           children: [
             Image(image: 'main_bg2'.png3x),
@@ -184,16 +170,22 @@ class MinePage extends BaseStateless {
             ))
           ],
         ),
+        Obx(() =>
+        
         Stack(
           children: [
             Image(image: 'main_bg3'.png3x),
             Positioned(
-                top: 8.w,
+                top: 4.w,
                 left: 88.w,
                 child: Image(
-                  image: 'eye_open'.png3x,
-                  width: 22.w,
-                )),
+                   image: logic.eyeOpen.value
+                          ? 'mine_eye_open'.png3x
+                          : 'mine_eye_close'.png3x,
+                  width: 20.w,
+                ).withOnTap(onTap: (){
+                  logic.eyeOpen.value = !logic.eyeOpen.value;
+                })),
             Positioned(
                 top: 90.w,
                 left: 30.w,
@@ -204,7 +196,7 @@ class MinePage extends BaseStateless {
                         child: Container(
                           height: 22.w,
                           child: BaseText(
-                            text: '¥${AppConfig.config.abcLogic.balance()}',
+                            text: !logic.eyeOpen.value?'******':'¥${AppConfig.config.abcLogic.balance()}',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -243,6 +235,7 @@ class MinePage extends BaseStateless {
               ),
             ))
           ],
+        )
         ),
         Stack(
           children: [
