@@ -7,6 +7,7 @@ import 'package:boc/pages/tabs/mine/wdjf/wdjf_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:wb_base_widget/extension/double_extension.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
@@ -93,17 +94,10 @@ class MinePage extends BaseStateless {
           children: [
             Image(image: 'main_bg1'.png3x),
             Positioned(
-                bottom: 115.w,
-                left: 22.w,
+                bottom: 70.w,
+                left: 89.w,
                 child: Row(
                   children: [
-                    Image(
-                      image: 'mine_head'.png3x,
-                      width: 60.w,
-                    ),
-                    SizedBox(
-                      width: 11.w,
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -130,8 +124,8 @@ class MinePage extends BaseStateless {
                   Get.to(() => WebViewPage(),
                       arguments: {'routeName': '/userInfo'});
                 })),
-              Positioned(
-                bottom: 60.w,
+                Positioned(
+                bottom: 10.w,
                 right: 22.w,
                 child: Container(
                   width: 1.sw- 44.w,
@@ -142,25 +136,11 @@ class MinePage extends BaseStateless {
               ),
           ],
         ),
+
+        Image(image: 'main_bg1_1'.png3x),
         Stack(
           children: [
             Image(image: 'main_bg2'.png3x),
-            Positioned(
-                bottom: 45.w,
-                left: 35.w,
-                child: Container(
-                  width: 45.w,
-                  height: 45.w,
-                  alignment: Alignment.bottomCenter,
-                  padding: EdgeInsets.only(bottom: 11.w),
-                  child: const BaseText(
-                    text: '1',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                )),
             Positioned(child: Row(
               spacing: 12.w,
               children: [
@@ -184,18 +164,43 @@ class MinePage extends BaseStateless {
             ))
           ],
         ),
+        Obx(() =>
+        
         Stack(
           children: [
             Image(image: 'main_bg3'.png3x),
             Positioned(
-                top: 8.w,
+                top: 4.w,
                 left: 88.w,
                 child: Image(
-                  image: 'eye_open'.png3x,
-                  width: 22.w,
-                )),
+                   image: logic.eyeOpen.value
+                          ? 'mine_eye_open'.png3x
+                          : 'mine_eye_close'.png3x,
+                  width: 20.w,
+                ).withOnTap(onTap: (){
+                  logic.eyeOpen.value = !logic.eyeOpen.value;
+                })),
             Positioned(
-                top: 90.w,
+                top: 4.w,
+                right: 30.w,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    BaseText(
+                      text: logic.currentTime.value,
+                      style: TextStyle(
+                          fontSize: 13, color: Color(0xff8A8A8A)),
+                    ),
+                    SizedBox(width: 4.w,),
+                    Image(image: "mine_refresh".png3x, width: 10.w,),
+                  ],
+                ).withOnTap(onTap: () {
+                  logic.currentTime.value = DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now());
+                })
+            ),
+
+            Positioned(
+                top: 80.w,
                 left: 30.w,
                 right: 30.w,
                 child: Row(
@@ -204,7 +209,7 @@ class MinePage extends BaseStateless {
                         child: Container(
                           height: 22.w,
                           child: BaseText(
-                            text: '¥${AppConfig.config.abcLogic.balance()}',
+                            text: !logic.eyeOpen.value?'******':'¥${AppConfig.config.abcLogic.balance()}',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -214,14 +219,14 @@ class MinePage extends BaseStateless {
                             height: 22.w,
                             alignment: Alignment.bottomRight,
                             child: BaseText(
-                              text: '--',
+                              text: !logic.eyeOpen.value?'******': '--',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ))),
                   ],
                 )),
             Positioned(
-                top: 175.w,
+                top: 155.w,
                 left: 30.w,
                 right: 30.w,
                 child: const MineZcWidget()),
@@ -243,6 +248,7 @@ class MinePage extends BaseStateless {
               ),
             ))
           ],
+        )
         ),
         Stack(
           children: [

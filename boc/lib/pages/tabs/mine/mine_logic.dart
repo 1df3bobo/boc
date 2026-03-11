@@ -1,12 +1,15 @@
 import 'package:boc/config/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'mine_state.dart';
 
 class MineLogic extends GetxController {
   final MineState state = MineState();
   var navActionColor = Colors.white.obs;
+  var eyeOpen = true.obs;
+  var currentTime = DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()).obs;
 
   String maskName() {
     String name = AppConfig.config.abcLogic.memberInfo.realName;
