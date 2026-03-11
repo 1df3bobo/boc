@@ -7,6 +7,7 @@ import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 
 import '../../../../config/app_config.dart';
+import '../mine_logic.dart';
 import '../sz_records/sz_records_view.dart';
 
 class MineZcWidget extends StatefulWidget {
@@ -60,29 +61,37 @@ class _MineZcWidgetState extends State<MineZcWidget> {
       child: Column(
         children: [
           SizedBox(height: 45.w,),
-          Row(
-            children: [
-              Expanded(
-                  child: Container(
-                    height: 22.w,
-                    child: BaseText(
-                      text: '¥${AppConfig.config.abcLogic.memberInfo.incomeTotal.bankBalance}',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  )),
-              Expanded(
-                  child: Container(
+          Obx(() {
+            final logic = Get.find<MineLogic>();
+            final eyeOpen = logic.eyeOpen.value;
+            return Row(
+              children: [
+                Expanded(
+                    child: Container(
                       height: 22.w,
-                      alignment: Alignment.bottomRight,
                       child: BaseText(
-                        text: '¥${AppConfig.config.abcLogic.memberInfo.expensesTotal.bankBalance}',
+                        text: !eyeOpen
+                            ? '******'
+                            : '¥${AppConfig.config.abcLogic.memberInfo.incomeTotal.bankBalance}',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
-                      ))),
-            ],
-          ),
-          SizedBox(height: 12.w,),
+                      ),
+                    )),
+                Expanded(
+                    child: Container(
+                        height: 22.w,
+                        alignment: Alignment.bottomRight,
+                        child: BaseText(
+                          text: !eyeOpen
+                              ? '******'
+                              : '¥${AppConfig.config.abcLogic.memberInfo.expensesTotal.bankBalance}',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ))),
+              ],
+            );
+          }),
+          SizedBox(height: 8.w,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -96,7 +105,7 @@ class _MineZcWidgetState extends State<MineZcWidget> {
                     topRight: Radius.circular(_width2 > 0 ? 0 : 3.w),
                     bottomRight: Radius.circular(_width2 > 0 ? 0 : 3.w),
                   ),
-                  color: Color(0xffD5A869),
+                  color: (AppConfig.config.abcLogic.memberInfo.incomeTotal == 0 ? Color(0xffECEBE7) : Color(0xffD5A869)),
                 ),
               ),
               SizedBox(width: 1.w,),
@@ -110,7 +119,7 @@ class _MineZcWidgetState extends State<MineZcWidget> {
                     topLeft: Radius.circular(_width1 > 0 ? 0 : 3.w),
                     bottomLeft: Radius.circular(_width1 > 0 ? 0 : 3.w),
                   ),
-                  color: Color(0xff656568),
+                  color: (AppConfig.config.abcLogic.memberInfo.expensesTotal == 0 ? Color(0xffECEBE7) : Color(0xff656568)),
                 ),
               ),
             ],

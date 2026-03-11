@@ -35,6 +35,7 @@ abstract class BaseStateless extends StatelessWidget  with StateWidgetConfig {
       controller: appBarController,
       navHeight: navHeight,
       showBackgroundColor: showBackgroundColor,
+      centerTitle: centerTitle,
     ):Scaffold(
       resizeToAvoidBottomInset: bottomInset,
       backgroundColor: Colors.white,
@@ -51,7 +52,7 @@ abstract class BaseStateless extends StatelessWidget  with StateWidgetConfig {
             ),),
           backgroundColor:  navColor ?? Colors.white,
           elevation: 0,
-          centerTitle: true,
+          centerTitle: centerTitle,
           titleSpacing: 0,
           titleTextStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.sw),
           leadingWidth:lefItemWidth,

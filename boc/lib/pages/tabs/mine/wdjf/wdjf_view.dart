@@ -40,11 +40,11 @@ class WdjfPage extends StatelessWidget {
                       top: position.getY(400),
                       left: position.getX(275),
                       child: BaseText(
-                        text: AppConfig.config.abcLogic.memberInfo.points
-                            .toStringAsFixed(2),
+                        text: AppConfig.config.abcLogic.memberInfo.points == 0 ? '0.00':AppConfig.config.abcLogic.memberInfo.points
+                            .toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 22.w,
+                            fontSize: 22,
                             color: Color(0xFFDB7C4F)),
                       ))
                 ],

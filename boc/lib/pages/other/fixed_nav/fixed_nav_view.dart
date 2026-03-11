@@ -35,6 +35,9 @@ class FixedNavPage extends BaseStateless {
   List<Widget>? get rightAction => Get.arguments?['rightWidget'] ?? [];
 
   @override
+  bool get centerTitle => Get.arguments?['centerTitle'] ?? true;
+
+  @override
   double? get lefItemWidth =>Get.arguments?['lefItemWidth'];
 
   @override

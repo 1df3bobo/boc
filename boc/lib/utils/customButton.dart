@@ -31,6 +31,7 @@ class CustomButton {
         )
     );
   }
+
   static Widget rightSearchButton({
     Color color = const Color(0xFF333333),
     double size = 24,
