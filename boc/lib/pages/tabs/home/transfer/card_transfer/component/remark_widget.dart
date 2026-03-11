@@ -10,7 +10,9 @@ import '../card_transfer_state.dart';
 import 'account_transfer_widget.dart';
 
 class RemarkWidget extends StatefulWidget {
-  const RemarkWidget({super.key});
+  const RemarkWidget({super.key, this.showTransferType = true});
+
+  final bool showTransferType;
 
   @override
   State<RemarkWidget> createState() => _RemarkWidgetState();
@@ -48,32 +50,33 @@ class _RemarkWidgetState extends State<RemarkWidget> {
       child: Column(
         children: [
 
-          Container(
-            height: 44.w,
-            padding: EdgeInsets.only(left: 15.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BaseText(text: '转账方式'),
-                Row(
-                  children: [
-                    BaseText(
-                      text: transferTimeName,
-                      color: Color(0xff111111),
-                    ),
-                    Image(image: 'ic_jt_right'.png3x,width: 22.w,height: 22.w,),
-                  ],
-                )
-              ],
+          if (widget.showTransferType) ...[
+            Container(
+              height: 44.w,
+              padding: EdgeInsets.only(left: 15.w, right: 12.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BaseText(text: '转账方式'),
+                  Row(
+                    children: [
+                      BaseText(
+                        text: transferTimeName,
+                        color: Color(0xff111111),
+                      ),
+                      Image(image: 'ic_jt_right'.png3x,width: 22.w,height: 22.w,),
+                    ],
+                  )
+                ],
+              ),
+            ).withOnTap(onTap: onTapTransferType),
+            Container(
+              width: 1.sw,
+              height: 1.w,
+              margin: EdgeInsets.only(left: 15.w),
+              color: const Color(0xffE7E9EB),
             ),
-          ).withOnTap(onTap: onTapTransferType),
-
-          Container(
-            width: 1.sw,
-            height: 1.w,
-            margin: EdgeInsets.only(left: 15.w),
-            color: const Color(0xffE7E9EB),
-          ),
+          ],
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,9 +95,58 @@ class _RemarkWidgetState extends State<RemarkWidget> {
           ).withContainer(
             height: 44.w,
             padding: EdgeInsets.only(left: 15.w, right: 12.w),
+            onTap: _showRemarkDialog,
           ),
         ],
       ),
+    );
+  }
+
+  void _showRemarkDialog() {
+    FocusScope.of(context).unfocus();
+    Get.dialog(
+      GestureDetector(
+        onTap: () => Get.back(),
+        child: Material(
+          color: Colors.black54,
+          child: Center(
+            child: GestureDetector(
+              onTap: () {},
+              child: Stack(
+                children: [
+                  Image(
+                    image: 'zhzz_fy'.png3x,
+                    width: 1.sw * 0.8,
+                    fit: BoxFit.fitWidth,
+                  ).withOnTap(onTap: () => Get.back()),
+                  Positioned(
+                    left: 10.w,
+                    right: 30.w,
+                    top: 50.w,
+                    child: TextField(
+                      controller: state.remarksTextController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: '选填',
+                        hintStyle: TextStyle(
+                          color: const Color(0xff999999),
+                          fontSize: 14.sp,
+                        ),
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 10.w),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      barrierColor: Colors.black54,
     );
   }
 
