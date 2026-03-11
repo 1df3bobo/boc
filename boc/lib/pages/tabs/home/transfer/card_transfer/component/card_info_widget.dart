@@ -49,9 +49,9 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                   children: [
                     Transfer.itemCellWidget(
                         title: "户名",
-                        hintText: '支持首字母检索',
+                        hintText: '请输入收款人户名',
                         controller: state.nameTextController,
-                        // textAlign: TextAlign.right,
+                        textAlign: TextAlign.right,
                         style: TextStyle(
                           fontSize: 14.sp,
                         ),
@@ -97,9 +97,9 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                   children: [
                     Transfer.itemCellWidget(
                       title: "账户",
-                      hintText: '支持手机号汇款',
+                      hintText: '请输入收款人账号',
                       keyboardType: TextInputType.datetime,
-                      // textAlign: TextAlign.right,
+                      textAlign: TextAlign.right,
                       style: TextStyle(fontSize: 14.sp,),
                       onChanged: (v) {
                         state.cardReq.cardNo = v;

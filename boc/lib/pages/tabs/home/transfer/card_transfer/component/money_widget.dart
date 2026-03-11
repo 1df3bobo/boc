@@ -145,17 +145,23 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                       ],
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        BaseText(
-                          text: '可用余额',
-                          fontSize: 12.w,
-                          color: Color(0xff666666),
+                        Row(
+                          children: [
+                            BaseText(
+                              text: '可用余额',
+                              fontSize: 12.w,
+                              color: Color(0xff666666),
+                            ),
+                            BaseText(
+                              text: '人民币元 ${AppConfig.config.abcLogic.balance()}',
+                              fontSize: 12.w,
+                              color: BColors.mainColor,
+                            ),
+                          ],
                         ),
-                        BaseText(
-                          text: '人民币元 ${AppConfig.config.abcLogic.balance()}',
-                          fontSize: 12.w,
-                          color: BColors.mainColor,
-                        ),
+                        Text("全部转出", style: Color,)
                       ],
                     ),
                   ],
