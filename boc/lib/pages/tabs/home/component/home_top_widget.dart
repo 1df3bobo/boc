@@ -62,9 +62,9 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
             'title': '支付超给利',
             'rightWidget': [
               CustomButton.rightSearchButton(
-                color: Colors.black,
+                color: Colors.grey,
                 size: 24.w,
-                icon: Icons.share_outlined,
+                icon: Icons.share,
               ),
             ],
           });
