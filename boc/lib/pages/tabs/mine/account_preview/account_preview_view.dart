@@ -49,6 +49,30 @@ class AccountPreviewPage extends BaseStateless {
                       logic.eyeOpen.value = !logic.eyeOpen.value;
                     })),
                 Positioned(
+                    top: 10.w,
+                    right: 25.w,
+                    child: Container(
+                      width: 50.w,
+                      height: 50.w,
+                    ).withOnTap(onTap: () {
+                      Get.dialog(
+                        GestureDetector(
+                          onTap: () => Get.back(),
+                          child: Material(
+                            color: Colors.black54,
+                            child: Center(
+                              child: Image(
+                                image: 'zhzl_gth'.png3x,
+                                width: 1.sw,
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          ),
+                        ),
+                        barrierColor: Colors.black54,
+                      );
+                    })),
+                Positioned(
                     top: 55.w,
                     left: 35.w,
                     child: Row(

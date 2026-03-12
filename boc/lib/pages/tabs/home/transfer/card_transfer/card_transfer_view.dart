@@ -25,7 +25,7 @@ class CardTransferPage extends BaseStateless {
       children: const [
         CardInfoWidget(),
         MoneyWidget(),
-        RemarkWidget(),
+        RemarkWidget(showTransferType: false,),
         BottomWidget(),
       ],
     );

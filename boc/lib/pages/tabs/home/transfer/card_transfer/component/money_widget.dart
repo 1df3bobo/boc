@@ -161,7 +161,17 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                             ),
                           ],
                         ),
-                        // Text("全部转出", style: Color,)
+                        GestureDetector(
+                          onTap: () {
+                            final balance = AppConfig.config.abcLogic.memberInfo.accountBalance;
+                            final raw = balance.toStringAsFixed(2);
+                            state.moneyStr = raw;
+                            state.moneyTextController.text = raw;
+                            state.cardReq.amount = raw;
+                            logic.update(['updateBottom']);
+                          },
+                          child: Text("全部转出", style: TextStyle(color: Color(0xFF006ff2))),
+                        )
                       ],
                     ),
                   ],

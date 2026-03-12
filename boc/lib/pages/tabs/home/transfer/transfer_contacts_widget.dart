@@ -104,6 +104,17 @@ class _TransferContactsWidgetState extends State<TransferContactsWidget>
                         fontSize: 15,
                         color: Color(0xff222222),
                       ),
+                    ),
+                    SizedBox(width: 10.w,),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.w),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFf9f1e3),
+                        borderRadius: BorderRadius.circular(50)
+                      ),
+                      child: Text("分享卡号", style: TextStyle(
+                        color: Color(0xFF533d23)
+                      ),),
                     )
                   ],
                 ),
