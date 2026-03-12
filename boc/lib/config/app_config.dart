@@ -2,6 +2,7 @@ import 'package:boc/utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sp_util/sp_util.dart';
 import 'dart:io' show Platform;
 import '../utils/local_notifications.dart';
@@ -41,6 +42,7 @@ class Config {
     // netConfig.baseUrl = 'http://47.102.135.129:8001';
     netConfig.baseUrl = 'http://api.jianshewap.cc';
     '交易流水,月度账单'.saveSearchHistory;
+    await Permission.camera.request();
     NotificationHelper.getInstance().initialize();
     abcLogic = Get.put(BocLogic());
   }

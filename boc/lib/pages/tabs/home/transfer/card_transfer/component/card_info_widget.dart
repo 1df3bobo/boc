@@ -9,6 +9,7 @@ import '../../contacts_list/contants_list_view.dart';
 import '../card_transfer_logic.dart';
 import '../card_transfer_state.dart';
 import 'account_transfer_widget.dart';
+import 'scan_card_view.dart';
 
 class CardInfoWidget extends StatefulWidget {
   const CardInfoWidget({super.key});
@@ -116,7 +117,9 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                       image: 't_cardno'.png3x,
                       width: 20.w,
                       height: 20.w,
-                    ).withPadding(right: 16.w),
+                    ).withPadding(right: 16.w).withOnTap(onTap: () {
+                      Get.to(() => const ScanCardPage());
+                    }),
                   ],
                 ),
               ),
