@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:boc/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:boc/pages/other/change_nav/change_nav_view.dart';
+import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:get/get.dart';
 
 import 'webview_page_state.dart';
@@ -101,6 +103,16 @@ class WebViewLogic extends GetxController {
         } else {
           state.webViewController!.goBack();
         }
+      }else if(data['type'] == 'zczd') {
+        // 我的资产 资产管理 => 资产诊断
+        Get.to(() => ChangeNavPage(), arguments: {
+          'image': 'zczd',
+          'title': '',
+          'leftWidget':Container(width: 90.w,height: 45.w,).withOnTap(onTap: (){
+            Get.back();
+          })
+
+        });
       }
     } catch (e) {
       debugPrint('解析Web消息失败: $e');

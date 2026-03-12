@@ -23,11 +23,11 @@
           <div class="analysis-title">
             <div :class="['item',incomeExpenseType === '2'?'active':'']" @click="changeIncomeExpenseType('2')">
               <div>支出</div>
-              <div>￥{{ Math.abs(analysisDetails.expenses) }}</div>
+              <div>￥{{ Math.abs(analysisDetails.expenses).toFixed(2) }}</div>
             </div>
             <div :class="['item',incomeExpenseType === '1'?'active':'']" @click="changeIncomeExpenseType('1')">
               <div>收入</div>
-              <div>￥{{ analysisDetails.income }}</div>
+              <div>￥{{ analysisDetails.income.toFixed(2) }}</div>
             </div>
           </div>
           <div class="chart">
@@ -158,8 +158,14 @@ export default {
           formatter: (params) => {
             let name, value;
             params.forEach(element => {
-              name = element.name
-              value = element.value
+              const list = element.name.split("-");
+              if(list.length >= 2) {
+                name = `${list[0] > 9 ? list[0] : '0' + list[0]}月${list[1] > 9 ? list[1] : '0' + list[1]}日`;
+                value = element.value;
+              }else{
+                name = element.name;
+                value = element.value;
+              }
             });
             return `
                         <div style="

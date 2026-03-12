@@ -161,7 +161,7 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                             ),
                           ],
                         ),
-                        Text("全部转出", style: Color,)
+                        // Text("全部转出", style: Color,)
                       ],
                     ),
                   ],
