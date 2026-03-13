@@ -33,6 +33,14 @@ class _Item1WidgetState extends State<Item1Widget> {
               width: 345.w,
               height: 102.w,
               margin: EdgeInsets.only(left: 15.w, right: 15.w)),
+          Positioned(
+            top: 0,
+              right: 10.w,
+              child: Container(
+                width: 40.w,
+                height: 40.w,
+                color: Colors.black,
+              )),
 
           Positioned(
               left: 30.w,
