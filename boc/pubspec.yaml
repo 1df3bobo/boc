@@ -56,6 +56,7 @@ dependencies:
 #  gallery_saver_plus:
 #    path: modules/gallery_saver_plus
   popup_menu: any
+  camera: ^0.11.0
 
 
 dev_dependencies:
