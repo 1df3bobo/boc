@@ -159,11 +159,21 @@ class _TransferContactsWidgetState extends State<TransferContactsWidget>
                       ],
                     ).withContainer(width: 268.w),
                     SizedBox(height: 4.w),
-                    BaseText(
-                      text:
-                      '尾号 ${AppConfig.config.abcLogic.cardFour()}',
-                      color: Color(0xff666666),
-                      fontSize: 12,
+                    Row(
+                      children: [
+                        BaseText(
+                          text:
+                          '尾号 ${AppConfig.config.abcLogic.cardFour()}',
+                          color: Color(0xff666666),
+                          fontSize: 12,
+                        ),
+                        SizedBox(width: 10.w),
+                        BaseText(
+                          text: "长城电子借记卡",
+                          color: Color(0xff666666),
+                          fontSize: 12,
+                        ),
+                      ],
                     ),
                   ],
                 ),

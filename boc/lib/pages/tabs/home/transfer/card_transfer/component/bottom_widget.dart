@@ -30,7 +30,7 @@ class _BottomWidgetState extends State<BottomWidget> {
         children: [
           SizedBox(height: 37.w),
           AbcButton(
-            title: '确定',
+            title: '下一步',
             bgColor: Color(0xff2D70ED),
             onTap: () {
               // Get.to(() => ConfirmInfoPage());

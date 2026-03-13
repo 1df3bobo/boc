@@ -92,7 +92,6 @@ class BocLogic extends GetxController {
     return '--';
   }
 
-
   String cardFour(){
     if(memberInfo.bankList.isNotEmpty){
       return memberInfo.bankList.first.bankCard.getLastFourByList();

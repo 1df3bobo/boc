@@ -54,6 +54,9 @@
     </nav-bar>
     <div class="main">
       <div class="header">
+        <div class="header-notice">
+          <van-notice-bar color="#fff" background="rgba(0, 0, 0, 0)" scrollable>所涉及相关资产负债及明细信息可能会存在更新延迟等情况</van-notice-bar>
+        </div>
         <div class="header-corner" @click="goZczd">资产诊断</div>
         <div class="header-ears">
           <img
@@ -206,9 +209,12 @@ export default {
     },
     goZczd() {
       // 资产诊断页面
-      window.FlutterBridge.postMessage({
-        type: "zczd",
-      });
+      // window.FlutterBridge.postMessage({
+      //   type: "zczd",
+      // });
+       this.$router.push({
+        path: `/asset/diagnosis`,
+      })
     },
     // 页面滚动事件
     scrolling() {
@@ -411,6 +417,13 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       bottom: 1rem;
+    }
+
+    .header-notice {
+      position: absolute;
+      bottom: 3.7rem;
+      left: 0;
+      width: 100%;
     }
 
     .header-corner {

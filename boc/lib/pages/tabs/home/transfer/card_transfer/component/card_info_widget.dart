@@ -138,7 +138,7 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           BaseText(
-                            text: '收款银行',
+                            text: '银行',
                             fontSize: 16.sp,
                             color: Color(0xff333333),
                           ).withContainer(
