@@ -56,15 +56,16 @@ dependencies:
 #  gallery_saver_plus:
 #    path: modules/gallery_saver_plus
   popup_menu: any
-  camera: ^0.11.0
+  camera: 0.11.2+1
 
+dependency_overrides:
+  camera_android_camerax: 0.6.19+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^4.0.0
-
 
 flutter:
 

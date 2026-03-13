@@ -94,6 +94,15 @@ class MinePage extends BaseStateless {
           children: [
             Image(image: 'main_bg1'.png3x),
             Positioned(
+                top: 80.w,
+                left: 20.w,
+                child: Container(
+              width: 60.w,
+              height: 60.w,
+            ).withOnTap(onTap: () {
+              _showImageSourceSheet(context);
+            })),
+            Positioned(
                 bottom: 70.w,
                 left: 89.w,
                 child: Row(
@@ -349,6 +358,48 @@ class MinePage extends BaseStateless {
     );
   }
 
+  void _showImageSourceSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12.w),
+            topRight: Radius.circular(12.w),
+          ),
+        ),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).padding.bottom),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildSheetOption(ctx, '拍照'),
+              Divider(height: 1, color: Colors.grey.withOpacity(0.3)),
+              _buildSheetOption(ctx, '照片图库'),
+              Container(height: 8, color: Colors.grey.withOpacity(0.15)),
+              _buildSheetOption(ctx, '取消'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSheetOption(BuildContext context, String text) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 16.w),
+        alignment: Alignment.center,
+        child: BaseText(text: text, fontSize: 16, color: Color(0xff333333)),
+      ),
+    );
+  }
 
   Widget _mineTag({
     required String img,
