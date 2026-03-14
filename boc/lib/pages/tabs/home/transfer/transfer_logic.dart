@@ -61,7 +61,7 @@ class TransferLogic extends GetxController {
       });
     }
     if(index == 4){
-      Get.to(() => ContactsListPage());
+      Get.to(() => ContactsListPage(), arguments: {"showAddContact":true});
     }
   }
 }

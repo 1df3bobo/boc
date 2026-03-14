@@ -13,10 +13,13 @@ class ContactsListLogic extends GetxController{
   List<ContactInfo> contactList = [];
   List<ContactInfo> topList = [];
 
+  bool showAddContact = false;
 
   @override
   void onInit() {
     super.onInit();
+    final args = Get.arguments;
+    showAddContact = args is Map && args['showAddContact'] == true;
     loadData();
   }
 
