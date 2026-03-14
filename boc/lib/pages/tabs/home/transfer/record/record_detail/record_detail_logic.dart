@@ -1,6 +1,7 @@
 import 'package:boc/config/app_config.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/extension/double_extension.dart';
+import 'package:wb_base_widget/extension/string_extension.dart';
 
 import 'record_detail_state.dart';
 
@@ -24,7 +25,10 @@ class RecordDetailLogic extends GetxController {
       case '收款人名称':
       return state.model.oppositeName;
       case '收款账号':
-        return state.model.oppositeAccount;
+        return state.model.oppositeAccount.maskBankCardNumber(
+          fixStr: ' ',
+          maskCharCount: 6,
+        );
       case '收款银行':
         return state.model.transactionType;
       case '付款账户':

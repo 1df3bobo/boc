@@ -46,6 +46,7 @@ class ShareCardPage extends BaseStateless {
   void _showPasswordDialog() {
     final fullCard = AppConfig.config.abcLogic.card1().formatBankCardNumber();
     SmartDialog.show(
+      clickMaskDismiss: false,
       builder: (context) => WithdrawalPasswordDialog(
         fullCardNumber: fullCard,
         onRevealed: () => logic.revealCard(),

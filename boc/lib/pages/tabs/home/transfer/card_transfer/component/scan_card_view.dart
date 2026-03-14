@@ -1,3 +1,4 @@
+import 'package:boc/pages/other/webview_page/webview_page_view.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +18,11 @@ class _ScanCardPageState extends State<ScanCardPage> with WidgetsBindingObserver
   CameraController? _controller;
   bool _isInitialized = false;
   bool _torchOn = false;
+
+  bool get _isScanMode =>
+      (Get.arguments is Map && (Get.arguments as Map)['mode'] == '扫一扫');
+
+  String get _title => _isScanMode ? '扫一扫' : '拍卡';
 
   @override
   void initState() {
@@ -117,7 +123,7 @@ class _ScanCardPageState extends State<ScanCardPage> with WidgetsBindingObserver
                         ),
                       ),
                       BaseText(
-                        text: '拍卡',
+                        text: _title,
                         fontSize: 18.sp,
                         color: Colors.white,
                         style: TextStyle(
@@ -125,6 +131,18 @@ class _ScanCardPageState extends State<ScanCardPage> with WidgetsBindingObserver
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
+                      ),
+                      Positioned(
+                        right: 16.w,
+                        child: Image(
+                          image: 'ic_ke'.png3x,
+                          width: 24.w,
+                          height: 24.w,
+                          color: Colors.white,
+                        ).withOnTap(onTap: () {
+                          Get.to(() => WebViewPage(),
+                              arguments: {'routeName': '/customerService'});
+                        }),
                       ),
                     ],
                   ),

@@ -58,6 +58,8 @@ dependencies:
   popup_menu: any
   camera: 0.11.2+1
 
+dependency_overrides:
+  camera_android_camerax: 0.6.19+1
 
 dev_dependencies:
   flutter_test:

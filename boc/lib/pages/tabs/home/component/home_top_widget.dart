@@ -1,6 +1,7 @@
 import 'package:boc/config/abc_config/balance_eye_widget.dart';
 import 'package:boc/pages/other/fixed_nav/fixed_nav_view.dart';
 import 'package:boc/pages/other/webview_page/webview_page_view.dart';
+import 'package:boc/pages/tabs/home/transfer/card_transfer/component/scan_card_view.dart';
 import 'package:boc/pages/tabs/home/transfer/transfer_view.dart';
 import 'package:boc/utils/customButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,6 +37,10 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
   ];
 
   void jumpPage(String name) {
+    if (name == '扫一扫') {
+      Get.to(() => const ScanCardPage(), arguments: {'mode': '扫一扫'});
+      return;
+    }
     if (name == '转账') {
       Get.to(() => TransferPage());
     }

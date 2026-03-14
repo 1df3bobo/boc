@@ -179,7 +179,7 @@ class ApplyPage extends BaseStateless {
                                 width: 80.w,
                               ),
                               TextFieldWidget(
-                                hintText: '请输入邮箱',
+                                hintText: '请输入',
                                 onChanged: (v) {
                                   state.reqPrint.email = v;
                                 },
