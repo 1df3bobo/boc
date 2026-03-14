@@ -44,7 +44,6 @@ class BillPage extends BaseStateless {
                   padding: EdgeInsets.zero,
                   controller: state.controller,
                   itemBuilder: (context, index) {
-
                     BillItemList model = state.list[index];
                     if (model.billDetail == null) {
                       return Container(

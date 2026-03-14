@@ -10,6 +10,7 @@ import 'package:wb_base_widget/text_widget/bank_text.dart';
 
 import '../../../../../../config/app_config.dart';
 import '../../../../../../utils/color_util.dart';
+import '../card_select/card_select_view.dart';
 import '../card_transfer_logic.dart';
 import '../card_transfer_state.dart';
 import 'account_transfer_widget.dart';
@@ -88,7 +89,7 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                   controller: state.moneyTextController,
                   focusNode: state.moneyFocusNode,
                   style:
-                      TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w600, color: BColors.mainColor),
                   hintColor: Color(0xff9B9B9B),
                   textColor: const Color(0xff333333),
                   keyboardType:
@@ -143,7 +144,9 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                           ],
                         )
                       ],
-                    ),
+                    ).withOnTap(onTap: () {
+                      Get.to(() => CardSelectPage());
+                    }),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -161,6 +164,7 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                             ),
                           ],
                         ),
+
                         GestureDetector(
                           onTap: () {
                             final balance = AppConfig.config.abcLogic.memberInfo.accountBalance;

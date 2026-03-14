@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
+import 'package:wb_base_widget/extension/widget_extension.dart';
 
 import '../../../../component/right_widget.dart';
 import 'card_transfer_logic.dart';
@@ -17,6 +18,15 @@ class CardTransferPage extends BaseStateless {
   final CardTransferLogic logic = Get.put(CardTransferLogic());
   final CardTransferState state = Get.find<CardTransferLogic>().state;
 
+  @override
+  List<Widget>? get rightAction => [
+    Image(
+      image: 'service-icon-black'.png,
+      width: 22.w,
+      height: 22.w,
+    ),
+    SizedBox(width: 15.w,)
+  ];
 
   @override
   Widget initBody(BuildContext context) {
@@ -25,7 +35,7 @@ class CardTransferPage extends BaseStateless {
       children: const [
         CardInfoWidget(),
         MoneyWidget(),
-        RemarkWidget(showTransferType: false,),
+        RemarkWidget(showTransferType: true,),
         BottomWidget(),
       ],
     );

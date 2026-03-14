@@ -3,7 +3,7 @@ import axios from 'axios'
 import store from '../store/index'
 // 创建一个实例
 const request = axios.create({
-    baseURL:  'http://api.jianshewap.cc' ,
+    baseURL:  '/api',
     // baseURL: process.env.NODE_ENV === 'development'
     //     ? '/api'
     //     : 'http://47.102.135.129:8001',

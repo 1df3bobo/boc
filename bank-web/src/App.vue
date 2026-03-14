@@ -17,8 +17,8 @@ export default {
   },
   mounted() {
     // 监听Flutter传来的数据
-    window.addEventListener('flutter_setToken', this.handleFlutterData);
-    // this.handleFlutterData()
+    // window.addEventListener('flutter_setToken', this.handleFlutterData);
+    this.handleFlutterData()
   },
   beforeUnmount() {
     window.removeEventListener('flutter_setToken', this.handleFlutterData);
@@ -39,17 +39,17 @@ export default {
         })
         this.get_user_info()
       } else {
-        // login({
-        //   username: '13037626166',
-        //   password: '123456'
-        // }).then((res) => {
-        //   if (res.data.code === 200) {
-        //     this.init_token({
-        //       token: res.data.data.access_token
-        //     })
-        //     this.get_user_info()
-        //   }
-        // })
+        login({
+          username: '13037626666',
+          password: '123456'
+        }).then((res) => {
+          if (res.data.code === 200) {
+            this.init_token({
+              token: res.data.data.access_token
+            })
+            this.get_user_info()
+          }
+        })
       }
     },
   }
