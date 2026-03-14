@@ -53,9 +53,18 @@ class HomePage extends BaseStateless {
           });
         }),
         SizedBox(width: 18.w),
-        _homeTag(img: 'ic_ke', name: '客服').withOnTap(onTap: (){
-          Get.to(() => WebViewPage(),
-              arguments: {'routeName': '/customerService'});
+        _homeTag(img: 'ic_ke', name: '客服').withOnTap(onTap: () {
+          Get.to(() => GestureDetector(
+            onTap: () {
+                Get.off(() => WebViewPage(),
+                    arguments: {'routeName': '/customerService'});
+            },
+            child: Image(
+              image: 'custom_bg'.png3x,
+              fit: BoxFit.fitWidth,
+              width: 1.sw,
+            ),
+          ));
         }),
         SizedBox(width: 18.w),
         _homeTag(img: 'ic_msg', name: '消息').withOnTap(onTap: (){
