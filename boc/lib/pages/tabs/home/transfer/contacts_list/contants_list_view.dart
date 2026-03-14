@@ -29,6 +29,7 @@ class ContactsListPage extends BaseStateless {
     return Column(
       children: [
         _searchWidget(),
+        if (logic.showAddContact) _addContactWidget(),
         Expanded(
             child: GetBuilder(
           builder: (ContactsListLogic c) {
@@ -37,6 +38,38 @@ class ContactsListPage extends BaseStateless {
           id: 'updateUI',
         ))
       ],
+    );
+  }
+
+  Widget _addContactWidget() {
+    return Container(
+      width: 1.sw,
+      height: 56.w,
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Row(
+        children: [
+          Container(
+            width: 32.w,
+            height: 32.w,
+            decoration: BoxDecoration(
+              color: const Color(0xffEBF1FF),
+              borderRadius: BorderRadius.circular(16.w),
+            ),
+            child: Icon(
+              Icons.add,
+              size: 18.w,
+              color: const Color(0xff3366FF),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          BaseText(
+            text: '添加收款人',
+            fontSize: 15.sp,
+            color: Colors.black,
+          ),
+        ],
+      ),
     );
   }
 
@@ -116,7 +149,7 @@ class ContactsListPage extends BaseStateless {
       height: susHeight,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 16.0),
-      color: Colors.white,
+      color: logic.showAddContact ? Color(0xFFf4f4f4) : Colors.white,
       alignment: Alignment.centerLeft,
       child: Text(
         '$tag',
@@ -147,20 +180,30 @@ class ContactsListPage extends BaseStateless {
             SizedBox(
               height: 4.w,
             ),
-            Row(
-              children: [
-                BaseText(
-                  text: model.bankName,
-                  fontSize: 12.sp,
-                  color: const Color(0xff666666),
-                ),
-                BaseText(
-                  text: '（${model.bankCard.maskBankCardNumber()}）',
-                  fontSize: 13.sp,
-                  color: Color(0xff666666),
-                )
-              ],
-            )
+            logic.showAddContact
+                ? Expanded(
+                    child: BaseText(
+                      text: '${model.bankCard.maskBankCardNumber()} | ${model.bankName}',
+                      fontSize: 12.sp,
+                      color: const Color(0xff666666),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                : Row(
+                    children: [
+                      BaseText(
+                        text: model.bankName,
+                        fontSize: 12.sp,
+                        color: const Color(0xff666666),
+                      ),
+                      BaseText(
+                        text: '（${model.bankCard.maskBankCardNumber()}）',
+                        fontSize: 13.sp,
+                        color: Color(0xff666666),
+                      )
+                    ],
+                  )
           ],
         )
       ],

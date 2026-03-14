@@ -1,6 +1,9 @@
 import 'package:boc/config/abc_config/balance_eye_widget.dart';
+import 'package:boc/pages/other/fixed_nav/fixed_nav_view.dart';
 import 'package:boc/pages/other/webview_page/webview_page_view.dart';
+import 'package:boc/pages/tabs/home/transfer/card_transfer/component/scan_card_view.dart';
 import 'package:boc/pages/tabs/home/transfer/transfer_view.dart';
+import 'package:boc/utils/customButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +37,10 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
   ];
 
   void jumpPage(String name) {
+    if (name == '扫一扫') {
+      Get.to(() => const ScanCardPage(), arguments: {'mode': '扫一扫'});
+      return;
+    }
     if (name == '转账') {
       Get.to(() => TransferPage());
     }
@@ -54,21 +61,27 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
     final navHeight = MediaQuery.of(context).padding.top + 44.w;
     return Stack(
       children: [
-        Image(image: 'bg_home_top'.png3x),
+        Image(image: 'bg_home_top'.png3x, fit: BoxFit.fitWidth, width: 1.sw,).withOnTap(onTap: () {
+          Get.to(() => FixedNavPage(), arguments: {
+            'image': 'home_top_bg',
+            'title': '支付超给利',
+            'rightWidget': [
+              CustomButton.rightSearchButton(
+                color: Colors.grey,
+                size: 24.w,
+                icon: Icons.share,
+              ),
+            ],
+          });
+        }),
         Positioned(
-          top: navHeight + 25.w,
+          top: navHeight + 18.w,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: titleName.map((e) {
-              return Column(
-                children: [
-                  Image(
-                    image: imgList[titleName.indexOf(e)].png3x,
-                    width: 37.w,
-                    height: 37.w,
-                  ),
-                  BaseText(text: e)
-                ],
+              return Container(
+                width: 50.w,
+                height: 60.w,
               ).withOnTap(onTap: () => jumpPage(e));
             }).toList(),
           ).withContainer(width: 1.sw),

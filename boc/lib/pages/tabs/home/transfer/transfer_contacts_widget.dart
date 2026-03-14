@@ -1,4 +1,5 @@
 import 'package:boc/pages/tabs/home/transfer/contacts_list/contants_list_view.dart';
+import 'package:boc/pages/tabs/home/transfer/share_card/share_card_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -104,7 +105,20 @@ class _TransferContactsWidgetState extends State<TransferContactsWidget>
                         fontSize: 15,
                         color: Color(0xff222222),
                       ),
-                    )
+                    ),
+                    SizedBox(width: 10.w,),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.w),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFf9f1e3),
+                        borderRadius: BorderRadius.circular(50)
+                      ),
+                      child: Text("分享卡号", style: TextStyle(
+                        color: Color(0xFF533d23)
+                      ),),
+                    ).withOnTap(onTap: () {
+                      Get.to(() => ShareCardPage());
+                    })
                   ],
                 ),
                 Container(

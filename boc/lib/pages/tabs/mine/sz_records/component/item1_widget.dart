@@ -21,6 +21,75 @@ class Item1Widget extends StatefulWidget {
 }
 
 class _Item1WidgetState extends State<Item1Widget> {
+  static const String _explanationText = '''1.收支记录的货币单位为人民币元，外币交易将按照上一日牌价自动折算为人民币;
+2.本人中行卡互转、同名账户跨行互转、信用卡还款、结售汇、投资理财交易，均不计入收入和支出；
+3.您可以在收支记录详情页，设置是否将该笔交易计入收支；
+4.每一笔交易都将按照特征自动分类，您也可以在收支记录详情页修改分类；
+5.您可以对交易添加备注以备查询；
+6.您可以在收支记录列表中删除交易，交易删除后不可恢复，但不会影响账户交易记录；
+7.收支记录的数据更新可能延迟，仅供参考，不作为对账凭证，具体交易信息以账户交易记录为准；
+8.收支记录可查询自2018年1月1日起至今的交易。''';
+
+  void _showExplanationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.w),
+        ),
+        insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(ctx).size.height * 0.6,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 20.w, bottom: 12.w),
+                child: BaseText(
+                  text: '说明',
+                  fontSize: 16,
+                  color: Color(0xff222222),
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+              Divider(height: 1, color: Colors.grey.withOpacity(0.3)),
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.w),
+                  child: BaseText(
+                    text: _explanationText,
+                    fontSize: 14,
+                    color: Color(0xff333333),
+                    style: TextStyle(height: 1.8),
+                    overflow: TextOverflow.visible,
+                    softWrap: true,
+                  ),
+                ),
+              ),
+              Divider(height: 1, color: Colors.grey.withOpacity(0.3)),
+              SizedBox(
+                width: double.infinity,
+                height: 48.w,
+                child: TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: BaseText(
+                    text: '确认',
+                    fontSize: 16,
+                    color: Color(0xffE82E4A),
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     PayMentList m = widget.model;
@@ -33,6 +102,15 @@ class _Item1WidgetState extends State<Item1Widget> {
               width: 345.w,
               height: 102.w,
               margin: EdgeInsets.only(left: 15.w, right: 15.w)),
+          Positioned(
+            top: 0,
+              right: 10.w,
+              child: Container(
+                width: 40.w,
+                height: 40.w,
+              ).withOnTap(onTap: () {
+                _showExplanationDialog(context);
+              })),
 
           Positioned(
               left: 30.w,

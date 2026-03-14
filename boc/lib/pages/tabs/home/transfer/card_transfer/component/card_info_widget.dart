@@ -9,6 +9,7 @@ import '../../contacts_list/contants_list_view.dart';
 import '../card_transfer_logic.dart';
 import '../card_transfer_state.dart';
 import 'account_transfer_widget.dart';
+import 'scan_card_view.dart';
 
 class CardInfoWidget extends StatefulWidget {
   const CardInfoWidget({super.key});
@@ -49,9 +50,9 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                   children: [
                     Transfer.itemCellWidget(
                         title: "户名",
-                        hintText: '支持首字母检索',
+                        hintText: '请输入收款人户名',
                         controller: state.nameTextController,
-                        // textAlign: TextAlign.right,
+                        textAlign: TextAlign.right,
                         style: TextStyle(
                           fontSize: 14.sp,
                         ),
@@ -97,9 +98,9 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                   children: [
                     Transfer.itemCellWidget(
                       title: "账户",
-                      hintText: '支持手机号汇款',
+                      hintText: '请输入收款人账号',
                       keyboardType: TextInputType.datetime,
-                      // textAlign: TextAlign.right,
+                      textAlign: TextAlign.right,
                       style: TextStyle(fontSize: 14.sp,),
                       onChanged: (v) {
                         state.cardReq.cardNo = v;
@@ -116,7 +117,9 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                       image: 't_cardno'.png3x,
                       width: 20.w,
                       height: 20.w,
-                    ).withPadding(right: 16.w),
+                    ).withPadding(right: 16.w).withOnTap(onTap: () {
+                      Get.to(() => const ScanCardPage());
+                    }),
                   ],
                 ),
               ),
