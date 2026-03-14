@@ -100,6 +100,13 @@ class BocLogic extends GetxController {
     return '--';
   }
 
+  String branchBelongs(){
+    if(memberInfo.bankList.isNotEmpty){
+      return memberInfo.bankList.first.branchBelongs;
+    }
+    return '--';
+  }
+
   String phone(){
     return memberInfo.phone.desensitize();
   }

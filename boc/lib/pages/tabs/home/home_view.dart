@@ -1,3 +1,4 @@
+import 'package:boc/pages/other/kefu/kefu_view.dart';
 import 'package:boc/pages/tabs/home/component/ad_banner_widget.dart';
 import 'package:boc/pages/tabs/home/component/function_banner_widget.dart';
 import 'package:boc/pages/tabs/home/component/home_bottom_widget.dart';
@@ -54,8 +55,7 @@ class HomePage extends BaseStateless {
         }),
         SizedBox(width: 18.w),
         _homeTag(img: 'ic_ke', name: '客服').withOnTap(onTap: (){
-          Get.to(() => WebViewPage(),
-              arguments: {'routeName': '/customerService'});
+          Get.to(() => KefuPage());
         }),
         SizedBox(width: 18.w),
         _homeTag(img: 'ic_msg', name: '消息').withOnTap(onTap: (){

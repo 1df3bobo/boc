@@ -130,26 +130,26 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                 color: const Color(0xffE7E9EB),
               ),
               GetBuilder(builder: (CardTransferLogic c){
-                if(c.state.cardReq.cardNo == '') return const SizedBox.shrink();
+                // if(c.state.cardReq.cardNo == '') return const SizedBox.shrink();
                 return Container(
                   height: 52.w,
                   width: 1.sw,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      BaseText(
+                        text: '收款银行',
+                        fontSize: 16.sp,
+                        color: Color(0xff333333),
+                      ).withContainer(
+                        width: 108.w,
+                        height: 45.w,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: 15.w, top: 2.w),
+                      ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          BaseText(
-                            text: '收款银行',
-                            fontSize: 16.sp,
-                            color: Color(0xff333333),
-                          ).withContainer(
-                            width: 108.w,
-                            height: 45.w,
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.only(left: 15.w, top: 2.w),
-                          ),
                           GetBuilder(
                             builder: (CardTransferLogic c) {
                               bool isSel = state.cardReq.bankName == '';
@@ -157,20 +157,18 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                                 text:isSel ?'请选择收款银行':state.cardReq.bankName ,
                                 fontSize: 14.sp,
                                 color:isSel? const Color(0xffC7C7C7):const Color(0xff333333),
-                              ).withContainer(
-                                width: 210.w,
-                                // alignment: Alignment.centerRight,
-                              ) ;
+                              ).withPadding(right: 18.w) ;
                             },
                             id: 'updateCard',
-                          )
+                          ),
+
+                          Image(
+                            image: 'ic_jt_right'.png3x,
+                            width: 24.w,
+                            height: 24.w,
+                          ).withPadding(right: 16.w),
                         ],
-                      ),
-                      Image(
-                        image: 'ic_jt_right'.png3x,
-                        width: 24.w,
-                        height: 24.w,
-                      ).withPadding(right: 16.w),
+                      )
                     ],
                   ).withOnTap(onTap: () {
                     Get.to(() => BankListPage())?.then((v) {

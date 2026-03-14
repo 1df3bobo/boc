@@ -1,6 +1,7 @@
 import 'package:boc/config/app_config.dart';
 import 'package:boc/pages/tabs/home/bill/bill_view.dart';
 import 'package:boc/pages/tabs/home/transfer/transfer_view.dart';
+import 'package:boc/pages/tabs/mine/account_preview/account_info/account_info_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -131,7 +132,9 @@ class AccountPreviewPage extends BaseStateless {
             Image(image: 'a_yl_bottom'.png3x).withPadding(
               left: 6.w,
               right: 6.w,
-            ),
+            ).withOnTap(onTap: (){
+              Get.to(() => AccountInfoPage());
+            }),
             Positioned(
                 top: 25.w,
                 left: 95.w,
