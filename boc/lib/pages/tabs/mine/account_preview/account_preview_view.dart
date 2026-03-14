@@ -119,12 +119,20 @@ class AccountPreviewPage extends BaseStateless {
         SizedBox(
           height: 28.w,
         ),
-        const BaseText(
-          text: '中行卡',
-          color: Color(0xff666666),
-          fontSize: 13,
-        ).withPadding(
-          left: 18.w,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            BaseText(
+              text: '中行卡',
+              color: Color(0xff666666),
+              fontSize: 13,
+            ).withPadding(
+              left: 18.w,
+            ),
+            Image(image: "mine_refresh".png3x, width: 10.w, color: Color(0xff666666)).withPadding(
+              right: 18.w,
+            ),
+          ],
         ),
         Stack(
           children: [
@@ -171,13 +179,13 @@ class AccountPreviewPage extends BaseStateless {
                         style:
                             TextStyle(fontSize: 13, color: Color(0xff666666)),
                       ),
-                      BaseText(
-                        text: AppConfig.config.abcLogic.balance(),
+                      Obx(() => BaseText(
+                        text: !logic.eyeOpen.value?'******':AppConfig.config.abcLogic.balance(),
                         style: TextStyle(
                             fontSize: 15,
                             color: Color(0xff222222),
                             fontWeight: FontWeight.bold),
-                      ),
+                      )),
                     ],
                   ),
                 )),

@@ -206,6 +206,7 @@ export default {
           {
             data: this.incomeExpenseType === '2' ? expensesList : incomeList,
             type: 'line',
+            symbol: 'circle',
             color: this.incomeExpenseType === '2' ? '#2C70ED' : '#DD0035',
             lineStyle: {
               width: 1,         // 线条宽度
@@ -228,6 +229,9 @@ export default {
         list.push(obj)
       })
       return {
+        grid:{
+          bottom: '5%',
+        },
         legend: {
           bottom: 10,
           left: 'center',
@@ -278,7 +282,8 @@ export default {
           {
             name: '访问来源',
             type: 'pie',
-            radius: [45, 70],
+            radius: [50, 70],
+            center: ['50%', '45%'],
             data: list,
             labelLine: {
               show: false
@@ -338,7 +343,7 @@ export default {
           this.dateTime = `${year}.${month}`;
         }
       } else {
-        this.dateTime = this.currentDate.getFullYear() + '年';
+        this.dateTime = this.currentDate.getFullYear();
       }
     },
     yearConfirm(value) {
@@ -402,6 +407,7 @@ export default {
             let pieEchartsDom = this.$refs.chartRefPie;
             this.pieChart = echarts.init(pieEchartsDom)
             let pieChart = this.pieChart
+            console.log(this.pieChartOption);
             pieChart.setOption(this.pieChartOption)
 
 
@@ -541,7 +547,7 @@ export default {
 
         .chart-pie {
           width: 100%;
-          height: 5rem;
+          height: 5.4rem;
           margin-top: 0.5rem;
         }
       }

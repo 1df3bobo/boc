@@ -31,7 +31,7 @@ class _BillTopWidgetState extends State<BillTopWidget> {
   final BillLogic logic = Get.find<BillLogic>();
   final BillState state = Get.find<BillLogic>().state;
 
-  List title = ['近一周', '近1月', '近3月'];
+  List title = ['近1周', '近1月', '近3月'];
 
   @override
   Widget build(BuildContext context) {
@@ -458,7 +458,7 @@ class _BillTopWidgetState extends State<BillTopWidget> {
     DateTime startDate;
 
     switch (tag) {
-      case '近一周':
+      case '近1周':
         startDate = now.subtract(const Duration(days: 7));
         break;
       case '近1月':

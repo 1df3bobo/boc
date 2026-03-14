@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/extension/string_extension.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
+import 'package:boc/pages/other/fixed_nav/fixed_nav_view.dart';
 
 import '../../../../../../routes/app_pages.dart';
 import '../../../../../../utils/abc_button.dart';
@@ -60,7 +61,13 @@ class _BottomWidgetState extends State<BottomWidget> {
             radius: 6.w,
           ),
           SizedBox(height: 40.w),
-          Image(image: 'zz_tips'.png3x, width: 335.w),
+          Image(image: 'zz_tips'.png3x, width: 335.w).withOnTap(onTap: () {
+            Get.to(() => FixedNavPage(), arguments: {
+              'image': 'fxts',
+              'title': '风险提示',
+            });
+
+          }),
           SizedBox(height: 40.w),
         ],
       ),

@@ -42,7 +42,10 @@ export default {
         const firstChar = realName.substring(0, 1);
         const lastChar = realName.substring(length - 1);
         // 计算中间需要替换的*数量
-        const middleStars = "*" * (length - 2);
+        let middleStars = "";
+        for(let i = 0; i < length - 2; i++) {
+          middleStars += "*";
+        }
         return `${firstChar}${middleStars}${lastChar}`;
       }
     }
