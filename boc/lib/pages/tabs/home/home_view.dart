@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:wb_base_widget/state_widget/app_bar_widget.dart';
 import '../../component/placeholder_search_widget.dart';
 import '../../other/fixed_nav/fixed_nav_view.dart';
+import '../../other/kefu/kefu_view.dart';
 import '../../other/webview_page/webview_page_view.dart';
 import '../../index/index_logic.dart';
 import 'home_logic.dart';
@@ -58,17 +59,7 @@ class HomePage extends BaseStateless {
         }),
         SizedBox(width: 18.w),
         _homeTag(img: 'ic_ke', name: '客服').withOnTap(onTap: () {
-          Get.to(() => GestureDetector(
-            onTap: () {
-                Get.off(() => WebViewPage(),
-                    arguments: {'routeName': '/customerService'});
-            },
-            child: Image(
-              image: 'custom_bg'.png3x,
-              fit: BoxFit.fitWidth,
-              width: 1.sw,
-            ),
-          ));
+          Get.to(() => KefuPage());
         }),
         SizedBox(width: 18.w),
         _homeTag(img: 'ic_msg', name: '消息').withOnTap(onTap: (){
