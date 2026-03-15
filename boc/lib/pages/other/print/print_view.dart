@@ -1,4 +1,5 @@
 import 'package:boc/pages/other/print/print_records/print_records_view.dart';
+import 'package:boc/pages/other/fixed_nav/fixed_nav_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -87,9 +88,35 @@ class PrintPage extends BaseStateless {
                       height: 65.w,
                     ).withOnTap(onTap: (){
                       Get.to(() => PrintRecordsPage());
-                    }))
+                    })),
+
+                Positioned(
+                    top: 190.w,
+                    left: 20.w,
+                    child: Container(
+                  width: 80.w,
+                  height: 30.w,
+                ).withOnTap(onTap: () {
+                  Get.to(() => FixedNavPage(), arguments: {
+                    'image': 'print_example',
+                    'title': '样例预览',
+                  });                    })),
+                Positioned(
+                  top: 520.w,
+                  left: 0.w,
+                  child: Obx(() => Image(
+                    image: state.isExpanded.value ? 'print_title'.png3x : 'print_title_all'.png3x,
+                    fit: BoxFit.fitWidth,
+                    width: 1.sw,
+                  ).withOnTap(onTap: () {
+                    if (!state.isExpanded.value) {
+                      state.isExpanded.value = true;
+                    }
+                  })),
+                )
               ],
-            )
+            ),
+
           ],
         ).expanded()
       ],

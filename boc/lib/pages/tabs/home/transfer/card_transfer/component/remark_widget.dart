@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
+import 'package:boc/utils/stack_position.dart';
 
 import '../../../../../../utils/color_util.dart';
 import '../card_transfer_logic.dart';
@@ -49,7 +50,6 @@ class _RemarkWidgetState extends State<RemarkWidget> {
       margin: EdgeInsets.only(top: 15.w),
       child: Column(
         children: [
-
           if (widget.showTransferType) ...[
             Container(
               height: 44.w,
@@ -157,97 +157,53 @@ class _RemarkWidgetState extends State<RemarkWidget> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Column(
-          children: [
-            Container(
-              width: 1.sw,
-              height: 45.w,
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 15.w, right: 15.w),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(6.w))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 24.w,
-                    height: 24.w,
-                  ),
-                  BaseText(
-                    text: '请选择',
-                    color: Color(0xff666666),
-                    fontSize: 16.sp,
-                  ),
-                  Icon(
-                    Icons.clear,
-                    size: 24.w,
-                  ).withOnTap(onTap: () {
-                    Get.back();
-                  }),
-                ],
+        StackPosition stackPosition = StackPosition(
+          designWidth: 1080,
+          designHeight: 584,
+          deviceWidth: 1.sw,
+        );
+        return Container(
+          width: 1.sw,
+          height: stackPosition.getHeight(584),
+          child: Stack(
+            children: [
+              transferTimeName == '实时' ? Image(image: 'transfer_type_dialog1'.png3x, width: 1.sw, fit: BoxFit.fitWidth) : Image(image: 'transfer_type_dialog2'.png3x, width: 1.sw, fit: BoxFit.fitWidth),
+              Positioned(
+                  left: 0,
+                  top: 0,
+                  child: Container(
+                    width: 50.w,
+                    height: 40.w,
+                  ).withOnTap(onTap: (){ Get.back(); })
               ),
-            ),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                String name = transferTime[index];
-                return Container(
-                  width: 1.sw,
-                  height: 55.w,
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(left: 15.w, right: 15.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 20.w,
-                        height: 15.w,
-                      ),
-                      BaseText(
-                        text: name,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: transferTimeName == name
-                              ? BColors.mainColor
-                              : Colors.black,
-                        ),
-                      ),
-                      transferTimeName == name
-                          ? Image(
-                        image: 't_sel'.png3x,
-                        width: 20.w,
-                        height: 15.w,
-                      )
-                          : SizedBox(
-                        width: 20.w,
-                        height: 15.w,
-                      )
-                    ],
-                  ),
-                ).withOnTap(onTap: () {
-                  transferTimeName = name;
-                  setState(() {});
-                  Get.back();
-                });
-              },
-              itemCount: transferTime.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return Container(
-                  width: 1.sw,
-                  height: 0.5.w,
-                  color: const Color(0xffEFEFEF),
-                );
-              }, //state.list.length,
-            ).withContainer(
-              margin: EdgeInsets.only(left: 15.w, right: 15.w),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(6.w))),
-            ),
-          ],
-        ).withContainer(height: 245.w, color: Colors.white);
+              Positioned(
+                  left: 0,
+                  top: 50.w,
+                  child: Container(
+                    width: 1.sw,
+                    height: 50.w,
+                  ).withOnTap(onTap: () {
+                    transferTimeName = '实时';
+                    setState(() {});
+                    Get.back();
+                  })
+              ),
+
+              Positioned(
+                  left: 0,
+                  top: 120.w,
+                  child: Container(
+                    width: 1.sw,
+                    height: 50.w,
+                  ).withOnTap(onTap: () {
+                    transferTimeName = '普通';
+                    setState(() {});
+                    Get.back();
+                  })
+              )
+            ],
+          ),
+        );
       },
     );
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <nav-bar :title="title+'账单'">
+    <nav-bar :title="title+'月账单'">
     </nav-bar>
     <div class="main">
       <van-swipe class="swipe" :show-indicators="false" vertical :loop="false" v-if="details">
@@ -8,7 +8,10 @@
           <div class="swipe-item-container">
             <img class="swipe-item-bg" src="@/assets/image/home/bill01.png" alt="">
             <div class="item-content">
-              <div class="item-amount">{{ details.totalAmount }}</div>
+              <div class="item-top">
+                <div class="item-tooltip" @click="showTooltip"></div>
+                <div class="item-amount">{{ details.totalAmount }}</div>
+              </div>
               <div class="chart">
                 <div class="chart-pie" ref="chartRefPie1"></div>
               </div>
@@ -72,6 +75,9 @@
         </van-swipe-item>
       </van-swipe>
     </div>
+    <van-popup v-model="showTooltipFlag" round position="center" @close="closeTooltip" @click-overlay="closeTooltip">
+      <img class="analysis-tootip" src="@/assets/image/home/monthly-bill-tooltip.png" @click="closeTooltip" alt=""></img>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -87,7 +93,8 @@ export default {
       dateTime: this.$route.query.dateTime,
       details: null,
       incomeCateogryList: [],
-      expensesCateogryList: []
+      expensesCateogryList: [],
+      showTooltipFlag: false
     }
   },
   computed: {
@@ -323,6 +330,12 @@ export default {
     this.getBillCategory()
   },
   methods: {
+     showTooltip() {
+      this.showTooltipFlag = true
+    },
+    closeTooltip() {
+      this.showTooltipFlag = false
+    },
     getBillCategory() {
       getBillCategory({
         dateTime: this.dateTime
@@ -434,11 +447,22 @@ export default {
             }
           }
 
+          .item-top {
+            padding-left: 3.3rem;
+            padding-right: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          .item-tooltip {
+            width: 0.5rem;
+            height: 0.5rem;
+          }
+
           .item-amount {
             font-size: 0.36rem;
             font-weight: 700;
-            text-align: right;
-            padding-right: 0.6rem;
             box-sizing: border-box;
           }
 
@@ -480,4 +504,9 @@ export default {
     }
   }
 }
+
+.analysis-tootip {
+    width: 6rem;
+    height: 4.299rem;
+  }
 </style>

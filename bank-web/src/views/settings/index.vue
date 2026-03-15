@@ -5,8 +5,8 @@
       <div class="user-info">
         <img class="user-header" src="@/assets/image/home/header.png" alt="">
         <div class="user-content">
-          <div class="user-name">王小花</div>
-          <div class="user-number">1995565177445877</div>
+          <div class="user-name">{{ maskName }}</div>
+          <div class="user-number">{{ phone }}</div>
         </div>
         <div class="user-edit" @click="goUserInfo">
           <span>个人信息修改</span>
@@ -51,7 +51,44 @@ export default {
     return {}
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    // app那边拷贝过来的逻辑
+    maskName() {
+      const name = this.userInfo.realName;
+      // 处理空值/空字符串
+      if (name == null || name.trim().isEmpty) {
+        return "";
+      }
+      const realName = name.trim();
+      const length = realName.length;
+
+      // 单字名：直接返回（无脱敏必要）
+      if (length == 1) {
+        return realName;
+      }
+      // 两字名：第二个字替换为*
+      else if (length == 2) {
+        return `${realName.substring(0, 1)}*`;
+      }
+      // 超两字名：首尾保留，中间全替换为*
+      else {
+        const firstChar = realName.substring(0, 1);
+        const lastChar = realName.substring(length - 1);
+        // 计算中间需要替换的*数量 
+        let middleStars = "";
+        for(let i = 0; i < length - 2; i++) {
+          middleStars += "*";
+        }
+        return `${firstChar} ${middleStars} ${lastChar}`;
+      }
+    },
+    phone() {
+      const tempPhone = this.userInfo.phone || "";
+      const length = tempPhone.length;
+      const prefix = tempPhone.substring(0, 3);
+      const suffix = substring(length - 4);
+      return `${prefix} **** ${suffix}`;
+    }
   },
   mounted() {
   },
@@ -62,7 +99,6 @@ export default {
       })
     },
     goPublicPage(query) {
-      console.log(query, 'query')
       this.$router.push({
         path: '/publicPage',
         query: query

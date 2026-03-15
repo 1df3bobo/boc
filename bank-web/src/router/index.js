@@ -57,7 +57,13 @@ const routes = [
         path: '/asset',
         name: 'asset',
         component: () => import(/* webpackChunkName: "about" */ '../views/asset/index.vue')
-    }, {
+    },
+    {
+        path: '/asset/diagnosis',
+        name: 'asset-diagnosis',
+        component: () => import(/* webpackChunkName: "about" */ '../views/asset/diagnosis/index.vue')
+    },
+    {
         path: '/earnings',
         name: 'earnings',
         component: () => import(/* webpackChunkName: "about" */ '../views/earnings/index.vue')
