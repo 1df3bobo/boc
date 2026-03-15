@@ -11,7 +11,7 @@ class SzDetailState {
     '交易后余额',
     '交易渠道/场所',
     '附言',
-    '交易时间',
+    // '交易时间',
     'text',
   ];
   List titles2 = [

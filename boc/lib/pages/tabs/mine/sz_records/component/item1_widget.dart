@@ -90,6 +90,16 @@ class _Item1WidgetState extends State<Item1Widget> {
     );
   }
 
+  String _weekAdd(String week){
+    if(week == '周一') return '星期一';
+    if(week == '周二') return '星期二';
+    if(week == '周三') return '星期三';
+    if(week == '周四') return '星期四';
+    if(week == '周五') return '星期五';
+    if(week == '周六') return '星期六';
+    if(week == '周日') return '星期日';
+    return week;
+  }
   @override
   Widget build(BuildContext context) {
     PayMentList m = widget.model;
@@ -144,7 +154,7 @@ class _Item1WidgetState extends State<Item1Widget> {
           padding: EdgeInsets.only(left: 15.w),
           alignment: Alignment.centerLeft,
           child: BaseText(
-            text: '${m.day} ${m.week}',
+            text: '${m.day} ${_weekAdd(m.week)}',
             color: Color(0xff222222),
             fontSize: 13,
           ),
