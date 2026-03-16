@@ -82,20 +82,20 @@ class _BillTopWidgetState extends State<BillTopWidget> {
               child:  Row(
                 children: [
                   GetBuilder<BillLogic>(builder: (_){
-                    String time = '';
-                    if(state.beginTime == '' && state.endTime == ''){
-                      DateTime now = DateTime.now();
-                      DateFormat formatter = DateFormat('yyyy.MM');
-                      time =  formatter.format(now);
-                    }else{
-                      time = '${state.beginTime.replaceAll('-', '/')}-${state.endTime.replaceAll('-', '/')}';
-                    }
-                    return BaseText(
-                      text: time,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff222222)),
-                    );
+                    return Obx(() {
+                      String time;
+                      if(state.beginTime == '' && state.endTime == ''){
+                        time = state.currentVisibleMonth.value;
+                      }else{
+                        time = '${state.beginTime.replaceAll('-', '/')}-${state.endTime.replaceAll('-', '/')}';
+                      }
+                      return BaseText(
+                        text: time,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff222222)),
+                      );
+                    });
                   },id: 'updateTopText',),
                   SizedBox(
                     width: 4.w,
