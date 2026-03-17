@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
@@ -39,36 +40,40 @@ class BillPage extends BaseStateless {
           children: [
             const BillTopWidget(),
 
-            refreshWidget(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  controller: state.controller,
-                  itemBuilder: (context, index) {
-                    BillItemList model = state.list[index];
-                    if (model.billDetail == null) {
-                      return Container(
-                        width: 1.sw,
-                        height: 35.w,
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(left: 15.w),
-                        color:Color(0xffF9F9F9),
-                        child: BaseText(
-                          text: model.month + '/' + model.year,
-                          style: TextStyle(
-                            color: Color(0xff666666),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
+            ListViewObserver(
+              controller: logic.observerController,
+              onObserve: logic.onListViewObserve,
+              child: refreshWidget(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    controller: state.controller,
+                    itemBuilder: (context, index) {
+                      BillItemList model = state.list[index];
+                      if (model.billDetail == null) {
+                        return Container(
+                          width: 1.sw,
+                          height: 35.w,
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(left: 15.w),
+                          color:Color(0xffF9F9F9),
+                          child: BaseText(
+                            text: model.month + '/' + model.year,
+                            style: TextStyle(
+                              color: Color(0xff666666),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
                           ),
-                        ),
+                        );
+                      }
+                      return BillItemWidget(
+                        model: model,
+                        index: 0,
                       );
-                    }
-                    return BillItemWidget(
-                      model: model,
-                      index: 0,
-                    );
-                  },
-                  itemCount: state.list.length ,
-                )).expanded()
+                    },
+                    itemCount: state.list.length ,
+                  )),
+            ).expanded()
           ],
         );
       },

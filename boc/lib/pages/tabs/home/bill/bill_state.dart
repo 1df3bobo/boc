@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../../../config/model/bill_item_model.dart';
@@ -8,6 +10,8 @@ import 'Req_data.dart';
 class BillState {
   RefreshController refreshController = RefreshController();
   ScrollController controller = ScrollController();
+
+  final RxString currentVisibleMonth = DateFormat('yyyy.MM').format(DateTime.now()).obs;
 
   ReqBillData billData = ReqBillData();
   String selectPrice = '全部';
