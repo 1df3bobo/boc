@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
-
-import '../../../../component/right_widget.dart';
 import 'card_transfer_logic.dart';
 import 'card_transfer_state.dart';
 import 'component/bottom_widget.dart';
@@ -35,7 +33,7 @@ class CardTransferPage extends BaseStateless {
       children: const [
         CardInfoWidget(),
         MoneyWidget(),
-        RemarkWidget(showTransferType: true,),
+        RemarkWidget(),
         BottomWidget(),
       ],
     );

@@ -124,7 +124,7 @@ class ConfirmInfoPage extends BaseStateless {
               return AuthSm(callBack: (){
                 print(state.cardReq.toJson());
                 Http.post(Apis.transfer, data: state.cardReq.toJson()).then((v) {
-                  print(state.cardReq.toJson());
+                  print(v.toString());
                       if(v != null){
                        Get.back();
                       }

@@ -7,6 +7,7 @@ import 'package:boc/utils/customButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:boc/utils/common_right_button.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
@@ -59,9 +60,12 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
   @override
   Widget build(BuildContext context) {
     final navHeight = MediaQuery.of(context).padding.top + 44.w;
+    DateTime now = DateTime.now();
+    int hour = now.hour;
     return Stack(
       children: [
-        Image(image: 'bg_home_top'.png3x, fit: BoxFit.fitWidth, width: 1.sw,).withOnTap(onTap: () {
+        hour < 12
+            ? Image(image: 'bg_home_top'.png3x, fit: BoxFit.fitWidth, width: 1.sw,).withOnTap(onTap: () {
           Get.to(() => FixedNavPage(), arguments: {
             'image': 'home_top_bg',
             'title': '支付超给利',
@@ -71,6 +75,16 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
                 size: 24.w,
                 icon: Icons.share,
               ),
+            ],
+          });
+        })
+            :
+        Image(image: 'bg_home_top2'.png3x, fit: BoxFit.fitWidth, width: 1.sw,).withOnTap(onTap: () {
+          Get.to(() => FixedNavPage(), arguments: {
+            'image': 'mlszq',
+            'title': '马拉松专区',
+            'rightWidget': [
+              CommonNavButtonUtil.xcxButton(),
             ],
           });
         }),

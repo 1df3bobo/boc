@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:wb_base_widget/extension/string_extension.dart';
 
 import 'card_transfer_state.dart';
 
@@ -18,7 +19,7 @@ class CardTransferLogic extends GetxController {
         state.cardReq.bankName = v['bankName']??'';
         state.cardReq.cardNo = v['bankCard']??'';
         state.nameTextController.text = state.cardReq.realName;
-        state.accountTextController.text = state.cardReq.cardNo;
+        state.accountTextController.text = state.cardReq.cardNo.formatBankCardNumber();
         update(['updateCard']);
       }
     });

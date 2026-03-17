@@ -145,44 +145,74 @@ class _TransferContactsWidgetState extends State<TransferContactsWidget>
               children: [
                 Image(image: 'zg_icon'.png,width: 20.w,height: 20.w,),
                 SizedBox(width: 8.w),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          BaseText(
+                            text: '中国银行',
+                            color: Color(0xff333333),
+                            fontSize: 16,
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                        ],
+                      ).withContainer(width: 268.w),
+                      SizedBox(height: 4.w),
+                      Row(
+                        children: [
+                          BaseText(
+                            text:
+                            '尾号 ${AppConfig.config.abcLogic.cardFour()}',
+                            color: Color(0xff666666),
+                            fontSize: 12,
+                          ),
+                          SizedBox(width: 10.w),
+                          BaseText(
+                            text: "长城电子借记卡",
+                            color: Color(0xff666666),
+                            fontSize: 12,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        BaseText(
-                          text: '中国银行',
-                          color: Color(0xff333333),
-                          fontSize: 16,
-                        ).withContainer(width: 260.w),
-                        SizedBox(
-                          width: 5.w,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xff666666), // 边框颜色
+                          width: 1.0, // 边框宽度
                         ),
-                      ],
-                    ).withContainer(width: 268.w),
-                    SizedBox(height: 4.w),
-                    Row(
-                      children: [
-                        BaseText(
-                          text:
-                          '尾号 ${AppConfig.config.abcLogic.cardFour()}',
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      child: BaseText(
+                          text: "关联",
                           color: Color(0xff666666),
                           fontSize: 12,
+                          textAlign: TextAlign.center,
                         ),
-                        SizedBox(width: 10.w),
-                        BaseText(
-                          text: "长城电子借记卡",
-                          color: Color(0xff666666),
-                          fontSize: 12,
-                        ),
-                      ],
-                    ),
+                    )
                   ],
-                ),
+                )
               ],
             ),
-          ):SizedBox.shrink(),
+          ).withOnTap(onTap: () {
+           Get.to(() => CardTransferPage(), arguments: {
+             'icon': 'http://img.chinajianse.com/bank/icon/BOC.png',
+             'bankName': '中国银行',
+             // 'id': model.bankId,
+             'name': AppConfig.config.abcLogic.memberInfo.realName,
+             'bankCard': AppConfig.config.abcLogic.card1(),
+           });
+         }):SizedBox.shrink(),
           Container(
             height: 3.w,
             color: Color(0xffF8F9FA),

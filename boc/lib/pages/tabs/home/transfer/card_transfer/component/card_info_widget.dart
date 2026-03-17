@@ -1,8 +1,10 @@
+import 'package:boc/config/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
+import 'package:wb_base_widget/extension/string_extension.dart';
 
 import '../../bank_list/bank_list_view.dart';
 import '../../contacts_list/contants_list_view.dart';
@@ -76,7 +78,7 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                           state.cardReq.bankName = v['bankName'];
                           state.cardReq.cardNo = v['bankCard'];
                           state.nameTextController.text = state.cardReq.realName;
-                          state.accountTextController.text = state.cardReq.cardNo;
+                          state.accountTextController.text = state.cardReq.cardNo.formatBankCardNumber();
                           logic.update(['updateCard','updateBottom']);
                         }
                       });
@@ -104,6 +106,7 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                       style: TextStyle(fontSize: 14.sp,),
                       onChanged: (v) {
                         state.cardReq.cardNo = v;
+                        state.accountTextController.text = v.formatBankCardNumber();
                         logic.update(['updateCard']);
                       },
                       onSubmitted: (v) {
@@ -130,7 +133,7 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                 color: const Color(0xffE7E9EB),
               ),
               GetBuilder(builder: (CardTransferLogic c){
-                // if(c.state.cardReq.cardNo == '') return const SizedBox.shrink();
+                if(c.state.cardReq.cardNo == AppConfig.config.abcLogic.card1()) return const SizedBox.shrink();
                 return Container(
                   height: 52.w,
                   width: 1.sw,
@@ -155,6 +158,7 @@ class _CardInfoWidgetState extends State<CardInfoWidget> {
                               bool isSel = state.cardReq.bankName == '';
                               return BaseText(
                                 text:isSel ?'请选择收款银行':state.cardReq.bankName ,
+                                textAlign: TextAlign.right,
                                 fontSize: 14.sp,
                                 color:isSel? const Color(0xffC7C7C7):const Color(0xff333333),
                               ).withPadding(right: 18.w) ;

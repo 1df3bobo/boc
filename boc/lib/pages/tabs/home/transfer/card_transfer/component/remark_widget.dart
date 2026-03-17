@@ -1,3 +1,4 @@
+import 'package:boc/config/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,15 +6,11 @@ import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 import 'package:boc/utils/stack_position.dart';
 
-import '../../../../../../utils/color_util.dart';
 import '../card_transfer_logic.dart';
 import '../card_transfer_state.dart';
-import 'account_transfer_widget.dart';
 
 class RemarkWidget extends StatefulWidget {
-  const RemarkWidget({super.key, this.showTransferType = true});
-
-  final bool showTransferType;
+  const RemarkWidget({super.key});
 
   @override
   State<RemarkWidget> createState() => _RemarkWidgetState();
@@ -44,62 +41,64 @@ class _RemarkWidgetState extends State<RemarkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 1.sw,
-      color: Colors.white,
-      margin: EdgeInsets.only(top: 15.w),
-      child: Column(
-        children: [
-          if (widget.showTransferType) ...[
-            Container(
+    return GetBuilder(builder: (CardTransferLogic c){
+      return Container(
+        width: 1.sw,
+        color: Colors.white,
+        margin: EdgeInsets.only(top: 15.w),
+        child: Column(
+          children: [
+            if (c.state.cardReq.cardNo != AppConfig.config.abcLogic.card1()) ...[
+              Container(
+                height: 44.w,
+                padding: EdgeInsets.only(left: 15.w, right: 12.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BaseText(text: '转账方式'),
+                    Row(
+                      children: [
+                        BaseText(
+                          text: transferTimeName,
+                          color: Color(0xff111111),
+                        ),
+                        Image(image: 'ic_jt_right'.png3x,width: 22.w,height: 22.w,),
+                      ],
+                    )
+                  ],
+                ),
+              ).withOnTap(onTap: onTapTransferType),
+              Container(
+                width: 1.sw,
+                height: 1.w,
+                margin: EdgeInsets.only(left: 15.w),
+                color: const Color(0xffE7E9EB),
+              ),
+            ],
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BaseText(text: '附言'),
+                Row(
+                  children: [
+                    BaseText(
+                      text: '选填',
+                      color: Color(0xff666666),
+                    ),
+                    Image(image: 'ic_jt_right'.png3x,width: 22.w,height: 22.w,),
+                  ],
+                )
+              ],
+            ).withContainer(
               height: 44.w,
               padding: EdgeInsets.only(left: 15.w, right: 12.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BaseText(text: '转账方式'),
-                  Row(
-                    children: [
-                      BaseText(
-                        text: transferTimeName,
-                        color: Color(0xff111111),
-                      ),
-                      Image(image: 'ic_jt_right'.png3x,width: 22.w,height: 22.w,),
-                    ],
-                  )
-                ],
-              ),
-            ).withOnTap(onTap: onTapTransferType),
-            Container(
-              width: 1.sw,
-              height: 1.w,
-              margin: EdgeInsets.only(left: 15.w),
-              color: const Color(0xffE7E9EB),
+              onTap: _showRemarkDialog,
             ),
           ],
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BaseText(text: '附言'),
-              Row(
-                children: [
-                  BaseText(
-                    text: '选填',
-                    color: Color(0xff666666),
-                  ),
-                  Image(image: 'ic_jt_right'.png3x,width: 22.w,height: 22.w,),
-                ],
-              )
-            ],
-          ).withContainer(
-            height: 44.w,
-            padding: EdgeInsets.only(left: 15.w, right: 12.w),
-            onTap: _showRemarkDialog,
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    },id: 'updateCard',);
   }
 
   void _showRemarkDialog() {
