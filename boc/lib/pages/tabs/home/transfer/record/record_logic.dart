@@ -29,8 +29,36 @@ class RecordLogic extends GetxController {
       }else{
         state.list = state.list + state.recordModel.list;
       }
+      _deduplicateDayHeaders(state.list);
       update(['updateUI']);
     });
+  }
+
+  /// 去重月份标题：如果上面已经展示过某月，下面同月的 day 不展示
+  void _deduplicateDayHeaders(List<TransferRecordList> list) {
+    final seenMonths = <String>{};
+    for (final item in list) {
+      if (item.day.isEmpty) continue;
+      final key = _getMonthKey(item);
+      if (key.isEmpty) continue;
+      if (seenMonths.contains(key)) {
+        item.day = '';
+      } else {
+        seenMonths.add(key);
+      }
+    }
+  }
+
+  String _getMonthKey(TransferRecordList item) {
+    final time = item.detail?.transactionTime;
+    if (time == null || time.isEmpty) return '';
+    try {
+      final normalized = time.replaceAll('/', '-');
+      final dt = DateTime.parse(normalized);
+      return '${dt.year}-${dt.month.toString().padLeft(2, '0')}';
+    } catch (_) {
+      return '';
+    }
   }
 
 }

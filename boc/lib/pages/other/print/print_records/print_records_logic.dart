@@ -8,6 +8,8 @@ import 'print_records_state.dart';
 class PrintRecordsLogic extends GetxController {
   final PrintRecordsState state = PrintRecordsState();
 
+  /// 当前选中查看密码的记录 id，用于控制仅该条记录显示明文
+  var selectRecordId = 0.obs;
 
   @override
   void onInit() {

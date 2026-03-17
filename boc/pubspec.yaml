@@ -57,6 +57,8 @@ dependencies:
 #    path: modules/gallery_saver_plus
   popup_menu: any
   camera: 0.11.2+1
+  scrollview_observer: ^1.26.2
+
 
 dependency_overrides:
   camera_android_camerax: 0.6.19+1

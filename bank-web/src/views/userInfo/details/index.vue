@@ -13,7 +13,7 @@
       </div>
       <div class="item">
         <div class="label">姓名</div>
-        <div class="content">哈哈哈</div>
+        <div class="content">{{ maskName }}</div>
       </div>
       <div class="item">
         <div class="label">英文/拼音<br>姓氏</div>
@@ -118,8 +118,43 @@
   </div>
 </template>
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: "UserInfoDetails",
+  computed: {
+    ...mapState(['userInfo']),
+    // app那边拷贝过来的逻辑
+    maskName() {
+      const name = this.userInfo.realName;
+      // 处理空值/空字符串
+      if (name == null || name.trim().isEmpty) {
+        return "";
+      }
+      const realName = name.trim();
+      const length = realName.length;
+
+      // 单字名：直接返回（无脱敏必要）
+      if (length == 1) {
+        return realName;
+      }
+      // 两字名：第二个字替换为*
+      else if (length == 2) {
+        return `${realName.substring(0, 1)}*`;
+      }
+      // 超两字名：首尾保留，中间全替换为*
+      else {
+        const firstChar = realName.substring(0, 1);
+        const lastChar = realName.substring(length - 1);
+        // 计算中间需要替换的*数量
+        let middleStars = "";
+        for(let i = 0; i < length - 2; i++) {
+          middleStars += "*";
+        }
+        return `${firstChar}${middleStars}${lastChar}`;
+      }
+    }
+  },
   data() {
     return {}
   }

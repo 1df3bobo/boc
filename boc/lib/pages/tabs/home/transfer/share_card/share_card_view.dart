@@ -145,6 +145,20 @@ class ShareCardPage extends BaseStateless {
                       fit: BoxFit.fitWidth,
                     ),
                     Positioned(
+                      left: 35.w,
+                      top: 50.w,
+                      child: Text(
+                        AppConfig.config.abcLogic.memberInfo.realName,
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          color: Colors.black,
+                          letterSpacing: 0,
+                          height: 1.0,
+                          fontFamily: "boc"
+                        ),
+                      ),
+                    ),
+                    Positioned(
                       right: 50.w,
                       top: 102.w,
                       child: Text(

@@ -22,21 +22,27 @@ class PrintRecordsPage extends BaseStateless {
 
   @override
   Widget initBody(BuildContext context) {
-    return GetBuilder<PrintRecordsLogic>(builder: (_){
-      return refreshWidget(
-          controller: state.refreshController,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              ApplyRecordList model  = state.list[index];
-              return model.email == ''? _item1(model):_item0(model);
-            },
-            itemCount: state.list.length,
-          )
-      );
-    },id: 'updateUI',);
+    return GetBuilder<PrintRecordsLogic>(
+      builder: (_) {
+        return refreshWidget(
+            controller: state.refreshController,
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                ApplyRecordList model = state.list[index];
+                return model.email == '' ? _item1(model) : _item0(model);
+              },
+              itemCount: state.list.length,
+            ));
+      },
+      id: 'updateUI',
+    );
   }
 
-  Widget _item0(ApplyRecordList model){
+  Widget _item0(ApplyRecordList model) {
+    // 将字符串解析为 DateTime 对象
+    DateTime dateTime = DateTime.parse(model.beginTime);
+    // 将日期加一天
+    DateTime newDate = dateTime.add(Duration(days: 1));
     return Container(
       width: 1.sw,
       height: 185.w,
@@ -62,7 +68,7 @@ class PrintRecordsPage extends BaseStateless {
                   SizedBox(
                     width: 4.w,
                   ),
-                  BaseText(text: model.status)
+                  BaseText(text: '已发送至邮箱')
                 ],
               )
             ],
@@ -79,28 +85,39 @@ class PrintRecordsPage extends BaseStateless {
           SizedBox(
             height: 12.w,
           ),
-          _itemWidget('申请时间', '${model.createTime}'),
+          _itemWidget(
+              '申请时间', '${model.createTime.replaceAll('-', '/')}', model),
           SizedBox(
             height: 15.w,
           ),
-          _itemWidget('日期区间', '${model.beginTime.substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}'),
+          _itemWidget(
+              '日期区间',
+              '${newDate.toString().substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}',
+              model),
           SizedBox(
             height: 15.w,
           ),
-          _itemWidget('申请邮箱', model.email),
+          _itemWidget('申请邮箱', model.email, model),
           SizedBox(
             height: 15.w,
           ),
-          _itemWidget('打开密码', model.code,onTap: (){
-            Clipboard.setData(ClipboardData(text: model.code,));
-            '复制成功'.showToast;
-          }),
+          Obx(() => _itemWidget('打开密码', model.code, model, onTap: () {
+                if (logic.selectRecordId.value == model.id) {
+                  logic.selectRecordId.value = 0;
+                } else {
+                  logic.selectRecordId.value = model.id;
+                }
+              })),
         ],
       ),
     );
   }
 
-  Widget _item1(ApplyRecordList model){
+  Widget _item1(ApplyRecordList model) {
+    // 将字符串解析为 DateTime 对象
+    DateTime dateTime = DateTime.parse(model.beginTime);
+    // 将日期加一天
+    DateTime newDate = dateTime.add(Duration(days: 1));
     return Container(
       width: 1.sw,
       height: 155.w,
@@ -143,22 +160,30 @@ class PrintRecordsPage extends BaseStateless {
           SizedBox(
             height: 12.w,
           ),
-          _itemWidget('申请时间', '${model.createTime}'),
+          _itemWidget(
+              '申请时间', '${model.createTime.replaceAll('-', '/')}', model),
           SizedBox(
             height: 15.w,
           ),
-          _itemWidget('日期区间', '${model.beginTime.substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}'),
+          _itemWidget(
+              '日期区间',
+              '${newDate.toString().substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}',
+              model),
           SizedBox(
             height: 15.w,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(image: 'xztag'.png3x,width: 21.w,),
-              BaseText(text: '预览并下载',color: Color(0xff0066EF ),style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold
-              ),)
+              Image(
+                image: 'xztag'.png3x,
+                width: 21.w,
+              ),
+              BaseText(
+                text: '预览并下载',
+                color: Color(0xff0066EF),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              )
             ],
           )
         ],
@@ -166,7 +191,8 @@ class PrintRecordsPage extends BaseStateless {
     );
   }
 
-  Widget _itemWidget(String name, String value,{Function? onTap}) {
+  Widget _itemWidget(String name, String value, ApplyRecordList model,
+      {Function? onTap}) {
     return Row(
       children: [
         BaseText(
@@ -175,21 +201,34 @@ class PrintRecordsPage extends BaseStateless {
         ).withContainer(
           width: 100.w,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            BaseText(
-              text: value,
-              style: TextStyle(color: Color(0xff222222), fontSize: 13),
-            ),
-            name == '打开密码'
-                ? BaseText(
-                text: '复制',
-                color: Colors.blueAccent).withOnTap(onTap: (){
-              onTap?.call();
-            }) : SizedBox.shrink()
-          ],
-        ).expanded()
+        name == '打开密码'
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BaseText(
+                    text: logic.selectRecordId.value != model.id
+                        ? '******'
+                        : value,
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 171, 151, 151),
+                        fontSize: 13),
+                  ),
+                  BaseText(text: '查看', color: Colors.blueAccent).withOnTap(
+                      onTap: () {
+                    onTap?.call();
+                  })
+                ],
+              ).expanded()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BaseText(
+                    text: value,
+                    style: TextStyle(color: Color(0xff222222), fontSize: 13),
+                  ),
+                  SizedBox.shrink()
+                ],
+              ).expanded()
       ],
     );
   }

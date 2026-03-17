@@ -122,17 +122,19 @@ class MinePage extends BaseStateless {
                         ),
                         BaseText(
                           text: '上次登录:${AppConfig.config.abcLogic.memberInfo
-                              .loginTime}',
+                              .loginTime.replaceAll('-', '/')}',
                           fontSize: 10,
                           color: Colors.white,
                         )
                       ],
                     )
                   ],
+
                 ).withOnTap(onTap: () {
                   Get.to(() => WebViewPage(),
                       arguments: {'routeName': '/userInfo'});
                 })),
+
                 Positioned(
                 bottom: 10.w,
                 right: 22.w,

@@ -88,9 +88,13 @@ class AccountPreviewPage extends BaseStateless {
                         SizedBox(
                           width: 8.w,
                         ),
-                        Image(
+                        !logic.eyeOpen.value?Image(
                           image: 'right_corlo'.png3x,
                           width: 18.w,
+                          color: Color(0xff613000),
+                        ):Image(
+                          image: 'mine_refresh'.png3x,
+                          width: 15.w,
                           color: Color(0xff613000),
                         )
                       ],

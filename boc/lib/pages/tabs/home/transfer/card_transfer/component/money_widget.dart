@@ -170,7 +170,9 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                             final balance = AppConfig.config.abcLogic.memberInfo.accountBalance;
                             final raw = balance.toStringAsFixed(2);
                             state.moneyStr = raw;
-                            state.moneyTextController.text = raw;
+                            String money = NumberFormat("#,##0.00", "zh_CN")
+                                .format(double.parse(state.moneyStr));
+                            state.moneyTextController.text = money;
                             state.cardReq.amount = raw;
                             logic.update(['updateBottom']);
                           },
