@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:wb_base_widget/extension/double_extension.dart';
+import 'package:boc/utils/sp_util.dart';
+import 'package:boc/pages/login/login_view.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
@@ -45,7 +46,10 @@ class MinePage extends BaseStateless {
       Row(
         children: [
           SizedBox(width: 16.w),
-          _mineTag(img: 'ic_exit', name: '退出'),
+          _mineTag(img: 'ic_exit', name: '退出').withOnTap(onTap: (){
+            ''.saveToken;
+            Get.offAll(() => LoginPage());
+          }),
           SizedBox(width: 16.w),
         ],
       );

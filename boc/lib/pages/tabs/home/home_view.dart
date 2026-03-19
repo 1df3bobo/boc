@@ -5,6 +5,8 @@ import 'package:boc/pages/tabs/home/component/home_top_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:boc/pages/tabs/home/two_level/two_level_view.dart';
 import 'package:get/get.dart';
+import 'package:boc/utils/sp_util.dart';
+import 'package:boc/pages/login/login_view.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
@@ -40,7 +42,10 @@ class HomePage extends BaseStateless {
   Widget? get leftItem => Row(
         children: [
           SizedBox(width: 16.w),
-          _homeTag(img: 'ic_exit', name: '退出'),
+          _homeTag(img: 'ic_exit', name: '退出').withOnTap(onTap: (){
+            ''.saveToken;
+            Get.offAll(() => LoginPage());
+          }),
           SizedBox(width: 16.w),
         ],
       );

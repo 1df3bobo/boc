@@ -32,6 +32,6 @@ class Apis {
   static const applyPageList = '/serviceboc/flowExport/applyPage';
 
   ///账单信息打印
-  static const print = '/serviceicbc/flowExport/print';
+  static const print = '/serviceboc/flowExport/print';
 
 }
