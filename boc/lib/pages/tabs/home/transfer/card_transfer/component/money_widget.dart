@@ -55,6 +55,27 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
     }
   }
 
+  String getUnit(String numberStr) {
+    // 先转为数字，处理掉可能的非数字字符
+    int? number = int.tryParse(numberStr);
+
+    if (number == null || number < 1000) {
+      return "";
+    } else if (number < 10000) {
+      return "千";
+    } else if (number < 100000) {
+      return "万";
+    } else if (number < 1000000) {
+      return "十万";
+    } else if (number < 10000000) {
+      return "百万";
+    } else if (number < 100000000) {
+      return "千万";
+    } else {
+      return "亿";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,14 +103,17 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
               padding: EdgeInsets.only(top: 12.w, left: 15.w, bottom: 12.w)),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Obx(() => logic.danWid.value == ''?const SizedBox.shrink():BaseText(text: logic.danWid.value,color: Color(0xff666666),).withPadding(
+                left: 25.w,
+              ),),
               Transfer.itemCellWidget(
                   title: "",
                   hintText: '请输入转账金额(免手续费)',
                   controller: state.moneyTextController,
                   focusNode: state.moneyFocusNode,
-                  style:
-                      TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w600, color: BColors.mainColor),
+                  style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w600, color: BColors.mainColor),
                   hintColor: Color(0xff9B9B9B),
                   textColor: const Color(0xff333333),
                   keyboardType:
@@ -106,6 +130,7 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                   onChanged: (value) {
                     state.moneyStr = value;
                     state.cardReq.amount = state.moneyStr;
+                    logic.danWid.value = getUnit(value);
                     logic.update(['updateBottom']);
                   }).withContainer(
                   width: 1.sw,
@@ -229,3 +254,4 @@ class _MaxValueInputFormatter extends TextInputFormatter {
     }
   }
 }
+

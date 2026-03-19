@@ -7,6 +7,8 @@ import 'card_transfer_state.dart';
 class CardTransferLogic extends GetxController {
   final CardTransferState state = CardTransferState();
 
+  var danWid = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
