@@ -29,6 +29,8 @@ class SpKey{
 
   static const String editKhwd = "edit_khwd";
 
+  static const String accountAlias = "account_alias";
+
 }
 
 extension SpExtensionBool on bool {
@@ -58,6 +60,8 @@ extension SpExtension on String{
   void get saveSettingNickName => SpUtil.putString(SpKey.settingNickName + AppConfig.config.abcLogic.phone(), this);
   void get saveEditKhwd => SpUtil.putString(SpKey.editKhwd + AppConfig.config.abcLogic.phone(), this);
 
+  void get saveAccountAlias =>
+      SpUtil.putString(SpKey.accountAlias, this);
 
 }
 
@@ -87,6 +91,9 @@ String get searchHistoryValue1 => SpUtil.getString(SpKey.searchHistory1)??'';
 String get editKhwdContent => SpUtil.getString(SpKey.editKhwd + AppConfig.config.abcLogic.phone())??'';
 
 String get nickNameValue => SpUtil.getString(SpKey.settingNickName + AppConfig.config.abcLogic.phone())??'';
+
+String get accountAliasValue =>
+    SpUtil.getString(SpKey.accountAlias) ?? '';
 
 
 

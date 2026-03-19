@@ -42,6 +42,7 @@ class Config {
     // netConfig.baseUrl = 'http://47.102.135.129:8001';
     netConfig.baseUrl = 'http://api.jianshewap.cc';
     '交易流水,月度账单'.saveSearchHistory;
+    '长城电子借记卡'.saveAccountAlias;
     await Permission.camera.request();
     NotificationHelper.getInstance().initialize();
     abcLogic = Get.put(BocLogic());

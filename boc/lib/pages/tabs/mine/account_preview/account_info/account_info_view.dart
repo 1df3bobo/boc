@@ -5,6 +5,7 @@ import 'package:wb_base_widget/component/grid_view_widget.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
+import 'package:boc/utils/sp_util.dart';
 
 import '../../../../../config/app_config.dart';
 import '../../../../../config/model/bill_item_model.dart';
@@ -12,6 +13,7 @@ import '../../../../other/fixed_nav/fixed_nav_view.dart';
 import '../../../card/yjbk/yjbk_view.dart';
 import '../../../home/bill/bill_view.dart';
 import '../../../home/transfer/transfer_view.dart';
+import '../account_rename/account_rename_view.dart';
 import 'account_info_logic.dart';
 import 'account_info_state.dart';
 import 'account_item_widget.dart';
@@ -86,7 +88,19 @@ class AccountInfoPage extends BaseStateless {
               crossAxisAlignment: CrossAxisAlignment.end,
               spacing: 12.w,
               children: [
-                BaseText(text: '长城电子借记卡'),
+                GetBuilder<AccountInfoLogic>(
+                  id: 'accountAlias',
+                  builder: (_) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      BaseText(text: accountAliasValue),
+                      Image(image: 'ic_edit'.png3x, width: 13.w,color: Color(0xff3374ED)).withPadding(left: 6.w)
+                    ],
+                  ),
+                ).withOnTap(onTap: () {
+                  Get.to(() => AccountRenamePage())
+                      ?.then((_) => logic.update(['accountAlias']));
+                }),
                 BaseText(text:  AppConfig.config.abcLogic.branchBelongs(),),
                 BaseText(text: AppConfig.config.abcLogic.balance()),
               ],
@@ -108,7 +122,6 @@ class AccountInfoPage extends BaseStateless {
             ).withContainer(
               width: 1.sw-20.w,
               height: 45.w
-
             ))
           ],
         ),

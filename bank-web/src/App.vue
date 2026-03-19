@@ -17,8 +17,8 @@ export default {
   },
   mounted() {
     // 监听Flutter传来的数据
-    // window.addEventListener('flutter_setToken', this.handleFlutterData);
-    this.handleFlutterData()
+    window.addEventListener('flutter_setToken', this.handleFlutterData);
+    // this.handleFlutterData()
   },
   beforeUnmount() {
     window.removeEventListener('flutter_setToken', this.handleFlutterData);
