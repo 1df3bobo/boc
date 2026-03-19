@@ -19,7 +19,8 @@ class BillLogic extends GetxController {
     int firstVisible = observeModel.firstChild?.index ?? 0;
     for (int i = firstVisible; i >= 0; i--) {
       if (i < state.list.length && state.list[i].billDetail == null) {
-        final String newTime = '${state.list[i].year}.${state.list[i].month}';
+        // 接口返回state.list[i].month 带月字，替换掉月字
+        final String newTime = '${state.list[i].year}.${state.list[i].month.replaceAll("月", "")}';
         if (newTime != state.currentVisibleMonth.value) {
           state.currentVisibleMonth.value = newTime;
         }
