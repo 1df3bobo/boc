@@ -200,8 +200,8 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
                             String money = NumberFormat("#,##0.00", "zh_CN")
                                 .format(double.parse(state.moneyStr));
                             state.moneyTextController.text = money;
-                            logic.danWid.value =getUnit(state.moneyStr);
                             state.cardReq.amount = raw;
+                            logic.danWid.value = getUnit(raw);
                             logic.update(['updateBottom']);
                           },
                           child: Text("全部转出", style: TextStyle(color: Color(0xFF006ff2))),

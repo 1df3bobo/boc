@@ -72,11 +72,58 @@ class _HomeBottomWidgetState extends State<HomeBottomWidget> {
                 ),
               ));
         }),
-        Image(
-          image: 'home_bottom4'.png3x,
-          fit: BoxFit.fitWidth,
-          width: 1.sw,
-        ),
+        Stack(
+          children: [
+            Image(
+              image: 'home_bottom4'.png3x,
+              fit: BoxFit.fitWidth,
+              width: 1.sw,
+            ),
+            Positioned(
+                left: 0.w,
+                bottom: 30.w,
+                child: Container(
+                  width: 1.sw,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 80.w,
+                        height: 30.w,
+                      ).withOnTap(onTap: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Stack(
+                              children: [
+                                Image(
+                                    image: 'yszc_sheet'.png3x,
+                                    width: 1.sw,
+                                    fit: BoxFit.fitWidth).withOnTap(onTap: () => Get.back()),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                      Container(
+                        width: 80.w,
+                        height: 30.w,
+                      ).withOnTap(onTap: () {
+                        Get.to(() => FixedNavPage(), arguments: {
+                          'image': 'gywm',
+                          'title': '关于我们',
+                        });
+                      }),
+                      Container(
+                        width: 80.w,
+                        height: 30.w,
+                      ),
+                    ],
+                  ),
+                ))
+          ],
+        )
       ],
     );
   }

@@ -6,19 +6,19 @@
       <div class="info">
         <div class="item">
           <div class="label">核心用户信息</div>
-          <div class="content">15544856994</div>
+          <div class="content">{{userInfo.phone}}</div>
         </div>
         <div class="item">
           <div class="label">登录手机银行</div>
-          <div class="content">15544856994</div>
+          <div class="content">{{userInfo.phone}}</div>
         </div>
         <div class="item">
           <div class="label">接受手机<br>交易码</div>
-          <div class="content">15544856994</div>
+          <div class="content">{{userInfo.phone}}</div>
         </div>
         <div class="item">
           <div class="label">电子银行客户<br>信息</div>
-          <div class="content">15544856994</div>
+          <div class="content">{{userInfo.phone}}</div>
         </div>
       </div>
       <div class="btn">下一步</div>
@@ -36,7 +36,12 @@
 
 </template>
 <script>
-export default {}
+import {mapState} from "vuex";
+export default {
+  computed: {
+    ...mapState(['userInfo'])
+  },
+}
 </script>
 <style scoped lang="scss">
 .app {

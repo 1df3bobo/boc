@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../../../config/dio/network.dart';
 import '../../../../config/model/pay_ment_model.dart';
@@ -9,12 +10,33 @@ class SzRecordsLogic extends GetxController {
 
   final SzRecordsState state = SzRecordsState();
 
+  late final ListObserverController observerController =
+      ListObserverController(controller: state.controller);
+
   bool showRange = false;
 
   @override
   void onInit() {
     super.onInit();
     getData1();
+  }
+
+  void onListViewObserve(ListViewObserveModel observeModel) {
+    if (state.beginTime != '' || state.endTime != '') return;
+
+    int firstVisible = observeModel.firstChild?.index ?? 0;
+    for (int i = firstVisible; i >= 0; i--) {
+      if (i < state.list.length && state.list[i].month != '') {
+        print(state.list[i]);
+        final String newTime = state.list[i].month.replaceAll('-', '.');
+        if(state.selectTime != newTime) {
+          state.selectTime = newTime;
+          print(state.selectTime);
+          update(['updateTime']);
+        }
+        break;
+      }
+    }
   }
 
   Future getData1() async{

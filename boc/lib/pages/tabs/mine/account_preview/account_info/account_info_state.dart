@@ -7,6 +7,7 @@ class AccountInfoState {
   ReqBillData billData = ReqBillData();
   BillItemModel itemModel = BillItemModel();
   List<BillItemList> list = [];
+  bool showFullCard = false;
   AccountInfoState() {
     billData.pageSize =200;
     billData.beginTime = getRangeDate()['start']??'';

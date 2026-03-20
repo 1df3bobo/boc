@@ -9,19 +9,19 @@
       <div class="title">基本信息</div>
       <div class="item">
         <div class="label">电子银行<br>客户序号</div>
-        <div class="content">204454545</div>
+        <div class="content content-1">{{ userInfo.chapterCode }}</div>
       </div>
       <div class="item">
         <div class="label">姓名</div>
-        <div class="content">{{ maskName }}</div>
+        <div class="content">{{ maskedString(userInfo.realName) }}</div>
       </div>
       <div class="item">
         <div class="label">英文/拼音<br>姓氏</div>
-        <div class="content">X*A</div>
+        <div class="content">{{ maskedString(pinyin(userInfo.realName[0],{ toneType: 'none' }).toUpperCase()) }}</div>
       </div>
       <div class="item">
         <div class="label">英文/拼音名</div>
-        <div class="content">JHBKIKMMM</div>
+        <div class="content">{{ maskedString(pinyin(userInfo.realName,{ toneType: 'none' }).toUpperCase()) }}</div>
       </div>
       <div class="item">
         <div class="label">证件类型</div>
@@ -29,7 +29,7 @@
       </div>
       <div class="item">
         <div class="label">证件号码</div>
-        <div class="content">3412211841452515511254</div>
+        <div class="content">{{ userInfo.idCard }}</div>
       </div>
       <div class="item">
         <div class="label">国家/地区</div>
@@ -41,15 +41,15 @@
       </div>
       <div class="item">
         <div class="label">性别</div>
-        <div class="content">男</div>
+        <div class="content">{{ userInfo.sex == '1' ? '男' : '女' }}</div>
       </div>
       <div class="item">
         <div class="label">出生日期</div>
-        <div class="content">1584/14/20</div>
+        <div class="content">{{extractBirthday}}</div>
       </div>
       <div class="item">
         <div class="label">出生地</div>
-        <div class="content"></div>
+        <div class="content">{{ userInfo.city }}</div>
       </div>
       <div class="title">证件地址信息</div>
       <div class="item">
@@ -58,7 +58,7 @@
       </div>
       <div class="item">
         <div class="label">省市区</div>
-        <div class="content">安徽省合肥市包河区</div>
+        <div class="content">{{ userInfo.city }}</div>
       </div>
       <div class="item">
         <div class="label">详细地址</div>
@@ -71,7 +71,7 @@
       </div>
       <div class="item">
         <div class="label">省市区</div>
-        <div class="content">安徽省合肥市包河区</div>
+        <div class="content">{{ userInfo.city }}</div>
       </div>
       <div class="item">
         <div class="label">详细地址</div>
@@ -79,7 +79,7 @@
       </div>
       <div class="item">
         <div class="label">邮编</div>
-        <div class="content">236000</div>
+        <div class="content"></div>
       </div>
       <div class="title">工作信息</div>
       <div class="item">
@@ -101,11 +101,11 @@
       <div class="title">联系信息</div>
       <div class="item">
         <div class="label">手机号码</div>
-        <div class="content">+86 18944544454</div>
+        <div class="content">{{ userInfo.phone }}</div>
       </div>
       <div class="item">
         <div class="label">办公电话</div>
-        <div class="content">+86 165494564564</div>
+        <div class="content"></div>
       </div>
       <div class="tips">
         温馨提示：您在我行预留的姓名、证件类型、证件号码如有问题，请携带本人有效身份证件前往我行任一网点进行修改。
@@ -120,44 +120,40 @@
 <script>
 import {mapState} from "vuex";
 
+const {pinyin} = require('pinyin-pro');
 export default {
   name: "UserInfoDetails",
+  data() {
+    return {
+      pinyin: pinyin,
+    }
+  },
   computed: {
     ...mapState(['userInfo']),
-    // app那边拷贝过来的逻辑
-    maskName() {
-      const name = this.userInfo.realName;
-      // 处理空值/空字符串
-      if (name == null || name.trim().isEmpty) {
-        return "";
-      }
-      const realName = name.trim();
-      const length = realName.length;
+    extractBirthday() {
+      let idCard = this.userInfo.idCard
+      const year = idCard.substring(6, 10);
+      const month = idCard.substring(10, 12);
+      const day = idCard.substring(12, 14);
 
-      // 单字名：直接返回（无脱敏必要）
-      if (length == 1) {
-        return realName;
-      }
-      // 两字名：第二个字替换为*
-      else if (length == 2) {
-        return `${realName.substring(0, 1)}*`;
-      }
-      // 超两字名：首尾保留，中间全替换为*
-      else {
-        const firstChar = realName.substring(0, 1);
-        const lastChar = realName.substring(length - 1);
-        // 计算中间需要替换的*数量
-        let middleStars = "";
-        for(let i = 0; i < length - 2; i++) {
-          middleStars += "*";
-        }
-        return `${firstChar}${middleStars}${lastChar}`;
+      return `${year}/${month}/${day}`;
+    },
+    maskedString() {
+      return (name) => {
+        const str = name
+        if (!str) return str;
+        if (str.length <= 1) return str;
+        if (str.length === 2) return str[0] + '*';
+
+        const firstChar = str[0];
+        const lastChar = str[str.length - 1];
+        const middleLength = str.length - 2;
+        const maskLength = Math.min(middleLength, 5);
+
+        return firstChar + '*'.repeat(maskLength) + lastChar;
       }
     }
   },
-  data() {
-    return {}
-  }
 }
 </script>
 <style scoped lang="scss">
@@ -170,11 +166,13 @@ export default {
 .main {
   width: 100%;
   position: relative;
-  .edit-btn-pl{
+
+  .edit-btn-pl {
     height: 1rem;
     width: 100%;
-    padding-bottom: env(safe-area-inset-bottom) ;
+    padding-bottom: env(safe-area-inset-bottom);
   }
+
   .edit-btn {
     position: fixed;
     width: 100%;
@@ -193,6 +191,10 @@ export default {
       line-height: 1rem;
       color: #DC0034;
     }
+  }
+
+  .content-1 {
+    margin-bottom: 0.34rem;
   }
 
   .tips {

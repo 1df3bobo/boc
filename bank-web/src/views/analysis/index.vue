@@ -343,7 +343,7 @@ export default {
           this.dateTime = `${year}.${month}`;
         }
       } else {
-        this.dateTime = this.currentDate.getFullYear();
+        this.dateTime = `${this.currentDate.getFullYear()}`;
       }
     },
     yearConfirm(value) {
@@ -407,7 +407,6 @@ export default {
             let pieEchartsDom = this.$refs.chartRefPie;
             this.pieChart = echarts.init(pieEchartsDom)
             let pieChart = this.pieChart
-            console.log(this.pieChartOption);
             pieChart.setOption(this.pieChartOption)
 
 

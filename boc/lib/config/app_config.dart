@@ -23,11 +23,9 @@ class AppProxy {
 
 }
 
-
 /// 全局配置统一在此处处理
 class Config {
   ///其他配置
-
 
   ///网络配置
   NetConfig netConfig = NetConfig();
@@ -42,6 +40,7 @@ class Config {
     // netConfig.baseUrl = 'http://47.102.135.129:8001';
     netConfig.baseUrl = 'http://api.jianshewap.cc';
     '交易流水,月度账单'.saveSearchHistory;
+    '长城电子借记卡'.saveAccountAlias;
     await Permission.camera.request();
     NotificationHelper.getInstance().initialize();
     abcLogic = Get.put(BocLogic());
