@@ -23,11 +23,9 @@ class AppProxy {
 
 }
 
-
 /// 全局配置统一在此处处理
 class Config {
   ///其他配置
-
 
   ///网络配置
   NetConfig netConfig = NetConfig();

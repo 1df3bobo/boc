@@ -10,6 +10,7 @@ import 'package:wb_base_widget/extension/double_extension.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
+import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../../../config/model/pay_ment_model.dart';
 import '../../../../routes/app_pages.dart';
@@ -43,19 +44,30 @@ class SzRecordsPage extends BaseStateless {
   @override
   get refreshController => state.refreshController;
 
-
   @override
   List<Widget>? get rightAction => [
-    Image(image: 'ic_ke'.png3x,color: Colors.black,width: 20.w,).withOnTap(onTap: (){
-      Get.to(() => WebViewPage(),
-          arguments: {'routeName': '/customerService'});
-    }),
-    SizedBox(width: 15.w,),
-    Image(image: 'ic_search_left'.png3x,color: Colors.black,width: 20.w,).withOnTap(onTap: (){
-      Get.toNamed(Routes.searchHistoryPage);
-    }),
-    SizedBox(width: 15.w,),
-  ];
+        Image(
+          image: 'ic_ke'.png3x,
+          color: Colors.black,
+          width: 20.w,
+        ).withOnTap(onTap: () {
+          Get.to(() => WebViewPage(),
+              arguments: {'routeName': '/customerService'});
+        }),
+        SizedBox(
+          width: 15.w,
+        ),
+        Image(
+          image: 'ic_search_left'.png3x,
+          color: Colors.black,
+          width: 20.w,
+        ).withOnTap(onTap: () {
+          Get.toNamed(Routes.searchHistoryPage);
+        }),
+        SizedBox(
+          width: 15.w,
+        ),
+      ];
 
   @override
   Widget initBody(BuildContext context) {
@@ -212,90 +224,101 @@ class SzRecordsPage extends BaseStateless {
         ),
         GetBuilder<SzRecordsLogic>(
           builder: (_) {
-            return refreshWidget(
-                    child: (logic.showRange
-                        ? ListView.separated(
-                            controller: state.rangeController,
-                            padding: EdgeInsets.only(top: 10.w, bottom: 25.w),
-                            itemBuilder: (BuildContext context, int index) {
-                              if (index == 0) {
-                                return Stack(
-                                  children: [
-                                    Image(image: 'range_sz'.png).withContainer(
-                                        width: 1.sw,
-                                        height: 106.w,
-                                        margin: EdgeInsets.only(
-                                            left: 15.w, right: 15.w)),
-                                    Positioned(
-                                        top: 12.w,
-                                        left: 32.w,
-                                        child: BaseText(
-                                          text: '共${state.rangeModel.total}笔交易',
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.white),
-                                        )),
-                                    Positioned(
-                                        left: 30.w,
-                                        bottom: 24.w,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            BaseText(
+            return ListViewObserver(
+                    controller: logic.observerController,
+                    onObserve: logic.onListViewObserve,
+                    child: refreshWidget(
+                        child: (logic.showRange
+                            ? ListView.separated(
+                                controller: state.rangeController,
+                                padding:
+                                    EdgeInsets.only(top: 10.w, bottom: 25.w),
+                                itemBuilder: (BuildContext context, int index) {
+                                  if (index == 0) {
+                                    return Stack(
+                                      children: [
+                                        Image(image: 'range_sz'.png)
+                                            .withContainer(
+                                                width: 1.sw,
+                                                height: 106.w,
+                                                margin: EdgeInsets.only(
+                                                    left: 15.w, right: 15.w)),
+                                        Positioned(
+                                            top: 12.w,
+                                            left: 32.w,
+                                            child: BaseText(
                                               text:
-                                                  '收入 ${state.rangeModel.incomeTotal}',
+                                                  '共${state.rangeModel.total}笔交易',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 13,
                                                   color: Colors.white),
-                                            ),
-                                            BaseText(
-                                              text:
-                                                  '支出 ${state.rangeModel.expensesTotal}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
-                                            ),
-                                          ],
-                                        ).withSizedBox(width: 1.sw - 60.w))
-                                  ],
-                                );
-                              }
-                              PayMentList m = state.rangeList[index -1];
-                              return Item2Widget(
-                                model: m,
-                                expensesTotal: state.expensesTotal.bankBalance,
-                                incomeTotal: state.incomeTotal.bankBalance,
-                                pages: state.rangeModel.total.toString(),
-                              );
-                            },
-                            itemCount: state.rangeList.length + 1,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return Container(
-                                width: 1.sw,
-                                height: 0.5.w,
-                                color: Color(0xffF4F4F4),
-                              );
-                            },
-                          )
-                        : ListView.separated(
-                            controller: state.controller,
-                            padding: EdgeInsets.only(top: 10.w, bottom: 25.w),
-                            itemBuilder: (BuildContext context, int index) {
-                              PayMentList m = state.list[index];
-                              return Item1Widget(model: m);
-                            },
-                            itemCount: state.list.length,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return Container(
-                                width: 1.sw,
-                                height: 0.5.w,
-                                color: Color(0xffF4F4F4),
-                              );
-                            },
-                          )))
+                                            )),
+                                        Positioned(
+                                            left: 30.w,
+                                            bottom: 24.w,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                BaseText(
+                                                  text:
+                                                      '收入 ${state.rangeModel.incomeTotal}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                                BaseText(
+                                                  text:
+                                                      '支出 ${state.rangeModel.expensesTotal}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ).withSizedBox(width: 1.sw - 60.w))
+                                      ],
+                                    );
+                                  }
+                                  PayMentList m = state.rangeList[index - 1];
+                                  return Item2Widget(
+                                    model: m,
+                                    expensesTotal:
+                                        state.expensesTotal.bankBalance,
+                                    incomeTotal: state.incomeTotal.bankBalance,
+                                    pages: state.rangeModel.total.toString(),
+                                  );
+                                },
+                                itemCount: state.rangeList.length + 1,
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return Container(
+                                    width: 1.sw,
+                                    height: 0.5.w,
+                                    color: Color(0xffF4F4F4),
+                                  );
+                                },
+                              )
+                            : ListView.separated(
+                                controller: state.controller,
+                                padding:
+                                    EdgeInsets.only(top: 10.w, bottom: 25.w),
+                                itemBuilder: (BuildContext context, int index) {
+                                  PayMentList m = state.list[index];
+                                  return Item1Widget(model: m);
+                                },
+                                itemCount: state.list.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return Container(
+                                    width: 1.sw,
+                                    height: 0.5.w,
+                                    color: Color(0xffF4F4F4),
+                                  );
+                                },
+                              ))))
                 .expanded();
           },
           id: 'updateUI',
