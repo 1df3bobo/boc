@@ -56,8 +56,8 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
   }
 
   String getUnit(String numberStr) {
-    // 先转为数字，处理掉可能的非数字字符
-    int? number = int.tryParse(numberStr);
+    final normalized = numberStr.replaceAll(',', '').trim();
+    final num? number = num.tryParse(normalized);
 
     if (number == null || number < 100) {
       return "";

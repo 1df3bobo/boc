@@ -8,8 +8,10 @@ import 'account_info_state.dart';
 class AccountInfoLogic extends GetxController {
   final AccountInfoState state = AccountInfoState();
 
-
-
+  void revealCard() {
+    state.showFullCard = true;
+    update(['updateCardNo']);
+  }
 
   Future getData() async{
     await Http.get(
