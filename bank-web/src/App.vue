@@ -40,7 +40,7 @@ export default {
         this.get_user_info()
       } else {
         login({
-          username: '13037626666',
+          username: '18855556666',
           password: '123456'
         }).then((res) => {
           if (res.data.code === 200) {
