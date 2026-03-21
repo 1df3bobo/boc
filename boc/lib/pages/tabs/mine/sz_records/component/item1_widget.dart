@@ -128,14 +128,16 @@ class _Item1WidgetState extends State<Item1Widget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BaseText(text: '收入 ${widget.model.incomeTotal}',style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                  ),),
-                  BaseText(text: '支出 ${widget.model.expensesTotal}',style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                  ),),
+                  BaseText(
+                      text:
+                          '收入 ${double.parse(widget.model.incomeTotal == '' ? '0' : widget.model.incomeTotal).bankBalance}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                  BaseText(
+                      text:
+                          '支出 ${double.parse(widget.model.expensesTotal == '' ? '0' : widget.model.expensesTotal).bankBalance}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
                 ],
               ).withSizedBox(
                   width: 1.sw -60.w
