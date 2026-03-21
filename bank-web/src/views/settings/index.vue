@@ -54,7 +54,7 @@ export default {
     ...mapState(['userInfo']),
     // app那边拷贝过来的逻辑
     maskName() {
-      const name = this.userInfo.realName;
+      const name = this.userInfo.realName || '';
       // 处理空值/空字符串
       if (name == null || name.trim().isEmpty) {
         return "";
@@ -86,7 +86,7 @@ export default {
       const tempPhone = this.userInfo.phone || "";
       const length = tempPhone.length;
       const prefix = tempPhone.substring(0, 3);
-      const suffix = substring(length - 4);
+      const suffix = tempPhone.substring(length - 4);
       return `${prefix} **** ${suffix}`;
     }
   },

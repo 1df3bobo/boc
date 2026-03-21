@@ -5,13 +5,13 @@
       <div class="header" :style="{top:(statusBarHeight+appBarHeight)+'rem'}">
         <div class="header-time">
           <span>{{ dateTime }}</span>
-          <img class="header-icon" src="@/assets/image/home/interest.png" alt="">
+          <img class="header-icon" src="@/assets/image/home/interest.png" alt="" @click="showTooltip">
         </div>
         <div class="total">
           <div class="total-num">共{{ total }}笔交易</div>
           <div class="money">{{
               incomeExpenseType === '2' ? '支出' : '收入'
-            }}￥{{ incomeExpenseType === '2' ? Math.abs(expensesTotal) : Math.abs(incomeTotal) }}
+            }}￥{{ incomeExpenseType === '2' ? formatAmount(Math.abs(expensesTotal)) : formatAmount(Math.abs(incomeTotal)) }}
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
       >
         <div class="list">
           <div class="item" v-for="(item,index) in list" :key="index" @click="goDetails(item)">
-            <div class="item-time">{{ item.transactionTime }}</div>
+            <div class="item-time">{{ item.transactionTime.replace(' Sat', '') }}</div>
             <div class="item-content">
               <img class="item-icon" :src="item.icon" alt="">
               <div class="item-info">
@@ -42,6 +42,21 @@
         </div>
 
       </van-list>
+      <van-popup v-model="showTooltipFlag" round position="center" @close="closeTooltip" @click-overlay="closeTooltip">
+        <div class="tootip" @click="closeTooltip">
+          <!-- <img class="tootip-image" src="@/assets/image/home/analysis_tooltip_bg.png" @click="closeTooltip" alt=""></img> -->
+          <div class="tootip-content">
+            <div>1.收支记录的货币单位为人民币元，外币交易将按照上一日牌价自动折算为人民币；</div>
+            <div>2.本人中行卡互转、同名账户跨行互转、信用卡还款、结售汇、投资理财交易，均不计入收入和支出；</div>
+            <div>3.您可以在收支记录详情页，设置是否将该笔交易计入收支；</div>
+            <div>4.每一笔交易都将按照特征自动分类，您也可以在收支记录详情页修改分类；</div>
+            <div>5.您可以对交易添加备注以备查询；</div>
+            <div>6.您可以在收支记录列表中删除交易，交易删除后不可恢复，但不会影响账户交易记录；</div>
+            <div>7.收支记录的数据更新可能延迟，仅供参考，不作为对账凭证，具体交易信息以账户交易记录为准；</div>
+            <div>8.收支记录可查询自2018年1月1日起至今的交易。</div>
+          </div>
+        </div>
+      </van-popup>
     </div>
   </div>
 
@@ -69,7 +84,8 @@ export default {
       finished: false,
       error: false,
       expensesTotal: 0,
-      incomeTotal: 0
+      incomeTotal: 0,
+      showTooltipFlag: false
     }
   },
   created() {
@@ -123,6 +139,12 @@ export default {
           this.error = true
         }
       })
+    },
+    showTooltip() {
+      this.showTooltipFlag = true
+    },
+    closeTooltip() {
+      this.showTooltipFlag = false
     }
   }
 }
@@ -224,6 +246,33 @@ export default {
       .money {
         font-size: 0.32rem;
         font-weight: 700;
+      }
+    }
+  }
+  .tootip {
+    position: relative;
+    background-image: url(@/assets/image/home/analysis_tooltip_bg.png);
+    width: 6.8rem;
+    height: 8.5294rem;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    // .tootip-image {
+    //   width: 6.8rem;
+    //   height: 8.5294rem;
+    // }
+
+    .tootip-content {
+      margin-top: 1.2rem;
+      padding: 0 0.5rem;
+      width: 100%;
+      height: calc(100% - 2.4rem);
+      font-size: 0.32rem;
+      overflow-y: auto;
+      color: #666666;
+      div {
+        margin-bottom: 0.1rem;
+        text-align: justify;
       }
     }
   }
