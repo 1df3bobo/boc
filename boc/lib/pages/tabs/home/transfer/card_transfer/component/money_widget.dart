@@ -57,12 +57,12 @@ class _MoneyWidgetState extends State<MoneyWidget> with WidgetsBindingObserver {
 
   String getUnit(String numberStr) {
     // 先转为数字，处理掉可能的非数字字符
-    int? number = int.tryParse(numberStr);
+    double? number = double.tryParse(numberStr);
 
     if (number == null || number < 100) {
       return "";
     } else if (number < 1000) {
-      return "百";
+      return "百"; // 新增：100 - 999 显示“百”
     } else if (number < 10000) {
       return "千";
     } else if (number < 100000) {

@@ -10,6 +10,12 @@ class SzDetailLogic extends GetxController {
 
   var noShow = true.obs;
 
+  String _maskOppositeAccount(String account) {
+    final digitsOnly = account.replaceAll(RegExp(r'\D'), '');
+    if (digitsOnly.length < 8) return account;
+    return '${digitsOnly.substring(0, 4)} ****** ${digitsOnly.substring(digitsOnly.length - 4)}';
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -40,6 +46,10 @@ class SzDetailLogic extends GetxController {
         return '';
       case '交易对象':
         return '';
+      case '对方名称':
+        return state.model.oppositeName;
+      case '对方账号':
+        return _maskOppositeAccount(state.model.oppositeAccount);
       case '计入收支':
         return state.model.merchantBranch;
     }

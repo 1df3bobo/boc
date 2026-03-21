@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:wb_base_widget/extension/string_extension.dart';
 import 'package:wb_base_widget/component/grid_view_widget.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
@@ -12,6 +14,7 @@ import '../../../../../config/model/bill_item_model.dart';
 import '../../../../other/fixed_nav/fixed_nav_view.dart';
 import '../../../card/yjbk/yjbk_view.dart';
 import '../../../home/bill/bill_view.dart';
+import '../../../home/transfer/share_card/withdrawal_password_dialog.dart';
 import '../../../home/transfer/transfer_view.dart';
 import '../account_rename/account_rename_view.dart';
 import 'account_info_logic.dart';
@@ -47,6 +50,15 @@ class AccountInfoPage extends BaseStateless {
     }
   }
 
+  void _showPasswordDialog() {
+    SmartDialog.show(
+      clickMaskDismiss: false,
+      builder: (context) => WithdrawalPasswordDialog(
+        onRevealed: logic.revealCard,
+      ),
+    );
+  }
+
   @override
   Widget initBody(BuildContext context) {
     return ListView(
@@ -64,23 +76,31 @@ class AccountInfoPage extends BaseStateless {
                 child: Container(
                   width: 1.sw - 120.w,
                   height: 42.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BaseText(
-                        text: AppConfig.config.abcLogic.card(),
-                        style:
-                        TextStyle(fontSize: 15, color: Color(0xff222222),fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      BaseText(
-                        text: '查看账号',
-                        style:
-                        TextStyle(fontSize: 13, color: Color(0xff3374ED)),
-                      ),
-                    ],
+                  child: GetBuilder<AccountInfoLogic>(
+                    id: 'updateCardNo',
+                    builder: (_) {
+                      final displayCard = state.showFullCard
+                          ? AppConfig.config.abcLogic.card1().formatBankCardNumber()
+                          : AppConfig.config.abcLogic.card();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          BaseText(
+                            text: displayCard,
+                            style:
+                            TextStyle(fontSize: 15, color: Color(0xff222222),fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          BaseText(
+                            text: '查看账号',
+                            style:
+                            TextStyle(fontSize: 13, color: Color(0xff3374ED)),
+                          ).withOnTap(onTap: _showPasswordDialog),
+                        ],
+                      );
+                    },
                   ),
                 )),
             
@@ -101,7 +121,7 @@ class AccountInfoPage extends BaseStateless {
                   Get.to(() => AccountRenamePage())
                       ?.then((_) => logic.update(['accountAlias']));
                 }),
-                BaseText(text:  AppConfig.config.abcLogic.branchBelongs(),),
+                BaseText(text:  "中国银行${AppConfig.config.abcLogic.branchBelongs()}",),
                 BaseText(text: AppConfig.config.abcLogic.balance()),
               ],
             )),

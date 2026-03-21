@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:wb_base_widget/extension/double_extension.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
@@ -42,6 +43,11 @@ class _Item2WidgetState extends State<Item2Widget> {
     if(week == '周日') return '星期日';
     return week;
   }
+  
+  String timeStr(String input){
+    DateTime dateTime = DateTime.parse(input);
+    return DateFormat('yyyy年MM月dd日').format(dateTime);
+  }
 
   Widget _itemWidget() {
     PayMentList m = widget.model;
@@ -55,7 +61,7 @@ class _Item2WidgetState extends State<Item2Widget> {
                 padding: EdgeInsets.only(left: 15.w),
                 alignment: Alignment.centerLeft,
                 child: BaseText(
-                  text: '${m.day} ${_weekAdd(m.week)}',
+                  text: '${timeStr(m.transactionTime)} ${_weekAdd(m.week)}',
                   color: Color(0xff222222),
                   fontSize: 13,
                 ),

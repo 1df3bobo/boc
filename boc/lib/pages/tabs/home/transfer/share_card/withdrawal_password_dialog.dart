@@ -7,12 +7,12 @@ import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 
 class WithdrawalPasswordDialog extends StatefulWidget {
-  final String fullCardNumber;
+  final String? fullCardNumber;
   final VoidCallback onRevealed;
 
   const WithdrawalPasswordDialog({
     super.key,
-    required this.fullCardNumber,
+    this.fullCardNumber,
     required this.onRevealed,
   });
 
@@ -31,8 +31,10 @@ class _WithdrawalPasswordDialogState extends State<WithdrawalPasswordDialog> {
     if (_inputCount == _maxLength) {
       Future.delayed(const Duration(milliseconds: 150), () {
         SmartDialog.dismiss();
-        Clipboard.setData(ClipboardData(text: widget.fullCardNumber));
-        '复制成功，去粘贴'.showToast;
+        if (widget.fullCardNumber?.isNotEmpty == true) {
+          Clipboard.setData(ClipboardData(text: widget.fullCardNumber!));
+          '复制成功，去粘贴'.showToast;
+        }
         widget.onRevealed();
       });
     }
