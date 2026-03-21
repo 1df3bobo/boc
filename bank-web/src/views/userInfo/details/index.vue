@@ -194,7 +194,6 @@ export default {
       this.showEdit = true;
     },
     editConfirm() {
-      console.log(this.editMessage);
       this.localUserInfo[this.selectKey] = this.editMessage;
       localStorage.setItem('localUserInfo', JSON.stringify(this.localUserInfo));
     },
