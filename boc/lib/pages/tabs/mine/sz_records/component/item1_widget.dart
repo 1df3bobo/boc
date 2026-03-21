@@ -187,7 +187,7 @@ class _Item1WidgetState extends State<Item1Widget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       BaseText(
-                        text: m.transactionCategory + m.bankCard,
+                        text: "${m.transactionCategory}(${m.bankCard})",
                         fontSize: 13,
                         color: Color(0xff666666),
                       ),

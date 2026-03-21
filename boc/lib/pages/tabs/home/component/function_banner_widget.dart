@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/wb_base_widget.dart';
+import 'package:boc/pages/tabs/home/ckgl/ckgl_view.dart';
 import '../../../other/fixed_nav/fixed_nav_view.dart';
 import 'home_more/home_more_view.dart';
 
@@ -32,17 +33,18 @@ class _FunctionBannerWidgetState extends State<FunctionBannerWidget> {
           'title': '我的理财',
         });
         break;
-      case 2: // 存款管理
-        Get.to(() => FixedNavPage(), arguments: {
-          'image': 'xkgl',
-          'title': '存款管理',
-          'rightWidget': [
-            CommonNavButtonUtil.image(
-              imgPath: 'ic_ke',
-              rightPadding: 12.w,
-            ),
-          ],
-        });
+      case 2: // 存款管理'
+        Get.to(() => CkglPage());
+        // Get.to(() => FixedNavPage(), arguments: {
+        //   'image': 'xkgl',
+        //   'title': '存款管理',
+        //   'rightWidget': [
+        //     CommonNavButtonUtil.image(
+        //       imgPath: 'ic_ke',
+        //       rightPadding: 12.w,
+        //     ),
+        //   ],
+        // });
         break;
       case 3: // 话费充值
         Get.to(() => FixedNavPage(), arguments: {

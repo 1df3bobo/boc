@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:boc/pages/other/fixed_nav/fixed_nav_view.dart';
 import 'package:boc/utils/common_right_button.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
+import 'package:boc/pages/other/image_view_page.dart';
+
 
 class HomeBottomWidget extends StatefulWidget {
   const HomeBottomWidget({super.key});
@@ -118,7 +120,9 @@ class _HomeBottomWidgetState extends State<HomeBottomWidget> {
                       Container(
                         width: 80.w,
                         height: 30.w,
-                      ),
+                      ).withOnTap(onTap: () {
+                        Get.to(() => ImageViewPage(), arguments: {'image': 'tsqd'});
+                      }),
                     ],
                   ),
                 ))

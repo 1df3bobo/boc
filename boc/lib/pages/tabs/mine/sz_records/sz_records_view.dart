@@ -11,6 +11,8 @@ import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
+import 'package:boc/pages/other/change_nav/change_nav_view.dart';
+import 'package:boc/pages/other/image_view_page.dart';
 
 import '../../../../config/model/pay_ment_model.dart';
 import '../../../../routes/app_pages.dart';
@@ -96,7 +98,13 @@ class SzRecordsPage extends BaseStateless {
                         Get.to(() => WebViewPage(),
                             arguments: {'routeName': '/monthlyBill'});
                       }),
-                      Container().expanded(),
+                      Container().expanded(onTap: () {
+                        Get.to(() => ImageViewPage(), arguments: {'image': 'xzzb'});
+                        // Get.to(() => ChangeNavPage(), arguments: {
+                        //   'image': 'xzzb',
+                        //   'title': '选择账本',
+                        // });
+                      }),
                     ],
                   ).withContainer(
                       width: 1.sw,

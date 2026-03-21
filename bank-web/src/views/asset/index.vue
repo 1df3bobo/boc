@@ -90,7 +90,7 @@
           >
             <div class="title">总资产</div>
             <div>
-              {{ earsClose ? userInfo.accountBalance.toFixed(2) : "*****" }}
+              {{ earsClose ? formatAmount(userInfo.accountBalance.toFixed(2)) : "*****" }}
             </div>
           </div>
           <div
@@ -139,7 +139,7 @@
           </div>
           <div class="open" @click="isOpen = !isOpen"></div>
           <div class="asset-details-money" v-if="earsClose">
-            {{ userInfo.accountBalance.toFixed(2) }}
+            {{ formatAmount(userInfo.accountBalance.toFixed(2)) }}
           </div>
           <div class="asset-details-money2" v-if="earsClose">0.00</div>
         </div>
@@ -168,11 +168,13 @@
 <script>
 import { remToPx } from "@/utils";
 import { mapState } from "vuex";
+import {formatAmount} from '@/utils'
 
 export default {
   name: "index",
   data() {
     return {
+      formatAmount: formatAmount,
       opacity: 1, // 标题透明度
       earsClose: false,
       time: "",
