@@ -201,8 +201,11 @@ class SzRecordsPage extends BaseStateless {
                         children: [
                           BaseText(
                             text: '筛选',
-                            fontSize: 13,
-                            color: sx ? BColors.mainColor : Color(0xff222222),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: sx ? BColors.mainColor : Color(0xff222222),
+                              fontWeight: FontWeight.bold
+                            ),
                           ),
                           Image(
                             image: 'sx_ic'.png3x,
@@ -271,7 +274,7 @@ class SzRecordsPage extends BaseStateless {
                                               children: [
                                                 BaseText(
                                                   text:
-                                                      '收入 ${state.rangeModel.incomeTotal}',
+                                                      '收入 ${state.rangeModel.incomeTotal.bankBalance}',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -279,7 +282,7 @@ class SzRecordsPage extends BaseStateless {
                                                 ),
                                                 BaseText(
                                                   text:
-                                                      '支出 ${state.rangeModel.expensesTotal}',
+                                                      '支出 ${state.rangeModel.expensesTotal.bankBalance}',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
