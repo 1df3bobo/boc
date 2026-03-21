@@ -1,5 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:boc/pages/tabs/home/transfer/transfer_contacts_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:boc/utils/stack_position.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/component/grid_view_widget.dart';
@@ -11,14 +14,14 @@ import 'transfer_logic.dart';
 import 'transfer_state.dart';
 
 class TransferPage extends BaseStateless {
-  TransferPage({Key? key}) : super(key: key,title: '转账汇款');
+  TransferPage({Key? key}) : super(key: key, title: '转账汇款');
 
   final TransferLogic logic = Get.put(TransferLogic());
   final TransferState state = Get.find<TransferLogic>().state;
 
   @override
   bool get isChangeNav => true;
-  
+
   @override
   Color? get titleColor => Color(0xff111111);
 
@@ -27,6 +30,10 @@ class TransferPage extends BaseStateless {
 
   @override
   Widget initBody(BuildContext context) {
+    StackPosition position1 = StackPosition(
+        designWidth: 1080, designHeight: 246, deviceWidth: 1.sw);
+    StackPosition position2 = StackPosition(
+        designWidth: 1080, designHeight: 420, deviceWidth: 1.sw);
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -77,32 +84,46 @@ class TransferPage extends BaseStateless {
         ),
         Stack(
           children: [
-            Stack(
-              children: [
-                Image(image: 'zh_f'.png3x),
-                VerticalGridView(
-                  padding: EdgeInsets.only(left: 16.w,right: 16.w,top: 12.w),
-                  widgetBuilder: (_, index) {
-                    return SizedBox(
-                      width: 45.w,
-                      height: 45.w).withOnTap(onTap: () => logic.jumpTag(index));
-                  },
-                  itemCount: 6,
-                  crossCount: 4,
-                  mainHeight: 65.w,
-                  spacing: 12.w,
-                ).withPadding(
-                  right: 20.w
-                )
-              ],
-            ),
+            Obx(() => state.zzJtRotated.value
+                ? Stack(
+                    children: [
+                      Image(image: 'zh_f_1'.png3x),
+                      VerticalGridView(
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 12.w),
+                        widgetBuilder: (_, index) {
+                          return SizedBox(width: 1.sw/4, height: position1.getHeight(180),).withOnTap(onTap: () => logic.jumpTag(index));
+                        },
+                        itemCount: 4,
+                        crossCount: 4,
+                        mainHeight: position1.getHeight(180),
+                      ).withPadding(right: 20.w)
+                    ],
+                  )
+                : Stack(
+                    children: [
+                      Image(image: 'zh_f_2'.png3x),
+                      VerticalGridView(
+                        padding:
+                            EdgeInsets.only(left: 16.w, right: 16.w, top: 12.w),
+                        widgetBuilder: (_, index) {
+                           return SizedBox(width: 1.sw/4, height: position2.getHeight(180)).withOnTap(onTap: () => logic.jumpTag(index));
+                        },
+                        itemCount: 6,
+                        crossCount: 4,
+                        mainHeight: position1.getHeight(180),
+                      ).withPadding(right: 20.w)
+                    ],
+                  )),
             Positioned(
-              right: 10.w,top: 28.w,
-              child: Image(
-                width: 18.w,
-                height: 54.w,
-                image: 'zz_jt'.png3x,
-              ),
+              right: 0.w,
+              top: 10.w,
+              child: Container(
+                width: 25.w,
+                height: 70.w,
+              ).withOnTap(onTap: (){
+                logic.toggleZzJtRotation();
+              })
             )
           ],
         ),

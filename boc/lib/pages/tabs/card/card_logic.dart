@@ -60,4 +60,43 @@ class CardLogic extends GetxController {
       });
     }
   }
+
+  void jumpGuangGao(int index){
+    if(index == 0){
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'xyk_rkjc_1',
+        'title': '卓隽留学卡',
+      });
+    }
+    if(index == 1){
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'xyk_rkjc_2',
+        'title': '品质菁英',
+      });
+    }
+    if(index == 2){
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'xyk_rkjc_3',
+        'title': '年轻时尚',
+      });
+    }
+    if(index == 3){
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'xyk_rkjc_4',
+        'title': '车享生活',
+      });
+    }
+    if(index == 4){
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'xyk_rkjc_5',
+        'title': '商旅跨境',
+      });
+    }
+    if(index == 5){
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'xyk_rkjc_6',
+        'title': '长城卓越PLUS信用卡...',
+      });
+    }
+  }
 }

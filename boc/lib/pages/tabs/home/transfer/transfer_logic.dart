@@ -42,6 +42,10 @@ class TransferLogic extends GetxController {
     }
   }
 
+  void toggleZzJtRotation() {
+    state.zzJtRotated.value = !state.zzJtRotated.value;
+  }
+
   void jumpTag(int index){
     if(index == 0){
       Get.to(() => TipsPagePage(),arguments: {

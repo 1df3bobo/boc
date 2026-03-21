@@ -1,4 +1,9 @@
+import 'package:get/get.dart';
+
 class TransferState {
+
+  /// zz_jt 图片是否旋转180度
+  var zzJtRotated = false.obs;
 
   List titles = [
     '账号转账',

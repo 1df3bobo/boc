@@ -16,6 +16,7 @@ import 'package:wb_base_widget/component/text_field_widget.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
+import 'package:boc/pages/tabs/home/ckgl/ckgl_view.dart';
 
 import '../../../../../utils/color_util.dart';
 import '../../../../../utils/stack_position.dart';
@@ -41,16 +42,7 @@ class HomeMorePage extends BaseStateless {
         });
         break;
       case 2: // 存款管理
-        Get.to(() => FixedNavPage(), arguments: {
-          'image': 'xkgl',
-          'title': '存款管理',
-          'rightWidget': [
-            CommonNavButtonUtil.image(
-              imgPath: 'ic_ke',
-              rightPadding: 12.w,
-            ),
-          ],
-        });
+        Get.to(() => CkglPage());
         break;
       case 3: // 贵金属积存
         break;

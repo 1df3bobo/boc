@@ -139,7 +139,68 @@ class CardPage extends BaseStateless {
           ],
         ),
         Image(image: 'card_03'.png3x),
-        Image(image: 'card_04'.png3x),
+        Stack(
+          children: [
+            Image(image: 'card_04'.png3x),
+            Positioned(
+              left: 0,
+              top: 40.w,
+              child: Row(
+                children: [
+                  Container(
+                    width: 1.sw/3*2,
+                    height: 140.w,
+                  ).withOnTap(onTap: (){
+                    logic.jumpGuangGao(0);
+                  }),
+                  Container(
+                    width: 1.sw/3,
+                    height: 140.w,
+                  ).withOnTap(onTap: (){
+                    logic.jumpGuangGao(1);
+                  })
+                ],
+              )
+            ),
+            Positioned(
+              left: 0,
+              top: 190.w,
+              child: Row(
+                children: [
+                  Container(
+                    width: 1.sw/3,
+                    height: 150.w,
+                  ).withOnTap(onTap: (){
+                    logic.jumpGuangGao(2);
+                  }),
+                  Container(
+                    width: 1.sw/3,
+                    height: 150.w,
+                  ).withOnTap(onTap: (){
+                    logic.jumpGuangGao(3);
+                  }),
+                  Container(
+                    width: 1.sw/3,
+                    height: 150.w,
+                  ).withOnTap(onTap: (){
+                    logic.jumpGuangGao(4);
+                  }),
+                ],
+              )
+            ),
+
+            Positioned(
+                left: 0,
+                top: 380.w,
+                child: Container(
+                  width: 1.sw,
+                  height: 200.w,
+                ).withOnTap(onTap: (){
+                  logic.jumpGuangGao(5);
+                }),
+            )
+          ],
+        ),
         Image(image: 'card_05'.png3x),
       ],
     );

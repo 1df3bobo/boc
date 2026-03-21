@@ -23,11 +23,11 @@
           <div class="analysis-title">
             <div :class="['item',incomeExpenseType === '2'?'active':'']" @click="changeIncomeExpenseType('2')">
               <div>支出</div>
-              <div>￥{{ Math.abs(analysisDetails.expenses).toFixed(2) }}</div>
+              <div>￥{{ formatAmount(Math.abs(analysisDetails.expenses).toFixed(2)) }}</div>
             </div>
             <div :class="['item',incomeExpenseType === '1'?'active':'']" @click="changeIncomeExpenseType('1')">
               <div>收入</div>
-              <div>￥{{ analysisDetails.income.toFixed(2) }}</div>
+              <div>￥{{formatAmount(analysisDetails.income.toFixed(2)) }}</div>
             </div>
           </div>
           <div class="chart">
@@ -44,7 +44,7 @@
         <div class="cateogry-title">
           <span>{{ incomeExpenseType === '2' ? '支出' : '收入' }}</span>
           <span>￥{{
-              incomeExpenseType === '2' ? Math.abs(analysisDetails.expenses) : Math.abs(analysisDetails.income)
+              incomeExpenseType === '2' ? formatAmount(Math.abs(analysisDetails.expenses) ): formatAmount(Math.abs(analysisDetails.income))
             }}</span>
         </div>
         <div class="item" v-for="(item, index) in cateogryList" :key="index" @click="goCateogryList(item)">
@@ -52,7 +52,7 @@
           <div class="item-content">
             <div class="item-content-info">
               <div class="item-name">{{ item.name }} {{ item.rate }}%</div>
-              <div class="item-number">￥{{ Math.abs(item.totalAmount) }}</div>
+              <div class="item-number">￥{{formatAmount(Math.abs(item.totalAmount)) }}</div>
             </div>
             <div class="item-progress">
               <van-progress :show-pivot="false" :percentage="item.rate" stroke-width="0.08rem"
@@ -88,12 +88,13 @@
 <script>
 import * as echarts from "echarts";
 import {getBillAnalysis} from "@/api";
-import {remToPx} from "@/utils";
+import {remToPx,formatAmount} from "@/utils";
 
 export default {
   name: "analysis",
   data() {
     return {
+      formatAmount:formatAmount,
       yearMonthShow: false,
       dateTime: '',
       type: '0',
@@ -138,8 +139,8 @@ export default {
     },
     lineChartOption() {
       let trendList = this.analysisDetails.trendList.reverse()
-      const incomeList = trendList.map(item => item.income); // 收入
-      const expensesList = trendList.map(item => Math.abs(item.expenses)); // 支出
+      const incomeList = trendList.map(item => item.income).reverse(); // 收入
+      const expensesList = trendList.map(item => Math.abs(item.expenses)).reverse(); // 支出
       const dateTimeList = trendList.map(item => {
         const date = new Date(item.dateTime);
         if (this.type === '0') {
@@ -182,7 +183,7 @@ export default {
           font-size: 0.2rem;
         ">
                             <div>${name}</div>
-                            <div>￥${value?.toFixed(2)}</div>
+                            <div>￥${formatAmount(value?.toFixed(2))}</div>
                         </div>
                     `;
           },
@@ -196,31 +197,39 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: dateTimeList,
+          data: dateTimeList.reverse(),
         },
         yAxis: {
           type: 'value',
           show: false, // 隐藏Y轴
         },
-        series: [
-          {
-            data: this.incomeExpenseType === '2' ? expensesList : incomeList,
-            type: 'line',
-            symbol: 'circle',
-            color: this.incomeExpenseType === '2' ? '#2C70ED' : '#DD0035',
-            lineStyle: {
-              width: 1,         // 线条宽度
-              type: 'solid'     // 线条类型：'solid' | 'dashed' | 'dotted'
-            }
-          }
-        ]
+series: [
+  {
+    data: this.incomeExpenseType === '2' ? expensesList : incomeList,
+    type: 'line',
+    symbol: 'circle',
+    symbolSize: 3,  // 建议设置点的大小
+    // 设置折线颜色
+    lineStyle: {
+      width: 2,
+      type: 'solid',
+      color: this.incomeExpenseType === '2' ? '#2C70ED' : '#DD0035'
+    },
+    // 设置点的样式
+    itemStyle: {
+      color: '#fff',  // 填充白色
+      borderColor: this.incomeExpenseType === '2' ? '#2C70ED' : '#DD0035',
+      borderWidth: 2
+    }
+  }
+]
       }
     },
 
     pieChartOption() {
       const list = []
       let cateogryList = this.incomeExpenseType === '2' ? this.analysisDetails.expensesCateogryList : this.analysisDetails.incomeCateogryList
-      let upTotalAmount = 110
+      let upTotalAmount = 110.00
       cateogryList.forEach((item) => {
         const obj = {
           name: item.name,
@@ -267,7 +276,7 @@ export default {
             },
             left: '48%', // 定位到适合的位置
             top: remToPx(2.1), // 定位到适合的位置
-            subtext: `￥${upTotalAmount}`, // 副标题
+            subtext: `￥${formatAmount(upTotalAmount)}`, // 副标题
             subtextStyle: {
               // 副标题样式
               color: '#282828',
