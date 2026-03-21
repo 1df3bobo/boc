@@ -9,7 +9,9 @@ import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 
+import '../../../utils/common_right_button.dart';
 import '../../../utils/customButton.dart';
+import '../../../utils/stack_position.dart';
 import '../../component/placeholder_search_widget.dart';
 import '../../other/change_nav/change_nav_view.dart';
 import '../../other/fixed_nav/fixed_nav_view.dart';
@@ -181,10 +183,225 @@ class LifePage extends BaseStateless {
             )
           ],
         ),
+        SizedBox(height: 20.w,),
         Image(image: 'life_b_04'.png3x),
-        Image(image: 'life_b_05'.png3x),
+        Builder(
+          builder: (context) {
+            final sp = StackPosition(
+              designWidth: 750,
+              designHeight: 5382,
+              deviceWidth: 1.sw,
+            );
+            return SizedBox(
+              width: 1.sw,
+              height: sp.deviceHeight,
+              child: Stack(
+                children: [
+                  Image(
+                    image: 'life_b_05'.png3x,
+                    width: 1.sw,
+                    height: sp.deviceHeight,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    top: 150.w,
+                    left: 0,
+                    right: 0,
+                    height: 240.w,
+                    child: Container().withOnTap(onTap: () {
+                      Get.to(() => FixedNavPage(), arguments: {
+                        'image': 'zysy',
+                        'title': '中银善源',
+                        'centerTitle': false,
+                        'rightWidget': [
+                          CommonNavButtonUtil.xcxButton(),
+                        ],
+                      });
+                    }),
+                  ),
+                  StackPositionGridWidget.custom(
+                    stackPosition: sp,
+                    x: 0,
+                    y: 770,
+                    bottomMargin: 3119,
+                    rightMargin: 0,
+                    crossCount: 2,
+                    itemCount: 6,
+                    childBuilder: (_, __) =>
+                        Container(color: Colors.transparent),
+                    onItemTap: _openZysyPartnerGridNav,
+                  ).build(),
+                  StackPositionGridWidget.custom(
+                    stackPosition: sp,
+                    x: 0,
+                    y: 2334,
+                    bottomMargin: 2557,
+                    rightMargin: 0,
+                    crossCount: 2,
+                    itemCount: 2,
+                    childBuilder: (_, __) =>
+                        Container(color: Colors.transparent),
+                    onItemTap: _openZysyMallGridNav,
+                  ).build(),
+                  StackPositionWidget.fromDesign(
+                    sp: sp,
+                    x: 0,
+                    y: 2824,
+                    width: 750,
+                    height: 493,
+                  ).build(
+                    onTap: () => Get.to(() => FixedNavPage(), arguments: {
+                      'image': 'gcg',
+                      'title': '国潮馆专区',
+                      'centerTitle': false,
+                      'rightWidget': [
+                        CommonNavButtonUtil.xcxButton(),
+                      ],
+                    }),
+                  ),
+                  StackPositionGridWidget.custom(
+                    stackPosition: sp,
+                    x: 0,
+                    y: 3317,
+                    bottomMargin: 1070,
+                    rightMargin: 0,
+                    crossCount: 2,
+                    itemCount: 4,
+                    childBuilder: (_, __) =>
+                        Container(color: Colors.transparent),
+                    onItemTap: _openZysyHealthGridNav,
+                  ).build(),
+                  StackPositionWidget.fromDesign(
+                    sp: sp,
+                    x: 0,
+                    y: 4393,
+                    width: 750,
+                    height: 490,
+                  ).build(
+                    onTap: () => Get.to(() => FixedNavPage(), arguments: {
+                      'image': 'fhsc',
+                      'title': '首页',
+                      'centerTitle': false,
+                      'rightWidget': [
+                        CommonNavButtonUtil.xcxButton(),
+                      ],
+                    }),
+                  ),
+                  StackPositionGridWidget.custom(
+                    stackPosition: sp,
+                    x: 0,
+                    y: 4888,
+                    bottomMargin: 0,
+                    rightMargin: 0,
+                    crossCount: 2,
+                    itemCount: 2,
+                    childBuilder: (_, __) =>
+                        Container(color: Colors.transparent),
+                    onItemTap: _openZysyBottomGridNav,
+                  ).build(),
+                ],
+              ),
+            );
+          },
+        ),
       ],
     );
+  }
+
+  /// 中银善源下方 2×3 网格：设计稿 childIndex 0..5 先行后列。
+  void _openZysyPartnerGridNav(int childIndex) {
+    const entries = <(String image, String title)>[
+      ('tbsg', '淘宝闪购'),
+      ('jdcjs', '京东超级省'),
+      ('cngg', '菜鸟裹裹'),
+      ('sfsy', '顺丰速运 用中行'),
+      ('hlcx', '哈罗优惠专区'),
+      ('mt', '美团外面天天减'),
+    ];
+    if (childIndex < 0 || childIndex >= entries.length) return;
+    final e = entries[childIndex];
+    Get.to(() => FixedNavPage(), arguments: {
+      'image': e.$1,
+      'title': e.$2,
+      'centerTitle': false,
+      'rightWidget': [
+        CommonNavButtonUtil.xcxButton(),
+      ],
+    });
+  }
+
+  /// life_b_05 第二行 2×1：云南白药 / 唯品会。
+  void _openZysyMallGridNav(int childIndex) {
+    const entries = <(String image, String title)>[
+      ('ynbysc', '云南白药商城'),
+      ('wph', '唯品会中行专区'),
+    ];
+    if (childIndex < 0 || childIndex >= entries.length) return;
+    final e = entries[childIndex];
+    Get.to(() => FixedNavPage(), arguments: {
+      'image': e.$1,
+      'title': e.$2,
+      'centerTitle': false,
+      'rightWidget': [
+        CommonNavButtonUtil.xcxButton(),
+      ],
+    });
+  }
+
+  /// 底栏 2×1：送水到府 / 年终盛典。
+  void _openZysyBottomGridNav(int childIndex) {
+    const entries = <(String image, String title)>[
+      ('nfsq', '送水到府'),
+      ('qqsc', '年终盛典'),
+    ];
+    if (childIndex < 0 || childIndex >= entries.length) return;
+    final e = entries[childIndex];
+    Get.to(() => FixedNavPage(), arguments: {
+      'image': e.$1,
+      'title': e.$2,
+      'centerTitle': false,
+      'rightWidget': [
+        CommonNavButtonUtil.xcxButton(),
+      ],
+    });
+  }
+
+  /// 2×2：国药 / 宠物 / 空位 / 龙江生活。
+  void _openZysyHealthGridNav(int childIndex) {
+    switch (childIndex) {
+      case 0:
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'gyzx',
+          'title': '健康相伴，国药相随',
+          'centerTitle': false,
+          'rightWidget': [
+            CommonNavButtonUtil.xcxButton(),
+          ],
+        });
+        break;
+      case 1:
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'cwzq',
+          'title': '宠物专区',
+          'centerTitle': false,
+          'rightWidget': [
+            CommonNavButtonUtil.xcxButton(),
+          ],
+        });
+        break;
+      case 2:
+        break;
+      case 3:
+        Get.to(() => FixedNavPage(), arguments: {
+          'image': 'ljsh',
+          'title': '首页｜龙江生活',
+          'centerTitle': false,
+          'rightWidget': [
+            CommonNavButtonUtil.xcxButton(),
+          ],
+        });
+        break;
+    }
   }
 
   void jumpPage(String tag) {

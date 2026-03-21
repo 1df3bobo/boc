@@ -72,7 +72,7 @@ class SzDetailPage extends BaseStateless {
                     color: Color(0xff999999),
                   ),
                 );
-              // if(logic.valueStr(e) == '') return const SizedBox.shrink();
+              if(logic.valueStr(e) == '') return const SizedBox.shrink();
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
