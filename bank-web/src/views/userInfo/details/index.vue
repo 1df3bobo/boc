@@ -29,7 +29,7 @@
       </div>
       <div class="item">
         <div class="label">证件号码</div>
-        <div class="content">{{ userInfo.idCard }}</div>
+        <div class="content">{{ idCard }}</div>
       </div>
       <div class="item">
         <div class="label">国家/地区</div>
@@ -152,6 +152,15 @@ export default {
 
         return firstChar + '*'.repeat(maskLength) + lastChar;
       }
+    },
+    idCard() {
+      const oglIdCard = this.userInfo.idCard || '';
+      if(oglIdCard.length > 2) {
+        const firstChar = oglIdCard.substring(0,1);
+        const lastChar = oglIdCard.substring(oglIdCard.length - 1,oglIdCard.length);
+        return `${firstChar}****************${lastChar}`;
+      }
+      return oglIdCard;
     }
   },
 }
