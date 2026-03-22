@@ -151,6 +151,12 @@ export default {
       return {
         tooltip: {
           trigger: 'axis',
+          position: function(point, params, dom, rect, size) {
+            // 获取图表容器的位置信息
+            // 固定显示在图表顶部 20px 的位置
+            const chartTop = 20;
+            return [point[0], chartTop];
+          },
           backgroundColor: 'transparent',  // 背景透明
           borderWidth: 0,                  // 边框宽度设为0
           padding: 0,                      // 内边距设为0
