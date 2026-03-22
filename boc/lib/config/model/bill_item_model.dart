@@ -73,6 +73,8 @@ class BillItemListBillDetail {
 	String billType = '';
 	String transactionCategory = '';
 	String postscriptno = '';
+	/// 交易对象（本人 / 家庭公用 等），可与接口字段对齐
+	String transactionObject = '';
 
 	BillItemListBillDetail();
 

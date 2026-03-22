@@ -1,3 +1,5 @@
+import 'dart:math' show pi;
+
 import 'package:boc/config/app_config.dart';
 import 'package:boc/pages/tabs/home/bill/bill_view.dart';
 import 'package:boc/pages/tabs/home/transfer/transfer_view.dart';
@@ -10,6 +12,7 @@ import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 
 import '../../../other/fixed_nav/fixed_nav_view.dart';
+import '../../../other/webview_page/webview_page_view.dart';
 import '../../home/transfer/card_transfer/card_transfer_view.dart';
 import 'account_preview_logic.dart';
 import 'account_preview_state.dart';
@@ -92,10 +95,9 @@ class AccountPreviewPage extends BaseStateless {
                           image: 'right_corlo'.png3x,
                           width: 18.w,
                           color: Color(0xff613000),
-                        ):Image(
-                          image: 'mine_refresh'.png3x,
+                        ): _SpinningRefreshIcon(
                           width: 15.w,
-                          color: Color(0xff613000),
+                          color: const Color(0xff613000),
                         )
                       ],
                     )),
@@ -134,7 +136,10 @@ class AccountPreviewPage extends BaseStateless {
             ).withPadding(
               left: 18.w,
             ),
-            Image(image: "mine_refresh".png3x, width: 10.w, color: Color(0xff666666)).withPadding(
+            _SpinningRefreshIcon(
+              width: 10.w,
+              color: const Color(0xff613000),
+            ).withPadding(
               right: 18.w,
             ),
           ],
@@ -221,9 +226,114 @@ class AccountPreviewPage extends BaseStateless {
                 ),
               ),
             ),
+            Positioned(
+                bottom: 0,
+                child: Container(
+                  width: 1.sw,
+                  height: 80.w,
+                ).withOnTap(onTap: () {
+                  Get.to(() => FixedNavPage(), arguments: {
+                    'image': 'zhgl',
+                    'title': '账户关联',
+                    'centerTitle': true,
+                  });
+                })),
           ],
-        )
+        ),
+        Container(
+          width: 1.sw,
+          height: 80.w,
+        ).withOnTap(onTap: () {
+          Get.to(() => FixedNavPage(), arguments: {
+            'image': 'qqzhfw',
+            'title': '全球账户服务',
+            'rightWidget': [
+              Padding(
+                padding: EdgeInsets.only(right: 12.w),
+                child: InkWell(
+                  onTap: () => Get.to(
+                    () => WebViewPage(),
+                    arguments: {'routeName': '/customerService'},
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.w),
+                    child: Image(
+                      image: 'ic_ke'.png3x,
+                      width: 22.w,
+                      height: 22.w,
+                      color: const Color(0xFF333333),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          });
+        }),
       ],
+    );
+  }
+}
+
+/// 点击后顺时针旋转 3 周，结束后复位。
+class _SpinningRefreshIcon extends StatefulWidget {
+  const _SpinningRefreshIcon({
+    required this.width,
+    required this.color,
+  });
+
+  final double width;
+  final Color color;
+
+  @override
+  State<_SpinningRefreshIcon> createState() => _SpinningRefreshIconState();
+}
+
+class _SpinningRefreshIconState extends State<_SpinningRefreshIcon>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    );
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _controller.reset();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (_controller.isAnimating) return;
+        _controller.forward(from: 0);
+      },
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: _controller.value * 4 * pi,
+            child: child,
+          );
+        },
+        child: Image(
+          image: 'mine_refresh'.png3x,
+          width: widget.width,
+          color: widget.color,
+        ),
+      ),
     );
   }
 }

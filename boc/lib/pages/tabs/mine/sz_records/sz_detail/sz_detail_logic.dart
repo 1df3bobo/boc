@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:wb_base_widget/extension/double_extension.dart';
 
 import '../../../../../config/model/bill_item_model.dart';
+import 'sz_detail_local_store.dart';
 import 'sz_detail_state.dart';
 
 class SzDetailLogic extends GetxController {
@@ -19,7 +20,23 @@ class SzDetailLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    state.model = Get.arguments['model'] ?? BillItemList();
+    state.model = Get.arguments['model'] as BillItemListBillDetail? ??
+        BillItemListBillDetail();
+    SzDetailLocalStore.applyToDetail(state.model, noShow);
+    loadCounterpartyOptions();
+  }
+
+  /// 活数据：后续可改为接口赋值 `state.counterpartyOptions = ...`
+  void loadCounterpartyOptions() {
+    state.counterpartyOptions = [
+      '本人',
+      '家庭公用',
+      '父母',
+      'TA',
+      '孩子',
+      '亲人',
+      '朋友',
+    ];
   }
 
   String valueStr(String name) {
@@ -45,7 +62,7 @@ class SzDetailLogic extends GetxController {
       case '所属账本':
         return '';
       case '交易对象':
-        return '';
+        return state.model.transactionObject;
       case '对方名称':
         return state.model.oppositeName;
       case '对方账号':

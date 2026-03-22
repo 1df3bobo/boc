@@ -12,6 +12,7 @@ import 'package:boc/utils/sp_util.dart';
 import '../../../../../config/app_config.dart';
 import '../../../../../config/model/bill_item_model.dart';
 import '../../../../other/fixed_nav/fixed_nav_view.dart';
+import '../../../../other/webview_page/webview_page_view.dart';
 import '../../../card/yjbk/yjbk_view.dart';
 import '../../../home/bill/bill_view.dart';
 import '../../../home/transfer/share_card/withdrawal_password_dialog.dart';
@@ -20,6 +21,29 @@ import '../account_rename/account_rename_view.dart';
 import 'account_info_logic.dart';
 import 'account_info_state.dart';
 import 'account_item_widget.dart';
+
+List<Widget> _fixedNavCustomerServiceTrailing() {
+  return [
+    Padding(
+      padding: EdgeInsets.only(right: 12.w),
+      child: InkWell(
+        onTap: () => Get.to(
+          () => WebViewPage(),
+          arguments: {'routeName': '/customerService'},
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(8.w),
+          child: Image(
+            image: 'ic_ke'.png3x,
+            width: 22.w,
+            height: 22.w,
+            color: const Color(0xFF333333),
+          ),
+        ),
+      ),
+    ),
+  ];
+}
 
 class AccountInfoPage extends BaseStateless {
   AccountInfoPage({Key? key}) : super(key: key,title: '账户详情');
@@ -39,10 +63,38 @@ class AccountInfoPage extends BaseStateless {
         'title': '紧急挂失',
       });
     }
-    if(index == '4'){
+    if (index == '2') {
       Get.to(() => FixedNavPage(), arguments: {
-        'image': 'tradeSet',
-        'title': '交易限额设置',
+        'image': '',
+        'title': '借记卡密码重置',
+        'bodyChild': _FixedNavCardOverlayBody('mmcz'),
+        'rightWidget': _fixedNavCustomerServiceTrailing(),
+      });
+    }
+    if (index == '3') {
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': '',
+        'title': '账户动户通知',
+        'bodyChild': _FixedNavCardOverlayBody('dhtz'),
+        'rightWidget': _fixedNavCustomerServiceTrailing(),
+      });
+    }
+    if (index == '5') {
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'kpgl',
+        'title': '卡片管理',
+      });
+    }
+    if (index == '6') {
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'zfsz',
+        'title': '支付设置',
+      });
+    }
+    if (index == '7') {
+      Get.to(() => FixedNavPage(), arguments: {
+        'image': 'wxyhbk',
+        'title': '中国银行手机银行',
       });
     }
     if(index == '8'){
@@ -222,6 +274,53 @@ class AccountInfoPage extends BaseStateless {
           );
         },id: 'updateUI',)
       ],
+    );
+  }
+}
+
+/// FixedNav 自定义底图 + 「前四 **** 后四」卡号叠字（无有效卡号时用占位）。
+class _FixedNavCardOverlayBody extends StatelessWidget {
+  _FixedNavCardOverlayBody(this.imageName);
+
+  /// 不含 `@3x` 的资源名，如 `mmcz`、`dhtz`。
+  final String imageName;
+
+  static String _cardLine() {
+    final raw = AppConfig.config.abcLogic.card1();
+    final digits = raw.replaceAll(RegExp(r'\D'), '');
+    if (digits.length >= 8) {
+      return '${digits.substring(0, 4)} ****** ${digits.substring(digits.length - 4)}';
+    }
+    return '1234 ****** 1234';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cardText = _cardLine();
+    return SingleChildScrollView(
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Image(
+            image: imageName.png3x,
+            width: 1.sw,
+            fit: BoxFit.fitWidth,
+          ),
+          Positioned(
+            left: 80.w,
+            top: 22.w,
+            child: BaseText(
+              text: cardText,
+              style: TextStyle(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.normal,
+                color: const Color(0xff222222),
+                letterSpacing: 1.2,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

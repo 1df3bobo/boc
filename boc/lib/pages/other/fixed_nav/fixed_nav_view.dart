@@ -45,6 +45,10 @@ class FixedNavPage extends BaseStateless {
 
   @override
   Widget initBody(BuildContext context) {
+    final Widget? bodyChild = Get.arguments?['bodyChild'];
+    if (bodyChild != null) {
+      return bodyChild;
+    }
     return ListView(
       padding: EdgeInsets.only(top: (Get.arguments?['top'] ?? 0).toDouble()),
       children: [

@@ -265,6 +265,11 @@ BillItemListBillDetail $BillItemListBillDetailFromJson(
   if (postscriptno != null) {
     billItemListBillDetail.postscriptno = postscriptno;
   }
+  final String? transactionObject = jsonConvert.convert<String>(
+      json['transactionObject']);
+  if (transactionObject != null) {
+    billItemListBillDetail.transactionObject = transactionObject;
+  }
   return billItemListBillDetail;
 }
 
@@ -290,6 +295,7 @@ Map<String, dynamic> $BillItemListBillDetailToJson(
   data['billType'] = entity.billType;
   data['transactionCategory'] = entity.transactionCategory;
   data['postscriptno'] = entity.postscriptno;
+  data['transactionObject'] = entity.transactionObject;
   return data;
 }
 
@@ -314,6 +320,7 @@ extension BillItemListBillDetailExtension on BillItemListBillDetail {
     String? billType,
     String? transactionCategory,
     String? postscriptno,
+    String? transactionObject,
   }) {
     return BillItemListBillDetail()
       ..id = id ?? this.id
@@ -334,6 +341,7 @@ extension BillItemListBillDetailExtension on BillItemListBillDetail {
       ..transactionChannel = transactionChannel ?? this.transactionChannel
       ..billType = billType ?? this.billType
       ..transactionCategory = transactionCategory ?? this.transactionCategory
-      ..postscriptno = postscriptno ?? this.postscriptno;
+      ..postscriptno = postscriptno ?? this.postscriptno
+      ..transactionObject = transactionObject ?? this.transactionObject;
   }
 }

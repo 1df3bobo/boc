@@ -7,8 +7,15 @@ import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 
+import '../../../../other/image_view_page.dart';
+import '../../../../other/webview_page/webview_page_view.dart';
+import '../../account_preview/account_preview_view.dart';
 import 'sz_detail_logic.dart';
 import 'sz_detail_state.dart';
+import 'transaction_category_side_sheet.dart';
+import 'transaction_remark_dialog.dart';
+import 'sz_detail_local_store.dart';
+import 'transaction_counterparty_bottom_sheet.dart';
 
 class SzDetailPage extends BaseStateless {
   SzDetailPage({Key? key}) : super(key: key, title: '明细');
@@ -48,7 +55,9 @@ class SzDetailPage extends BaseStateless {
             ],
           ),
         ),
-        ListView.separated(
+        GetBuilder<SzDetailLogic>(
+          id: 'detailFields',
+          builder: (_) => ListView.separated(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -72,7 +81,7 @@ class SzDetailPage extends BaseStateless {
                     color: Color(0xff999999),
                   ),
                 );
-              if(logic.valueStr(e) == '') return const SizedBox.shrink();
+              if(logic.valueStr(e) == '' && state.titles2.contains(e) == false) return const SizedBox.shrink();
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -98,7 +107,7 @@ class SzDetailPage extends BaseStateless {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13.sp),
                               ),
-                              _titles2Widget(e),
+                              _titles2Widget(context, logic, e),
                             ],
                           ),
                         ).expanded()
@@ -129,14 +138,52 @@ class SzDetailPage extends BaseStateless {
                   : const SizedBox.shrink();
             },
             itemCount: state.titles.length),
+        ),
 
-        Image(image: 'sz_b_bg'.png3x),
+        Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Image(
+              image: 'sz_b_bg'.png3x,
+              width: 1.sw,
+              fit: BoxFit.fitWidth,
+            ),
+            Positioned.fill(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Container(color: Colors.transparent).expanded(
+                          onTap: () => Get.to(
+                            () => WebViewPage(),
+                            arguments: {'routeName': '/monthlyBill'},
+                          ),
+                        ),
+                        Container(color: Colors.transparent).expanded(
+                          onTap: () => Get.to(
+                            () => ImageViewPage(),
+                            arguments: {'image': 'xzzb'},
+                          ),
+                        ),
+                        Container(color: Colors.transparent).expanded(
+                          onTap: () => Get.to(() => AccountPreviewPage()),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Expanded(child: SizedBox.expand()),
+                ],
+              ),
+            ),
+          ],
+        ),
         SizedBox(height: 45.w),
       ],
     );
   }
 
-  Widget _titles2Widget(String name) {
+  Widget _titles2Widget(BuildContext context, SzDetailLogic logic, String name) {
     if (name == '分类') {
       return BaseText(
         text: '修改',
@@ -144,7 +191,18 @@ class SzDetailPage extends BaseStateless {
             fontWeight: FontWeight.bold,
             fontSize: 13.sp,
             color: Colors.blueAccent),
-      );
+      ).withOnTap(onTap: () async {
+        final v = await TransactionCategorySideSheet.show(
+          context,
+          initialSelection: logic.state.model.transactionCategory,
+          billDetailId: logic.state.model.id,
+        );
+        if (v != null && v.isNotEmpty) {
+          logic.state.model.transactionCategory = v;
+          SzDetailLocalStore.savePartial(logic.state.model, category: v);
+          logic.update(['detailFields']);
+        }
+      });
     }
     if (name == '交易备注') {
       return BaseText(
@@ -153,7 +211,18 @@ class SzDetailPage extends BaseStateless {
             fontWeight: FontWeight.bold,
             fontSize: 13.sp,
             color: Colors.blueAccent),
-      );
+      ).withOnTap(onTap: () async {
+        final v = await TransactionRemarkDialog.show(
+          context,
+          initialText: logic.state.model.postscriptno,
+          billDetailId: logic.state.model.id,
+        );
+        if (v != null) {
+          logic.state.model.postscriptno = v;
+          SzDetailLocalStore.savePartial(logic.state.model, remark: v);
+          logic.update(['detailFields']);
+        }
+      });
     }
     if (name == '所属账本') {
       return BaseText(
@@ -162,7 +231,33 @@ class SzDetailPage extends BaseStateless {
             fontWeight: FontWeight.bold,
             fontSize: 13.sp,
             color: Colors.blueAccent),
-      );
+      ).withOnTap(onTap: () {
+        showModalBottomSheet<void>(
+          context: context,
+          backgroundColor: Colors.transparent,
+          barrierColor: Colors.black.withOpacity(0.45),
+          isScrollControlled: true,
+          builder: (ctx) {
+            return SafeArea(
+              top: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => Navigator.of(ctx).pop(),
+                    child: Image(
+                      image: 'sszb'.png3x,
+                      width: 1.sw,
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      });
     }
     if (name == '交易对象') {
       return BaseText(
@@ -171,7 +266,21 @@ class SzDetailPage extends BaseStateless {
             fontWeight: FontWeight.bold,
             fontSize: 13.sp,
             color: Colors.blueAccent),
-      );
+      ).withOnTap(onTap: () {
+        if (logic.state.counterpartyOptions.isEmpty) {
+          logic.loadCounterpartyOptions();
+        }
+        TransactionCounterpartyBottomSheet.show(
+          context,
+          options: logic.state.counterpartyOptions,
+          current: logic.state.model.transactionObject,
+          onConfirm: (v) {
+            logic.state.model.transactionObject = v;
+            SzDetailLocalStore.savePartial(logic.state.model, object: v);
+            logic.update(['detailFields']);
+          },
+        );
+      });
     }
     if (name == '计入收支') {
       return Obx(() => CupertinoSwitch(
@@ -180,6 +289,10 @@ class SzDetailPage extends BaseStateless {
           activeColor: Color(0xff2F805A),
           onChanged: (bool value) {
             logic.noShow.value = value;
+            SzDetailLocalStore.savePartial(
+              logic.state.model,
+              includeInSz: value,
+            );
           }).withContainer(
         height: 25
       )).sw(scale: 1);

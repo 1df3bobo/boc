@@ -25,6 +25,9 @@ class SzDetailState {
   ];
   BillItemListBillDetail model = BillItemListBillDetail();
 
+  /// 交易对象选项（接口返回后覆盖，见 [SzDetailLogic.loadCounterpartyOptions]）
+  List<String> counterpartyOptions = [];
+
   SzDetailState() {
     ///Initialize variables
     titles.addAll(titles2);
