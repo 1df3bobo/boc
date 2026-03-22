@@ -18,6 +18,7 @@ class TransactionCounterpartyBottomSheet {
     '孩子',
     '亲人',
     '朋友',
+    '单位',
   ];
 
   static Future<void> show(
@@ -33,6 +34,7 @@ class TransactionCounterpartyBottomSheet {
       backgroundColor: Colors.transparent,
       barrierColor: Colors.black.withOpacity(0.45),
       isScrollControlled: true,
+      useSafeArea: false,
       builder: (ctx) {
         return _CounterpartySheetBody(
           options: opts,
@@ -85,17 +87,16 @@ class _CounterpartySheetBodyState extends State<_CounterpartySheetBody> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
               padding: EdgeInsets.fromLTRB(8.w, 12.w, 8.w, 10.w),
               child: Row(
                 children: [
@@ -193,8 +194,8 @@ class _CounterpartySheetBodyState extends State<_CounterpartySheetBody> {
                 ),
               ),
             ),
-          ],
-        ),
+          SizedBox(height: bottomInset),
+        ],
       ),
     );
   }

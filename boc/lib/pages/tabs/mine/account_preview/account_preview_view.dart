@@ -11,6 +11,7 @@ import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 
+import '../../../other/change_nav/change_nav_view.dart';
 import '../../../other/fixed_nav/fixed_nav_view.dart';
 import '../../../other/webview_page/webview_page_view.dart';
 import '../../home/transfer/card_transfer/card_transfer_view.dart';
@@ -240,11 +241,9 @@ class AccountPreviewPage extends BaseStateless {
                 })),
           ],
         ),
-        Container(
-          width: 1.sw,
-          height: 80.w,
+        Image(image: 'a_yl_bottom2'.png3x).withPadding(
         ).withOnTap(onTap: () {
-          Get.to(() => FixedNavPage(), arguments: {
+          Get.to(() => ChangeNavPage(), arguments: {
             'image': 'qqzhfw',
             'title': '全球账户服务',
             'rightWidget': [

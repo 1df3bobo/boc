@@ -36,6 +36,7 @@ class SzDetailLogic extends GetxController {
       '孩子',
       '亲人',
       '朋友',
+      '单位',
     ];
   }
 

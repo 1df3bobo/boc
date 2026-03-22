@@ -2,7 +2,7 @@
   <div class="app">
     <nav-bar :title="name"></nav-bar>
     <div class="main">
-      <div class="header" :style="{top:(statusBarHeight+appBarHeight)+'rem'}">
+      <div class="header" :style="{ top: (statusBarHeight + appBarHeight) + 'rem' }">
         <div class="header-time">
           <span>{{ dateTime }}</span>
           <img class="header-icon" src="@/assets/image/home/interest.png" alt="" @click="showTooltip">
@@ -10,24 +10,18 @@
         <div class="total">
           <div class="total-num">共{{ total }}笔交易</div>
           <div class="money">{{
-              incomeExpenseType === '2' ? '支出' : '收入'
-            }}￥{{ incomeExpenseType === '2' ? formatAmount(Math.abs(expensesTotal)) : formatAmount(Math.abs(incomeTotal)) }}
+            incomeExpenseType === '2' ? '支出' : '收入'
+          }}￥{{ incomeExpenseType === '2' ? formatAmount(Math.abs(expensesTotal)) :
+              formatAmount(Math.abs(incomeTotal)) }}
           </div>
         </div>
       </div>
       <div class="header-pl"></div>
-      <van-list
-          :immediate-check="false"
-          style="min-height: 80vh"
-          v-model="loading"
-          :finished="finished"
-          :error="error"
-          finished-text="没有更多了"
-          @load="nextPages"
-      >
+      <van-list :immediate-check="false" style="min-height: 80vh" v-model="loading" :finished="finished" :error="error"
+        finished-text="没有更多了" @load="nextPages">
         <div class="list">
-          <div class="item" v-for="(item,index) in list" :key="index" @click="goDetails(item)">
-            <div class="item-time">{{ item.transactionTime.replace(' Sat', '') }}</div>
+          <div class="item" v-for="(item, index) in list" :key="index" @click="goDetails(item)">
+            <div class="item-time">{{ convertWeekday(item.transactionTime) }}</div>
             <div class="item-content">
               <img class="item-icon" :src="item.icon" alt="">
               <div class="item-info">
@@ -62,9 +56,9 @@
 
 </template>
 <script>
-import {getBillCategoryList} from "@/api";
-import {mapState} from "vuex";
-import {formatAmount} from '@/utils'
+import { getBillCategoryList } from "@/api";
+import { mapState } from "vuex";
+import { formatAmount } from '@/utils'
 
 export default {
   name: "cateogryList",
@@ -92,7 +86,30 @@ export default {
     this.getBillCategoryList()
   },
   computed: {
-    ...mapState(['statusBarHeight', 'appBarHeight'])
+    ...mapState(['statusBarHeight', 'appBarHeight']),
+    convertWeekday() {
+      return (str) => {
+        const map = {
+          'Mon.': '星期一',
+          'Mon': '星期一',
+          'Tue.': '星期二',
+          'Tue': '星期二',
+          'Tues.': '星期二',
+          'Wed.': '星期三',
+          'Wed': '星期三',
+          'Thu.': '星期四',
+          'Thu': '星期四',
+          'Thur.': '星期四',
+          'Fri.': '星期五',
+          'Fri': '星期五',
+          'Sat.': '星期六',
+          'Sat': '星期六',
+          'Sun.': '星期日',
+          'Sun': '星期日'
+        };
+        return str.replace(/\b(Mon(?:\.)?|Tue(?:\.|s\.)?|Wed(?:\.)?|Thu(?:\.|r\.)?|Fri(?:\.)?|Sat(?:\.)?|Sun(?:\.)?)\b/g, match => map[match]);
+      }
+    },
   },
   methods: {
     nextPages() {
@@ -249,6 +266,7 @@ export default {
       }
     }
   }
+
   .tootip {
     position: relative;
     background-image: url(@/assets/image/home/analysis_tooltip_bg.png);
@@ -270,6 +288,7 @@ export default {
       font-size: 0.32rem;
       overflow-y: auto;
       color: #666666;
+
       div {
         margin-bottom: 0.1rem;
         text-align: justify;
