@@ -5,33 +5,15 @@
       <div class="title">
         <div class="item" @click="datePopup">
           <span>{{ dateTime }}</span>
-          <img
-            class="icon"
-            src="@/assets/image/home/arrow-tri-down.png"
-            alt=""
-          />
+          <img class="icon" src="@/assets/image/home/arrow-tri-down.png" alt />
         </div>
         <div class="item" @click="selectBankShow = true">
           <span>{{ bankName }}</span>
-          <img
-            class="icon"
-            src="@/assets/image/home/arrow-tri-down.png"
-            alt=""
-          />
+          <img class="icon" src="@/assets/image/home/arrow-tri-down.png" alt />
         </div>
         <div class="date">
-          <div
-            @click="changeType('1')"
-            :class="['date-item', type === '1' ? 'date-item-month' : '']"
-          >
-            年
-          </div>
-          <div
-            @click="changeType('0')"
-            :class="['date-item', type === '0' ? 'date-item-month' : '']"
-          >
-            月
-          </div>
+          <div @click="changeType('1')" :class="['date-item',type ==='1'?'date-item-month':'']">年</div>
+          <div @click="changeType('0')" :class="['date-item',type ==='0'?'date-item-month':'']">月</div>
         </div>
       </div>
       <div class="analysis">
@@ -39,66 +21,49 @@
           class="analysis-bg"
           v-if="incomeExpenseType === '2'"
           src="@/assets/image/home/budgetAnalysis1.png"
-          alt=""
+          alt
         />
         <img
           class="analysis-bg"
           v-if="incomeExpenseType === '1'"
           src="@/assets/image/home/budgetAnalysis2.png"
-          alt=""
+          alt
         />
         <div class="analysis-content" v-if="analysisDetails">
           <div class="analysis-title">
             <div
-              :class="['item', incomeExpenseType === '2' ? 'active' : '']"
+              :class="['item',incomeExpenseType === '2'?'active':'']"
               @click="changeIncomeExpenseType('2')"
             >
               <div>支出</div>
-              <div>
-                ￥{{
-                  formatAmount(Math.abs(analysisDetails.expenses).toFixed(2))
-                }}
-              </div>
+              <div>￥{{ formatAmount(Math.abs(analysisDetails.expenses).toFixed(2)) }}</div>
             </div>
             <div
-              :class="['item', incomeExpenseType === '1' ? 'active' : '']"
+              :class="['item',incomeExpenseType === '1'?'active':'']"
               @click="changeIncomeExpenseType('1')"
             >
               <div>收入</div>
-              <div>￥{{ formatAmount(analysisDetails.income.toFixed(2)) }}</div>
+              <div>￥{{formatAmount(analysisDetails.income.toFixed(2)) }}</div>
             </div>
           </div>
           <div class="chart">
             <div class="chart-line" ref="chartRef"></div>
-            <div
-              class="chart-pie"
-              v-if="cateogryList.length > 0"
-              ref="chartRefPie"
-            ></div>
+            <div class="chart-pie" v-if="cateogryList.length>0" ref="chartRefPie"></div>
             <div v-else class="empty">
-              <img
-                class="empty-bg"
-                src="@/assets/image/home/empty.png"
-                alt=""
-              />
-              <span>{{ type === "0" ? "本月暂无交易" : "本年暂无交易" }}</span>
+              <img class="empty-bg" src="@/assets/image/home/empty.png" alt />
+              <span>{{ type === '0' ? '本月暂无交易' : '本年暂无交易' }}</span>
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="cateogry-list"
-        v-if="analysisDetails && cateogryList.length > 0"
-      >
+      <div class="cateogry-list" v-if="analysisDetails&&cateogryList.length>0">
         <div class="cateogry-title">
-          <span>{{ incomeExpenseType === "2" ? "支出" : "收入" }}</span>
-          <span
-            >￥{{
-              incomeExpenseType === "2"
-                ? formatAmount(Math.abs(analysisDetails.expenses))
-                : formatAmount(Math.abs(analysisDetails.income))
-            }}</span
-          >
+          <span>{{ incomeExpenseType === '2' ? '支出' : '收入' }}</span>
+          <span>
+            ￥{{
+            incomeExpenseType === '2' ? formatAmount(Math.abs(analysisDetails.expenses) ): formatAmount(Math.abs(analysisDetails.income))
+            }}
+          </span>
         </div>
         <div
           class="item"
@@ -106,24 +71,18 @@
           :key="index"
           @click="goCateogryList(item)"
         >
-          <img class="item-icon" :src="item.categoryIcon" alt="" />
+          <img class="item-icon" :src="item.categoryIcon" alt />
           <div class="item-content">
             <div class="item-content-info">
               <div class="item-name">{{ item.name }} {{ item.rate }}%</div>
-              <div class="item-number">
-                ￥{{ formatAmount(Math.abs(item.totalAmount)) }}
-              </div>
+              <div class="item-number">￥{{formatAmount(Math.abs(item.totalAmount)) }}</div>
             </div>
             <div class="item-progress">
               <van-progress
                 :show-pivot="false"
                 :percentage="item.rate"
                 stroke-width="0.08rem"
-                :color="
-                  incomeExpenseType === '2'
-                    ? expenseColorList[index]
-                    : incomeColorList[index]
-                "
+                :color="incomeExpenseType === '2'?expenseColorList[index]:incomeColorList[index]"
               />
             </div>
           </div>
@@ -135,11 +94,7 @@
       @confirm="bankConfirm"
       :show="selectBankShow"
     ></select-bank-card-pop>
-    <van-popup
-      v-model="yearMonthShow"
-      position="bottom"
-      @close="yearMonthShow = false"
-    >
+    <van-popup v-model="yearMonthShow" position="bottom" @close="yearMonthShow = false">
       <van-datetime-picker
         v-model="currentDate"
         type="year-month"
@@ -189,7 +144,7 @@ export default {
         "#002C86",
         "#CCE1FF",
         "#66A7FF",
-        "#99C4FF",
+        "#99C4FF"
       ],
       incomeColorList: [
         "#DD0035",
@@ -200,8 +155,8 @@ export default {
         "#B8002C",
         "#930023",
         "#6F001B",
-        "#4A0012",
-      ],
+        "#4A0012"
+      ]
     };
   },
   mounted() {
@@ -222,13 +177,17 @@ export default {
       }
       return lastEightYears;
     },
+    tooltipBgColor() {
+      return this.incomeExpenseType === "2" ? "#2C70ED" : "#DD0035";
+    },
     lineChartOption() {
       let trendList = this.analysisDetails.trendList.reverse();
-      const incomeList = trendList.map((item) => item.income).reverse(); // 收入
+      const incomeList = trendList.map(item => item.income).reverse(); // 收入
       const expensesList = trendList
-        .map((item) => Math.abs(item.expenses))
+        .map(item => Math.abs(item.expenses))
         .reverse(); // 支出
-      const dateTimeList = trendList.map((item) => {
+      let tooltipBgColor = this.tooltipBgColor;
+      const dateTimeList = trendList.map(item => {
         const date = new Date(item.dateTime);
         if (this.type === "0") {
           return `${date.getMonth() + 1}-${date.getDate()}`;
@@ -238,9 +197,7 @@ export default {
       return {
         tooltip: {
           trigger: "axis",
-          position: function (point, params, dom, rect, size) {
-            // 获取图表容器的位置信息
-            // 固定显示在图表顶部 20px 的位置
+          position: function(point, params, dom, rect, size) {
             const chartTop = 20;
             return [point[0], chartTop];
           },
@@ -249,9 +206,9 @@ export default {
           padding: 0, // 内边距设为0
           alwaysShowContent: false, // 注意这里设为 false
           // 使用 formatter 返回 HTML 内容
-          formatter: (params) => {
+          formatter: params => {
             let name, value;
-            params.forEach((element) => {
+            params.forEach(element => {
               const list = element.name.split("-");
               if (list.length >= 2) {
                 name = `${list[0] > 9 ? list[0] : "0" + list[0]}月${
@@ -267,7 +224,7 @@ export default {
                         <div style="
           width: 1.39rem;
           height: 0.93rem;
-          background: ${this.incomeExpenseType === "2" ? "#2C70ED" : "#DD0035"};
+          background: ${this.tooltipBgColor};
           border: 0.02rem solid #fff;
           border-radius: 0.08rem;
           display: flex;
@@ -283,20 +240,20 @@ export default {
                     `;
           },
           confine: true,
-          extraCssText: "box-shadow: 0 0 10px rgba(0,0,0,0.3);",
+          extraCssText: "box-shadow: 0 0 10px rgba(0,0,0,0.3);"
         },
         grid: {
           left: remToPx(0.2),
           right: remToPx(0.3),
-          bottom: remToPx(0.2),
+          bottom: remToPx(0.2)
         },
         xAxis: {
           type: "category",
-          data: dateTimeList.reverse(),
+          data: dateTimeList.reverse()
         },
         yAxis: {
           type: "value",
-          show: false, // 隐藏Y轴
+          show: false // 隐藏Y轴
         },
         series: [
           {
@@ -308,17 +265,17 @@ export default {
             lineStyle: {
               width: 2,
               type: "solid",
-              color: this.incomeExpenseType === "2" ? "#2C70ED" : "#DD0035",
+              color: this.incomeExpenseType === "2" ? "#2C70ED" : "#DD0035"
             },
             // 设置点的样式
             itemStyle: {
               color: "#fff", // 填充白色
               borderColor:
                 this.incomeExpenseType === "2" ? "#2C70ED" : "#DD0035",
-              borderWidth: 2,
-            },
-          },
-        ],
+              borderWidth: 2
+            }
+          }
+        ]
       };
     },
 
@@ -329,16 +286,16 @@ export default {
           ? this.analysisDetails.expensesCateogryList
           : this.analysisDetails.incomeCateogryList;
       let upTotalAmount = 110.0;
-      cateogryList.forEach((item) => {
+      cateogryList.forEach(item => {
         const obj = {
           name: item.name,
-          value: Math.abs(item.totalAmount),
+          value: Math.abs(item.totalAmount)
         };
         list.push(obj);
       });
       return {
         grid: {
-          bottom: "5%",
+          bottom: "5%"
         },
         legend: {
           bottom: 10,
@@ -349,9 +306,9 @@ export default {
           textStyle: {
             // 图例文字的样式
             color: "#222222",
-            fontSize: remToPx(0.24),
+            fontSize: remToPx(0.24)
           },
-          itemHeight: remToPx(0.16),
+          itemHeight: remToPx(0.16)
         },
         graphic: {
           elements: [
@@ -360,12 +317,12 @@ export default {
               style: {
                 image: require("@/assets/image/home/decline.png"),
                 width: remToPx(0.3),
-                height: remToPx(0.3),
+                height: remToPx(0.3)
               },
               left: "54%", // 定位到适合的位置
-              top: remToPx(2.14), // 定位到适合的位置
-            },
-          ],
+              top: remToPx(2.14) // 定位到适合的位置
+            }
+          ]
         },
         title: [
           {
@@ -374,7 +331,7 @@ export default {
               // 主标题样式
               color: "#ACACAC",
               fontWeight: "500",
-              fontSize: remToPx(0.24),
+              fontSize: remToPx(0.24)
             },
             left: "48%", // 定位到适合的位置
             top: remToPx(2.1), // 定位到适合的位置
@@ -383,10 +340,10 @@ export default {
               // 副标题样式
               color: "#282828",
               fontSize: remToPx(0.26),
-              fontWeight: "700",
+              fontWeight: "700"
             },
-            textAlign: "center", // 主、副标题水平居中显示
-          },
+            textAlign: "center" // 主、副标题水平居中显示
+          }
         ],
         color:
           this.incomeExpenseType === "2"
@@ -400,24 +357,25 @@ export default {
             center: ["50%", "45%"],
             data: list,
             labelLine: {
-              show: false,
+              show: false
             },
             label: {
-              show: false, // 关键：设置为false
+              show: false // 关键：设置为false
             },
 
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
-              },
-            },
-          },
-        ],
+                shadowColor: "rgba(0, 0, 0, 0.5)"
+              }
+            }
+          }
+        ]
       };
-    },
+    }
   },
+
   methods: {
     goCateogryList(item) {
       this.$router.push({
@@ -426,8 +384,8 @@ export default {
           name: item.name,
           type: this.type,
           incomeExpenseType: this.incomeExpenseType,
-          dateTime: this.dateTime,
-        },
+          dateTime: this.dateTime
+        }
       });
     },
     changeIncomeExpenseType(type) {
@@ -435,7 +393,16 @@ export default {
       this.incomeExpenseType = type;
       let chart = this.chart;
       chart.setOption(this.lineChartOption);
-
+      chart.dispatchAction({
+        type: "hideTip"
+      });
+      const dataLength = this.lineChartOption.series[0].data.length;
+      const lastIndex = dataLength - 1;
+      chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: lastIndex
+      });
       let pieChart = this.pieChart;
       pieChart.setOption(this.pieChartOption);
     },
@@ -507,8 +474,8 @@ export default {
       }
       getBillAnalysis({
         dateTime: formattedDate,
-        type: this.type,
-      }).then((res) => {
+        type: this.type
+      }).then(res => {
         if (res.data.code === 200) {
           this.analysisDetails = res.data.data;
           this.$nextTick(() => {
@@ -530,14 +497,14 @@ export default {
               this.chart.dispatchAction({
                 type: "showTip",
                 seriesIndex: 0, // 系列索引
-                dataIndex: lastIndex, // 数据索引（最后一个）
+                dataIndex: lastIndex // 数据索引（最后一个）
               });
             }, 100);
           });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped lang="scss">
