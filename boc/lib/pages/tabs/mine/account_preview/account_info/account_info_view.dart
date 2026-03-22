@@ -122,7 +122,9 @@ class AccountInfoPage extends BaseStateless {
                       ?.then((_) => logic.update(['accountAlias']));
                 }),
                 BaseText(text:  "中国银行${AppConfig.config.abcLogic.branchBelongs()}",),
-                BaseText(text: AppConfig.config.abcLogic.balance()),
+                BaseText(text: AppConfig.config.abcLogic.balance(), style: TextStyle(
+                  fontWeight: FontWeight.bold
+                ),),
               ],
             )),
 

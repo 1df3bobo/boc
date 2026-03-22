@@ -106,7 +106,7 @@ class _BillItemWidgetState extends State<BillItemWidget> {
                         Row(
                           children: [
                             BaseText(
-                              text: '人民币',
+                              text: '人民币元',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
