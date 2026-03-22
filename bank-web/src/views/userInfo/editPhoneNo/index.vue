@@ -6,19 +6,19 @@
       <div class="info">
         <div class="item">
           <div class="label">核心用户信息</div>
-          <div class="content">{{userInfo.phone}}</div>
+          <div class="content">{{phone}}</div>
         </div>
         <div class="item">
           <div class="label">登录手机银行</div>
-          <div class="content">{{userInfo.phone}}</div>
+          <div class="content">{{phone}}</div>
         </div>
         <div class="item">
           <div class="label">接受手机<br>交易码</div>
-          <div class="content">{{userInfo.phone}}</div>
+          <div class="content">{{phone}}</div>
         </div>
         <div class="item">
           <div class="label">电子银行客户<br>信息</div>
-          <div class="content">{{userInfo.phone}}</div>
+          <div class="content">{{phone}}</div>
         </div>
       </div>
       <div class="btn">下一步</div>
@@ -39,7 +39,14 @@
 import {mapState} from "vuex";
 export default {
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    phone() {
+      const tempPhone = this.userInfo.phone || "";
+      const length = tempPhone.length;
+      const prefix = tempPhone.substring(0, 3);
+      const suffix = tempPhone.substring(length - 4);
+      return `${prefix} **** ${suffix}`;
+    }
   },
 }
 </script>

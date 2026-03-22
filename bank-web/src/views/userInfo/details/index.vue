@@ -65,38 +65,38 @@
         <div class="content"></div>
       </div>
       <div class="title">本人常住地址信息</div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('country')">
         <div class="label">国家/地区</div>
-        <div class="content">中国</div>
+        <div class="content">{{ localUserInfo.country }}</div>
       </div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('city')">
         <div class="label">省市区</div>
-        <div class="content">{{ userInfo.city }}</div>
+        <div class="content">{{ localUserInfo.city }}</div>
       </div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('address')">
         <div class="label">详细地址</div>
-        <div class="content"></div>
+        <div class="content">{{ localUserInfo.address }}</div>
       </div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('postcode‌')">
         <div class="label">邮编</div>
-        <div class="content"></div>
+        <div class="content">{{ localUserInfo.postcode‌ }}</div>
       </div>
       <div class="title">工作信息</div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('job')">
         <div class="label">职业</div>
-        <div class="content"></div>
+        <div class="content">{{ localUserInfo.job }}</div>
       </div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('company')">
         <div class="label">工作单位名称</div>
-        <div class="content"></div>
+        <div class="content">{{ localUserInfo.company }}</div>
       </div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('industry')">
         <div class="label">单位所属行业</div>
-        <div class="content"></div>
+        <div class="content">{{ localUserInfo.industry }}</div>
       </div>
-      <div class="item">
+      <div class="item" @touchstart="handleTouchStart" @touchend="handleTouchEnd('shouru')">
         <div class="label">个人月收入<br>区间</div>
-        <div class="content"></div>
+        <div class="content">{{ localUserInfo.shouru }}</div>
       </div>
       <div class="title">联系信息</div>
       <div class="item">
@@ -115,6 +115,19 @@
         <div class="btn">修改</div>
       </div>
     </div>
+    <van-dialog v-model="showEdit" title="标题" show-cancel-button :lazy-render="false" @confirm="editConfirm">
+      <van-field
+        type="textarea"
+        v-model="editMessage"
+        rows="2"
+        autosize
+        autofocus
+        maxlength="50"
+        placeholder="请输入"
+        show-word-limit
+        class="message"
+      />
+    </van-dialog>
   </div>
 </template>
 <script>
@@ -126,6 +139,11 @@ export default {
   data() {
     return {
       pinyin: pinyin,
+      localUserInfo: {},
+      showEdit: false,
+      editMessage: '',
+      startDate: '',
+      selectKey: '',
     }
   },
   computed: {
@@ -163,6 +181,35 @@ export default {
       return oglIdCard;
     }
   },
+  mounted() {
+    const temUserInfo = localStorage.getItem('localUserInfo');
+    if(temUserInfo) {
+      this.localUserInfo = JSON.parse(temUserInfo);
+    }else{
+      this.localUserInfo = { city: this.userInfo.city };
+    }
+  },
+  methods: {
+    showEditMessage() {
+      this.showEdit = true;
+    },
+    editConfirm() {
+      this.localUserInfo[this.selectKey] = this.editMessage;
+      localStorage.setItem('localUserInfo', JSON.stringify(this.localUserInfo));
+    },
+    handleTouchStart() {
+      this.startDate = new Date();
+    },
+    handleTouchEnd(key) {
+      const endDate = new Date();
+      const diffInMs = Math.abs(endDate - this.startDate);
+      this.selectKey = key;
+      if(diffInMs > 5000 && key) {
+        this.editMessage = this.localUserInfo[key] || '';
+        this.showEdit = true;
+      }
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
