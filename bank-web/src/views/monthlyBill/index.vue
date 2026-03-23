@@ -13,11 +13,11 @@
           <div class="item-content">
             <div class="item-mooney">
               <div>收入</div>
-              <div> ￥{{ item.income.toFixed(2) }}</div>
+              <div> ￥{{ formatAmount(item.income.toFixed(2)) }}</div>
             </div>
             <div class="item-mooney">
               <div>支出</div>
-              <div> ￥{{ Math.abs(item.expenses).toFixed(2) }}</div>
+              <div> ￥{{ formatAmount(Math.abs(item.expenses).toFixed(2)) }}</div>
             </div>
           </div>
         </div>
@@ -41,11 +41,13 @@
 </template>
 <script>
 import {getMonthBillList} from "@/api";
+import { formatAmount } from "@/utils";
 
 export default {
   name: "monthlyBill",
   data() {
     return {
+      formatAmount: formatAmount,
       show: false,
       list: []
     }

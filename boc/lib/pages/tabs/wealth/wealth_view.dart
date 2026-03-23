@@ -6,6 +6,7 @@ import 'package:wb_base_widget/component/grid_view_widget.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
+import 'package:boc/pages/tabs/home/ckgl/ckgl_view.dart';
 
 import '../../component/placeholder_search_widget.dart';
 import '../../other/change_nav/change_nav_view.dart';
@@ -305,9 +306,9 @@ class WealthPage extends BaseStateless {
         });
         break;
       case 2:
+        Get.to(() => CkglPage());
         break;
       case 3:
-
         Get.to(() => ChangeNavPage(),
             arguments: {
               'image': 'jhgh',
