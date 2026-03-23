@@ -4,6 +4,8 @@ import 'package:boc/utils/sp_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:boc/pages/other/change_nav/change_nav_view.dart';
+import 'package:boc/pages/tabs/mine/sz_records/sz_detail/sz_detail_view.dart';
+import 'package:boc/config/model/bill_item_model.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:get/get.dart';
 
@@ -103,16 +105,11 @@ class WebViewLogic extends GetxController {
         } else {
           state.webViewController!.goBack();
         }
-      }else if(data['type'] == 'zczd') {
-        // 我的资产 资产管理 => 资产诊断
-        Get.to(() => ChangeNavPage(), arguments: {
-          'image': 'zczd',
-          'title': '',
-          'leftWidget':Container(width: 90.w,height: 45.w,).withOnTap(onTap: (){
-            Get.back();
-          })
-
-        });
+      } else if(data['type'] == 'sz_detail') {
+        // 收支分析 =》 分类列表 =》明细
+        Map<String, dynamic> jsonMap = jsonDecode(data['data']);
+        BillItemListBillDetail model = BillItemListBillDetail.fromJson(jsonMap);
+        Get.to((() => SzDetailPage()), arguments: {'model': model});
       }
     } catch (e) {
       debugPrint('解析Web消息失败: $e');

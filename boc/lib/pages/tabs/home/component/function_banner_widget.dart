@@ -1,6 +1,7 @@
 import 'package:boc/config/app_config.dart';
 import 'package:boc/pages/other/change_nav/change_nav_view.dart';
 import 'package:boc/pages/tabs/home/transfer/gjs/gjs_view.dart';
+import 'package:boc/pages/other/print/print_view.dart';
 import 'package:boc/pages/tabs/home/transfer/transfer_view.dart';
 import 'package:boc/utils/common_right_button.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:wb_base_widget/wb_base_widget.dart';
 import 'package:boc/pages/tabs/home/ckgl/ckgl_view.dart';
 import '../../../other/fixed_nav/fixed_nav_view.dart';
 import 'home_more/home_more_view.dart';
+import 'package:boc/utils/stack_position.dart';
 
 class FunctionBannerWidget extends StatefulWidget {
   const FunctionBannerWidget({super.key});
@@ -59,14 +61,8 @@ class _FunctionBannerWidgetState extends State<FunctionBannerWidget> {
           'title': '贷款',
         });
         break;
-      case 5: // 马拉松专区
-        Get.to(() => FixedNavPage(), arguments: {
-          'image': 'mlszq',
-          'title': '马拉松专区',
-          'rightWidget': [
-            CommonNavButtonUtil.xcxButton(),
-          ],
-        });
+      case 5: // 流水打印
+        Get.to(() => PrintPage());
         break;
       case 6: // 薪酬管家
         Get.to(() => ChangeNavPage(), arguments: {
@@ -127,9 +123,23 @@ class _FunctionBannerWidgetState extends State<FunctionBannerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    StackPosition stackPosition = StackPosition(
+      designWidth: 1080,
+      designHeight: 435,
+      deviceWidth: 1.sw,
+    );
    return Stack(
      children: [
        Image(image: 'home_tag'.png3x,),
+       // Positioned(
+       //     left: 0,
+       //     bottom: 0,
+       //     child: Container(
+       //       width: 1.sw/5,
+       //       height: stackPosition.getHeight(216),
+       //       color: Colors.red.withAlpha(20),
+       //     )
+       // ),
        VerticalGridView(
          padding: EdgeInsets.only(left: 15.w,right: 15.w),
          widgetBuilder: (_, index) {
