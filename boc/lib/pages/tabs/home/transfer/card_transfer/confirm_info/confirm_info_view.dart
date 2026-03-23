@@ -15,6 +15,7 @@ import '../../../../../component/right_widget.dart';
 import '../../../../../component/auth_sm.dart';
 import 'confirm_info_logic.dart';
 import 'confirm_info_state.dart';
+import 'confirm_widget.dart';
 
 class ConfirmInfoPage extends BaseStateless {
   ConfirmInfoPage({Key? key}) : super(key: key, title: '确认信息');
@@ -124,9 +125,8 @@ class ConfirmInfoPage extends BaseStateless {
               return AuthSm(callBack: (){
                 print(state.cardReq.toJson());
                 Http.post(Apis.transfer, data: state.cardReq.toJson()).then((v) {
-                  print(v.toString());
                       if(v != null){
-                       Get.back();
+                        Get.to(() => CountdownLoader());
                       }
                 });
               },);
