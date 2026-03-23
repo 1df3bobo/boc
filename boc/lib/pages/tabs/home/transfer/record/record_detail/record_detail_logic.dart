@@ -36,7 +36,7 @@ class RecordDetailLogic extends GetxController {
       case '交易渠道':
         return state.model.transactionChannel;
       case '交易序号':
-        return state.model.certificateNo;
+        return state.model.transactionLogno ;
       case '交易时间':
         return state.model.transactionTime;
     }

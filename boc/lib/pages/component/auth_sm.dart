@@ -80,7 +80,7 @@ class _AuthSmState extends State<AuthSm> {
             color: Color(0xffD8D8E0),
           ),
 
-          BaseText(text: '已发送至尾号1234的手机',color: Color(0xff222222),).withPadding(
+          BaseText(text: '已发送至尾号${AppConfig.config.abcLogic.memberInfo.phone.substring(AppConfig.config.abcLogic.memberInfo.phone.length - 4)}的手机',color: Color(0xff222222),).withPadding(
             top: 16.w,bottom: 12.w,
               left: 20.w,
           ),

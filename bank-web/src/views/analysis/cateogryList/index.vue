@@ -11,8 +11,8 @@
           <div class="total-num">共{{ total }}笔交易</div>
           <div class="money">{{
             incomeExpenseType === '2' ? '支出' : '收入'
-          }}￥{{ incomeExpenseType === '2' ? formatAmount(Math.abs(expensesTotal)) :
-              formatAmount(Math.abs(incomeTotal)) }}
+            }}￥{{ incomeExpenseType === '2' ? formatAmount(Math.abs(expensesTotal).toFixed(2)) :
+              formatAmount(Math.abs(incomeTotal).toFixed(2)) }}
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
                 <div class="item-excerpt">{{ item.excerpt }}</div>
                 <div class="item-info-bottom">
                   <div>{{ item.transactionCategory }}({{ item.bankCard }})</div>
-                  <div>人民币元 <span>{{ formatAmount(item.amount) }}</span></div>
+                  <div>人民币元 <span>{{ formatAmount(item.amount.toFixed(2)) }}</span></div>
                 </div>
               </div>
             </div>
@@ -147,8 +147,12 @@ export default {
         if (res.data.code === 200) {
           this.list = [...this.list, ...res.data.data.list]
           this.total = res.data.data.total
-          this.expensesTotal = res.data.data.expensesTotal
-          this.incomeTotal = res.data.data.incomeTotal
+          if (!this.expensesTotal || this.expensesTotal === 0) {
+            this.expensesTotal = res.data.data.expensesTotal
+          }
+          if (!this.incomeTotal || this.incomeTotal === 0) {
+            this.incomeTotal = res.data.data.incomeTotal
+          }
           // this.pageNum = res.data.data.customizeParam
           this.loading = false
         } else {
