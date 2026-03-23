@@ -10,7 +10,7 @@
             <div class="item-content">
               <div class="item-top">
                 <div class="item-tooltip" @click="showTooltip"></div>
-                <div class="item-amount">{{ details.totalAmount }}</div>
+                <div class="item-amount">{{ formatAmount(details.totalAmount) }}</div>
               </div>
               <div class="chart">
                 <div class="chart-pie" ref="chartRefPie1"></div>
@@ -28,8 +28,8 @@
             <img class="swipe-item-bg" v-if="incomeCateogryList.length>0" src="@/assets/image/home/bill06.png" alt="">
             <img class="swipe-item-bg" v-else src="@/assets/image/home/bill03.png" alt="">
             <div class="item-content" v-if="incomeCateogryList.length>0">
-              <div class="item-amount">{{ details.cashSurplus }}</div>
-              <div class="item-money">总计 <span>{{ details.income }}</span></div>
+              <div class="item-amount">{{ formatAmount(details.cashSurplus) }}</div>
+              <div class="item-money">总计 <span>{{ formatAmount(details.income) }}</span></div>
               <div class="chart">
                 <div class="chart-pie" ref="chartRefPie2"></div>
               </div>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="list-item" v-for="(item,index) in incomeCateogryList" :key="index" v-if="index<3">
                   <div class="item-label">{{ item.name }}</div>
-                  <div class="item-num">{{ item.totalAmount }}</div>
+                  <div class="item-num">{{ formatAmount(item.totalAmount) }}</div>
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@
             <img class="swipe-item-bg" v-if="expensesCateogryList.length>0" src="@/assets/image/home/bill07.png" alt="">
             <img class="swipe-item-bg" v-else src="@/assets/image/home/bill04.png" alt="">
             <div class="item-content" v-if="expensesCateogryList.length>0">
-              <div class="item-money expenses-money">总计 <span>{{ Math.abs(details.expenses) }}</span></div>
+              <div class="item-money expenses-money">总计 <span>{{ formatAmount(Math.abs(details.expenses)) }}</span></div>
               <div class="chart">
                 <div class="chart-pie chart-pie3" ref="chartRefPie3"></div>
               </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="list-item" v-for="(item,index) in expensesCateogryList" :key="index" v-if="index<3">
                   <div class="item-label">{{ item.name }}</div>
-                  <div class="item-num">{{ item.totalAmount }}</div>
+                  <div class="item-num">{{ formatAmount(item.totalAmount) }}</div>
                 </div>
               </div>
             </div>
@@ -75,20 +75,22 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-    <van-popup v-model="showTooltipFlag" round position="center" @close="closeTooltip" @click-overlay="closeTooltip">
-      <img class="analysis-tootip" src="@/assets/image/home/monthly-bill-tooltip.png" @click="closeTooltip" alt=""></img>
+    <van-popup v-model="showTooltipFlag" class="analysis-tootip" round position="center" @close="closeTooltip" @click-overlay="closeTooltip">
+      <img class="analysis-tootip" src="@/assets/image/home/monthly-bill-tooltip.png" @click="closeTooltip" fit=""></img>
     </van-popup>
   </div>
 </template>
 <script>
 import * as echarts from "echarts";
 import {getBillCategory} from "@/api";
-import {remToPx} from "@/utils";
+import {remToPx, formatAmount} from "@/utils";
+
 
 export default {
   name: "monthlyBillDetails",
   data() {
     return {
+      formatAmount: formatAmount,
       title: this.$route.query.title || 11,
       dateTime: this.$route.query.dateTime,
       details: null,
@@ -118,7 +120,7 @@ export default {
         },
         title: [
           {
-            text: '￥' + this.details.totalAmount, // 主标题
+            text: '￥' + this.formatAmount(this.details.totalAmount), // 主标题
             textStyle: {
               // 主标题样式
               color: '#222222',
@@ -199,7 +201,7 @@ export default {
             },
             left: '48%', // 定位到适合的位置
             top: remToPx(2.1), // 定位到适合的位置
-            subtext: `￥${this.details.upIncomeAmount}`, // 副标题
+            subtext: `￥${this.formatAmount(this.details.upIncomeAmount)}`, // 副标题
             subtextStyle: {
               // 副标题样式
               color: '#282828',
@@ -276,7 +278,7 @@ export default {
               height: remToPx(0.3),
             },
             left: '54%', // 定位到适合的位置
-            top: remToPx(2.14), // 定位到适合的位置
+            top: remToPx(2.66), // 定位到适合的位置
           }]
         },
         title: [
@@ -289,8 +291,8 @@ export default {
               fontSize: remToPx(0.24)
             },
             left: '48%', // 定位到适合的位置
-            top: remToPx(2.1), // 定位到适合的位置
-            subtext: `￥${this.details.upExpensesAmount}`, // 副标题
+            top: remToPx(2.6), // 定位到适合的位置
+            subtext: `￥${this.formatAmount(this.details.upExpensesAmount)}`, // 副标题
             subtextStyle: {
               // 副标题样式
               color: '#282828',
@@ -449,7 +451,6 @@ export default {
 
           .item-top {
             padding-left: 3.3rem;
-            padding-right: 0.6rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -464,6 +465,8 @@ export default {
             font-size: 0.36rem;
             font-weight: 700;
             box-sizing: border-box;
+            padding-right: 0.6rem;
+            text-align: right;
           }
 
           .item-money {
@@ -508,5 +511,6 @@ export default {
 .analysis-tootip {
     width: 6rem;
     height: 4.299rem;
+    overflow: hidden;
   }
 </style>

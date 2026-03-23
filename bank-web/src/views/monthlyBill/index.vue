@@ -81,7 +81,8 @@ export default {
       this.$router.push({
         path:'/monthlyBill/details',
         query:{
-          dateTime:item.dateTime
+          dateTime:item.dateTime,
+          title: item.month,
         }
       })
     },
