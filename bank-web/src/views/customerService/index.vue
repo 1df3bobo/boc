@@ -3,6 +3,7 @@
     <nav-bar title="在线客服"></nav-bar>
     <div class="main">
       <img class="content" src="@/assets/image/home/customerService.png" alt="">
+      <img class="bottom" src="@/assets/image/home/customerServiceBottom.png" alt="">
     </div>
   </div>
 </template>
@@ -27,6 +28,11 @@ export default {
       width: 100%;
       display: block;
       height: 8.83rem;
+    }
+    .bottom {
+      width: 100%;
+      position: fixed;
+      bottom: 0
     }
   }
 }

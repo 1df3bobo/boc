@@ -18,6 +18,7 @@ import '../../../../../component/auth_sm.dart';
 import 'confirm_info_logic.dart';
 import 'confirm_info_state.dart';
 import 'transfer_waiting_dialog.dart';
+import 'confirm_widget.dart';
 
 class ConfirmInfoPage extends BaseStateless {
   ConfirmInfoPage({Key? key}) : super(key: key, title: '确认信息');
@@ -134,7 +135,27 @@ class ConfirmInfoPage extends BaseStateless {
           }),
         ),
 
-
+        SizedBox(height: 40.w,),
+        AbcButton(
+          title: '确定',
+          bgColor: Color(0xff2D70ED),
+          onTap: () {
+            AlterWidget.alterWidget(builder: (context) {
+              return AuthSm(callBack: (){
+                print(state.cardReq.toJson());
+                Http.post(Apis.transfer, data: state.cardReq.toJson()).then((v) {
+                      if(v != null){
+                        Get.to(() => CountdownLoader());
+                      }
+                });
+              },);
+            });
+          },
+          margin: EdgeInsets.only(left: 15.w,right: 15.w),
+          width: 343.w,
+          height: 44.w,
+          radius: 6.w,
+        ),
       ],
     );
 

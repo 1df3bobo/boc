@@ -131,15 +131,6 @@ class _FunctionBannerWidgetState extends State<FunctionBannerWidget> {
    return Stack(
      children: [
        Image(image: 'home_tag'.png3x,),
-       // Positioned(
-       //     left: 0,
-       //     bottom: 0,
-       //     child: Container(
-       //       width: 1.sw/5,
-       //       height: stackPosition.getHeight(216),
-       //       color: Colors.red.withAlpha(20),
-       //     )
-       // ),
        VerticalGridView(
          padding: EdgeInsets.only(left: 15.w,right: 15.w),
          widgetBuilder: (_, index) {
