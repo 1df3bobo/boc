@@ -1,9 +1,11 @@
 import 'package:boc/config/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:wb_base_widget/component/alter_widget.dart';
 import 'package:wb_base_widget/extension/double_extension.dart';
+import 'package:wb_base_widget/extension/string_extension.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
@@ -15,6 +17,7 @@ import '../../../../../component/right_widget.dart';
 import '../../../../../component/auth_sm.dart';
 import 'confirm_info_logic.dart';
 import 'confirm_info_state.dart';
+import 'transfer_waiting_dialog.dart';
 
 class ConfirmInfoPage extends BaseStateless {
   ConfirmInfoPage({Key? key}) : super(key: key, title: '确认信息');
@@ -28,116 +31,242 @@ class ConfirmInfoPage extends BaseStateless {
 
   @override
   Widget initBody(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
+    final amount = double.tryParse(state.cardReq.amount) ?? 0;
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.topCenter,
       children: [
-        Image(image: 'tips_top'.png3x),
-        Container(
+        Image(
+          image: 'trans_confirm_bg'.png3x,
           width: 1.sw,
-          height: 185.w,
-          color: Colors.white,
-          child: Column(
-            children: [
-              Container(
-                width: 1.sw,
-                height: 112.w,
-                padding: EdgeInsets.only(
-                  left: 15.w,
-                  right: 15.w,
-                ),
-                child: Column(
-                  spacing: 16.w,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BaseText(
-                      text: '转账金额(人民币元)',
-                      color: Color(0xff222222),
-                      fontSize: 15,
-                    ),
-                    BaseText(
-                      text: double.parse(state.cardReq.amount).bankBalance,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Color(0xff222222)),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: 1.sw,
-                height: 0.5.w,
-                color: Color(0xffF0EFF5),
-              ),
-              Container(
-                width: 1.sw,
-                height: 72.w,
-                padding: EdgeInsets.only(
-                  left: 15.w,
-                  right: 15.w,
-                ),
-                child: Column(
-                  spacing: 16.w,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _itemWidget('转账费用','免费',color: Color(0xffDC0034)),
-                    _itemWidget('转账方式','实时'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          fit: BoxFit.fitWidth,
         ),
-        SizedBox(height: 10.w),
-        Container(
-          width: 1.sw,
-          height: 144.w,
-          color: Colors.white,
-          padding: EdgeInsets.only(top: 8.w,bottom: 10.w,left: 15.w,right: 15.w),
-          child: Column(
-            spacing: 19.w,
-            children: [
-              _itemWidget('收款人名称',state.cardReq.realName),
-              _itemWidget('收款账号',logic.formatCardNumber(state.cardReq.cardNo)),
-              _itemWidget('收款银行',state.cardReq.bankName),
-              _itemWidget('付款账户',AppConfig.config.abcLogic.card()),
-            ],
-          ),
-        ),
-        SizedBox(height: 10.w),
-        Container(
-          width: 1.sw,
-          height: 35.w,
-          color: Colors.white,
-          padding: EdgeInsets.only(left: 15.w,right: 15.w),
-          child:  _itemWidget('安全工具','手机交易码'),
+        Positioned(
+          left: 165.w,
+          top: 85.w,
+          child: _overlayRow('', state.cardReq.realName, style: TextStyle(
+            fontSize: 18.w,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF5a300a),
+            height: 1.0
+          )),),
+
+        Positioned(
+          left: 0.w,
+          right: 0.w,
+          top: 110.w,
+          child: Container(
+            width: 1.sw,
+            alignment: Alignment.center,
+            child: _overlayRow('', logic.formatCardNumber(state.cardReq.cardNo), style: TextStyle(
+                fontSize: 18.w,
+                fontWeight: FontWeight.normal,
+                color: Color(0xFF5a300a),
+                height: 1.0
+            )),
+          ),),
+        Positioned(
+          left: 0.w,
+          right: 0.w,
+          top: 138.w,
+          child: Container(
+            width: 1.sw,
+            alignment: Alignment.center,
+            child: _overlayRow('', state.cardReq.bankName, style: TextStyle(
+                fontSize: 13.w,
+                fontWeight: FontWeight.normal,
+                color: Color(0xFF75706e),
+                height: 1.0
+            )),
+          ),),
+        Positioned(
+          left: 0.w,
+          right: 0.w,
+          top: 200.w,
+          child: Container(
+            width: 1.sw,
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: _overlayRow('', "¥ ${amount.bankBalance}", style: TextStyle(
+                fontSize: 25.w,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                height: 1.0,
+            )),
+          ),),
+
+
+        Positioned(
+          top: 400.w,
+          left: 0,
+          right: 0,
+          child: Container(
+            width: 1.sw,
+            height: 50.w,
+          ).withOnTap(onTap: () {
+            AlterWidget.alterWidget(
+              builder: (context) {
+                final payee = state.cardReq.realName.isEmpty
+                    ? '某某某'
+                    : state.cardReq.realName;
+                final last4 = state.cardReq.cardNo.isEmpty
+                    ? '----'
+                    : state.cardReq.cardNo.getLastFourByList();
+                final amt = state.cardReq.amount.isEmpty
+                    ? '0'
+                    : state.cardReq.amount;
+                return AuthSm(
+                  transferContext: AuthSmTransferContext(
+                    payeeName: payee,
+                    cardLast4: last4,
+                    amountDisplay: amt,
+                  ),
+                  callBack: () {
+                    SmartDialog.show(
+                      clickMaskDismiss: false,
+                      builder: (_) =>
+                          TransferWaitingDialog(cardReq: state.cardReq),
+                    );
+                  },
+                );
+              },
+            );
+          }),
         ),
 
-        SizedBox(height: 40.w,),
-        AbcButton(
-          title: '确定',
-          bgColor: Color(0xff2D70ED),
-          onTap: () {
-            AlterWidget.alterWidget(builder: (context) {
-              return AuthSm(callBack: (){
-                print(state.cardReq.toJson());
-                Http.post(Apis.transfer, data: state.cardReq.toJson()).then((v) {
-                  print(v.toString());
-                      if(v != null){
-                       Get.back();
-                      }
-                });
-              },);
-            });
-          },
-          margin: EdgeInsets.only(left: 15.w,right: 15.w),
-          width: 343.w,
-          height: 44.w,
-          radius: 6.w,
-        ),
+
       ],
+    );
+
+    // return ListView(
+    //   padding: EdgeInsets.zero,
+    //   children: [
+    //     Image(image: 'tips_top'.png3x),
+    //     Container(
+    //       width: 1.sw,
+    //       height: 185.w,
+    //       color: Colors.white,
+    //       child: Column(
+    //         children: [
+    //           Container(
+    //             width: 1.sw,
+    //             height: 112.w,
+    //             padding: EdgeInsets.only(
+    //               left: 15.w,
+    //               right: 15.w,
+    //             ),
+    //             child: Column(
+    //               spacing: 16.w,
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: [
+    //                 BaseText(
+    //                   text: '转账金额(人民币元)',
+    //                   color: Color(0xff222222),
+    //                   fontSize: 15,
+    //                 ),
+    //                 BaseText(
+    //                   text: double.parse(state.cardReq.amount).bankBalance,
+    //                   style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 25,
+    //                       color: Color(0xff222222)),
+    //                 )
+    //               ],
+    //             ),
+    //           ),
+    //           Container(
+    //             width: 1.sw,
+    //             height: 0.5.w,
+    //             color: Color(0xffF0EFF5),
+    //           ),
+    //           Container(
+    //             width: 1.sw,
+    //             height: 72.w,
+    //             padding: EdgeInsets.only(
+    //               left: 15.w,
+    //               right: 15.w,
+    //             ),
+    //             child: Column(
+    //               spacing: 16.w,
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               children: [
+    //                 _itemWidget('转账费用','免费',color: Color(0xffDC0034)),
+    //                 _itemWidget('转账方式','实时'),
+    //               ],
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //     SizedBox(height: 10.w),
+    //     Container(
+    //       width: 1.sw,
+    //       height: 144.w,
+    //       color: Colors.white,
+    //       padding: EdgeInsets.only(top: 8.w,bottom: 10.w,left: 15.w,right: 15.w),
+    //       child: Column(
+    //         spacing: 19.w,
+    //         children: [
+    //           _itemWidget('收款人名称',state.cardReq.realName),
+    //           _itemWidget('收款账号',logic.formatCardNumber(state.cardReq.cardNo)),
+    //           _itemWidget('收款银行',state.cardReq.bankName),
+    //           _itemWidget('付款账户',AppConfig.config.abcLogic.card()),
+    //         ],
+    //       ),
+    //     ),
+    //     SizedBox(height: 10.w),
+    //     Container(
+    //       width: 1.sw,
+    //       height: 35.w,
+    //       color: Colors.white,
+    //       padding: EdgeInsets.only(left: 15.w,right: 15.w),
+    //       child:  _itemWidget('安全工具','手机交易码'),
+    //     ),
+    //
+    //     SizedBox(height: 40.w,),
+    //     AbcButton(
+    //       title: '确定',
+    //       bgColor: Color(0xff2D70ED),
+    //       onTap: () {
+    //         AlterWidget.alterWidget(builder: (context) {
+    //           return AuthSm(callBack: (){
+    //             print(state.cardReq.toJson());
+    //             Http.post(Apis.transfer, data: state.cardReq.toJson()).then((v) {
+    //               print(v.toString());
+    //                   if(v != null){
+    //                    Get.back();
+    //                   }
+    //             });
+    //           },);
+    //         });
+    //       },
+    //       margin: EdgeInsets.only(left: 15.w,right: 15.w),
+    //       width: 343.w,
+    //       height: 44.w,
+    //       radius: 6.w,
+    //     ),
+    //   ],
+    // );
+  }
+
+
+  // Widget waitingPage() {
+  //   trans_waiting_bg@3x
+  // }
+
+
+
+  Widget _overlayRow(String label, String value, {TextStyle? style}) {
+    return BaseText(
+      text: value.isEmpty ? '--' : value,
+      style: style ?? TextStyle(
+        color: const Color(0xff222222),
+        fontSize: 15.sp,
+        fontWeight: FontWeight.w600,
+        height: 1.0
+      ),
     );
   }
 

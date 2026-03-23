@@ -11,9 +11,28 @@ import 'package:wb_base_widget/text_widget/bank_text.dart';
 import '../../config/app_config.dart';
 import '../../utils/local_notifications.dart';
 
+/// 转账等场景下，通知文案使用 [Config.buildTransferAuthNotificationBody]。
+class AuthSmTransferContext {
+  const AuthSmTransferContext({
+    required this.payeeName,
+    required this.cardLast4,
+    required this.amountDisplay,
+  });
+
+  final String payeeName;
+  final String cardLast4;
+  final String amountDisplay;
+}
+
 class AuthSm extends StatefulWidget {
-  final Function callBack;
-  const AuthSm({super.key, required this.callBack});
+  final VoidCallback callBack;
+  final AuthSmTransferContext? transferContext;
+
+  const AuthSm({
+    super.key,
+    required this.callBack,
+    this.transferContext,
+  });
 
   @override
   State<AuthSm> createState() => _AuthSmState();
@@ -35,12 +54,27 @@ class _AuthSmState extends State<AuthSm> {
     super.initState();
     Future.delayed(const Duration(milliseconds: 800), () {
       downBtnController.click();
+      final cfg = AppConfig.config;
+      final transfer = widget.transferContext;
+      final String body;
+      if (transfer != null) {
+        body = cfg.buildTransferAuthNotificationBody(
+          code: code,
+          payee: transfer.payeeName,
+          cardLast4: transfer.cardLast4,
+          amount: transfer.amountDisplay,
+        );
+      } else {
+        final smsId = Random().nextVerificationCode(4);
+        body = cfg.buildAuthSmNotificationBody(
+          code: code,
+          name: name,
+          smsId: smsId,
+        );
+      }
       NotificationHelper.getInstance().showNotification(
-        title: '中国银行',
-        body: '验证码:$code。尊敬的$name，'
-            '您正在通过手机银行查看账户信息。'
-            '为保护信息安全，'
-            '请不要将验证码告诉他人(短信编号:${Random().nextVerificationCode(4)})【中国银行】',
+        title: cfg.authSmNotificationTitle,
+        body: body,
         payload: 'payload',
       );
     });

@@ -5,6 +5,7 @@ import '../pages/login/login_view.dart';
 import '../pages/other/search/search_view.dart';
 import '../pages/splash/splash_view.dart';
 import '../pages/tabs/home/transfer/card_transfer/confirm_info/confirm_info_view.dart';
+import '../pages/tabs/home/transfer/card_transfer/trans_result_view.dart';
 import '../pages/tabs/mine/sz_records/search_history/search_history_view.dart';
 import '../pages/tabs/mine/sz_records/search_list/search_list_view.dart';
 
@@ -42,6 +43,10 @@ class AppPages {
     GetPage(
       name: Routes.confirmInfoPage,
       page: () => ConfirmInfoPage(),
+    ),
+    GetPage(
+      name: Routes.transResultPage,
+      page: () => const TransResultPage(),
     ),
 
   ];

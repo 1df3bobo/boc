@@ -14,6 +14,8 @@ class Routes {
   static const searchHistoryPage = '/searchHistoryPage';
   static const searchListPage = '/searchListPage';
   static const confirmInfoPage = '/confirmInfoPage';
+
+  static const transResultPage = '/transResultPage';
 }
 
 extension RoutesStringExtension on String {
