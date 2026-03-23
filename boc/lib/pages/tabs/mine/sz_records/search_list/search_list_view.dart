@@ -138,17 +138,23 @@ class SearchListPage extends BaseStateless {
               right: 16.w,
             ),
           ),
+          state.list.length == 0 ? Expanded(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(image: 'search_list_empty'.png3x, width: 1.sw, fit: BoxFit.fitWidth)
+            ],
+          )) :
           BaseText(
             text: '收入 ¥ ${state.incomeTotal.bankBalance}',
             fontSize: 13,
             color: Color(0xff666666),
           ).withPadding(top: 10.w, left: 12.w),
-          BaseText(
+          state.list.length == 0 ? SizedBox.shrink() : BaseText(
             text: '支出 ¥ ${state.expensesTotal.bankBalance}',
             fontSize: 13,
             color: Color(0xff666666),
           ).withPadding(top: 4.w, left: 12.w,bottom: 12.w),
-          refreshWidget(
+          state.list.length == 0 ? SizedBox.shrink() : refreshWidget(
             child: ListView.separated(
                 controller: state.controller,
                 itemBuilder: (context, index) {

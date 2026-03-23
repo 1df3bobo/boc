@@ -39,6 +39,7 @@ class SzRecordsLogic extends GetxController {
     }
   }
 
+
   Future getData1() async{
     print('pagePayment 0000 ${state.szData.toJson()}');
    await Http.get(
