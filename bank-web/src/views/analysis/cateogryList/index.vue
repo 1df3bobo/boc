@@ -21,7 +21,7 @@
         finished-text="没有更多了" @load="nextPages">
         <div class="list">
           <div class="item" v-for="(item, index) in list" :key="index" @click="goDetails(item)">
-            <div class="item-time">{{ convertWeekday(item.transactionTime) }}</div>
+            <div class="item-time" v-if="item.showTime">{{ convertWeekday(item.transactionTime) }}</div>
             <div class="item-content">
               <img class="item-icon" :src="item.icon" alt="">
               <div class="item-info">
@@ -79,7 +79,8 @@ export default {
       error: false,
       expensesTotal: 0,
       incomeTotal: 0,
-      showTooltipFlag: false
+      showTooltipFlag: false,
+      lastTime: '',
     }
   },
   created() {
@@ -124,8 +125,8 @@ export default {
     goDetails(item) {
       if (window.FlutterBridge) {
         window.FlutterBridge.postMessage({
-          type: 'billDetails',
-          data: JSON.stringify(item)
+          type: 'sz_detail',
+          data: JSON.stringify(item.billDetail)
         });
       }
     },
@@ -150,6 +151,19 @@ export default {
           this.expensesTotal = res.data.data.expensesTotal
           this.incomeTotal = res.data.data.incomeTotal
           // this.pageNum = res.data.data.customizeParam
+          this.list.forEach((item, index) => {
+            if(index == 0) {
+              this.lastTime = item.transactionTime;
+              item.showTime = true;
+            }else {
+              if(item.transactionTime != this.lastTime) {
+                this.lastTime = item.transactionTime;
+                item.showTime = true;
+              }else{
+                item.showTime = false;
+              }
+            }
+          });
           this.loading = false
         } else {
           this.loading = false
