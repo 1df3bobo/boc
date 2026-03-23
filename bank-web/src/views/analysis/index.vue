@@ -12,43 +12,27 @@
           <img class="icon" src="@/assets/image/home/arrow-tri-down.png" alt />
         </div>
         <div class="date">
-          <div @click="changeType('1')" :class="['date-item',type ==='1'?'date-item-month':'']">年</div>
-          <div @click="changeType('0')" :class="['date-item',type ==='0'?'date-item-month':'']">月</div>
+          <div @click="changeType('1')" :class="['date-item', type === '1' ? 'date-item-month' : '']">年</div>
+          <div @click="changeType('0')" :class="['date-item', type === '0' ? 'date-item-month' : '']">月</div>
         </div>
       </div>
       <div class="analysis">
-        <img
-          class="analysis-bg"
-          v-if="incomeExpenseType === '2'"
-          src="@/assets/image/home/budgetAnalysis1.png"
-          alt
-        />
-        <img
-          class="analysis-bg"
-          v-if="incomeExpenseType === '1'"
-          src="@/assets/image/home/budgetAnalysis2.png"
-          alt
-        />
+        <img class="analysis-bg" v-if="incomeExpenseType === '2'" src="@/assets/image/home/budgetAnalysis1.png" alt />
+        <img class="analysis-bg" v-if="incomeExpenseType === '1'" src="@/assets/image/home/budgetAnalysis2.png" alt />
         <div class="analysis-content" v-if="analysisDetails">
           <div class="analysis-title">
-            <div
-              :class="['item',incomeExpenseType === '2'?'active':'']"
-              @click="changeIncomeExpenseType('2')"
-            >
+            <div :class="['item', incomeExpenseType === '2' ? 'active' : '']" @click="changeIncomeExpenseType('2')">
               <div>支出</div>
               <div>￥{{ formatAmount(Math.abs(analysisDetails.expenses).toFixed(2)) }}</div>
             </div>
-            <div
-              :class="['item',incomeExpenseType === '1'?'active':'']"
-              @click="changeIncomeExpenseType('1')"
-            >
+            <div :class="['item', incomeExpenseType === '1' ? 'active' : '']" @click="changeIncomeExpenseType('1')">
               <div>收入</div>
-              <div>￥{{formatAmount(analysisDetails.income.toFixed(2)) }}</div>
+              <div>￥{{ formatAmount(analysisDetails.income.toFixed(2)) }}</div>
             </div>
           </div>
           <div class="chart">
             <div class="chart-line" ref="chartRef"></div>
-            <div class="chart-pie" v-if="cateogryList.length>0" ref="chartRefPie"></div>
+            <div class="chart-pie" v-if="cateogryList.length > 0" ref="chartRefPie"></div>
             <div v-else class="empty">
               <img class="empty-bg" src="@/assets/image/home/empty.png" alt />
               <span>{{ type === '0' ? '本月暂无交易' : '本年暂无交易' }}</span>
@@ -56,62 +40,39 @@
           </div>
         </div>
       </div>
-      <div class="cateogry-list" v-if="analysisDetails&&cateogryList.length>0">
+      <div class="cateogry-list" v-if="analysisDetails && cateogryList.length > 0">
         <div class="cateogry-title">
           <span>{{ incomeExpenseType === '2' ? '支出' : '收入' }}</span>
           <span>
             ￥{{
-            incomeExpenseType === '2' ? formatAmount(Math.abs(analysisDetails.expenses) ): formatAmount(Math.abs(analysisDetails.income))
+              incomeExpenseType === '2' ? formatAmount(Math.abs(analysisDetails.expenses)) :
+                formatAmount(Math.abs(analysisDetails.income))
             }}
           </span>
         </div>
-        <div
-          class="item"
-          v-for="(item, index) in cateogryList"
-          :key="index"
-          @click="goCateogryList(item)"
-        >
+        <div class="item" v-for="(item, index) in cateogryList" :key="index" @click="goCateogryList(item)">
           <img class="item-icon" :src="item.categoryIcon" alt />
           <div class="item-content">
             <div class="item-content-info">
               <div class="item-name">{{ item.name }} {{ item.rate }}%</div>
-              <div class="item-number">￥{{formatAmount(Math.abs(item.totalAmount)) }}</div>
+              <div class="item-number">￥{{ formatAmount(Math.abs(item.totalAmount)) }}</div>
             </div>
             <div class="item-progress">
-              <van-progress
-                :show-pivot="false"
-                :percentage="item.rate"
-                stroke-width="0.08rem"
-                :color="incomeExpenseType === '2'?expenseColorList[index]:incomeColorList[index]"
-              />
+              <van-progress :show-pivot="false" :percentage="item.rate" stroke-width="0.08rem"
+                :color="incomeExpenseType === '2' ? expenseColorList[index] : incomeColorList[index]" />
             </div>
           </div>
         </div>
       </div>
     </div>
-    <select-bank-card-pop
-      @close="selectBankShow = false"
-      @confirm="bankConfirm"
-      :show="selectBankShow"
-    ></select-bank-card-pop>
+    <select-bank-card-pop @close="selectBankShow = false" @confirm="bankConfirm"
+      :show="selectBankShow"></select-bank-card-pop>
     <van-popup v-model="yearMonthShow" position="bottom" @close="yearMonthShow = false">
-      <van-datetime-picker
-        v-model="currentDate"
-        type="year-month"
-        :min-date="minDate"
-        :max-date="maxDate"
-        :formatter="formatter"
-        @cancel="yearMonthShow = false"
-        @confirm="yearMonthConfirm"
-      />
+      <van-datetime-picker v-model="currentDate" type="year-month" :min-date="minDate" :max-date="maxDate"
+        :formatter="formatter" @cancel="yearMonthShow = false" @confirm="yearMonthConfirm" />
     </van-popup>
     <van-popup v-model="yearShow" round position="bottom">
-      <van-picker
-        show-toolbar
-        :columns="columns"
-        @cancel="yearShow = false"
-        @confirm="yearConfirm"
-      />
+      <van-picker show-toolbar :columns="columns" @cancel="yearShow = false" @confirm="yearConfirm" />
     </van-popup>
   </div>
 </template>
@@ -197,7 +158,7 @@ export default {
       return {
         tooltip: {
           trigger: "axis",
-          position: function(point, params, dom, rect, size) {
+          position: function (point, params, dom, rect, size) {
             const chartTop = 20;
             return [point[0], chartTop];
           },
@@ -211,9 +172,8 @@ export default {
             params.forEach(element => {
               const list = element.name.split("-");
               if (list.length >= 2) {
-                name = `${list[0] > 9 ? list[0] : "0" + list[0]}月${
-                  list[1] > 9 ? list[1] : "0" + list[1]
-                }日`;
+                name = `${list[0] > 9 ? list[0] : "0" + list[0]}月${list[1] > 9 ? list[1] : "0" + list[1]
+                  }日`;
                 value = element.value;
               } else {
                 name = element.name;
@@ -384,7 +344,8 @@ export default {
           name: item.name,
           type: this.type,
           incomeExpenseType: this.incomeExpenseType,
-          dateTime: this.dateTime
+          dateTime: this.dateTime,
+          totalAmount: item.totalAmount
         }
       });
     },

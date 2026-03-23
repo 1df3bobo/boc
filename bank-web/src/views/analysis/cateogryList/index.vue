@@ -11,8 +11,8 @@
           <div class="total-num">共{{ total }}笔交易</div>
           <div class="money">{{
             incomeExpenseType === '2' ? '支出' : '收入'
-            }}￥{{ incomeExpenseType === '2' ? formatAmount(Math.abs(expensesTotal).toFixed(2)) :
-              formatAmount(Math.abs(incomeTotal).toFixed(2)) }}
+            }}￥{{ formatAmount(Math.abs(totalAmount).toFixed(2))
+              }}
           </div>
         </div>
       </div>
@@ -67,6 +67,7 @@ export default {
       formatAmount: formatAmount,
       name: this.$route.query.name || '',
       type: this.$route.query.type || '',
+      totalAmount: this.$route.query.totalAmount || '',
       incomeExpenseType: this.$route.query.incomeExpenseType || '',
       dateTime: this.$route.query.dateTime || '',
       status: 'loading',
@@ -148,10 +149,10 @@ export default {
         if (res.data.code === 200) {
           this.list = [...this.list, ...res.data.data.list]
           this.total = res.data.data.total
-          if (!this.expensesTotal || this.expensesTotal === 0) {
+          if (this.expensesTotal == 0) {
             this.expensesTotal = res.data.data.expensesTotal
           }
-          if (!this.incomeTotal || this.incomeTotal === 0) {
+          if (this.incomeTotal == 0) {
             this.incomeTotal = res.data.data.incomeTotal
           }
           // this.pageNum = res.data.data.customizeParam
