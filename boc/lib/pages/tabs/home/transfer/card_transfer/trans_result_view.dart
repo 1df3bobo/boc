@@ -7,7 +7,11 @@ import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
 
 import 'package:boc/pages/component/right_widget.dart';
+import 'package:boc/pages/other/fixed_nav/fixed_nav_view.dart';
 import 'package:boc/pages/other/webview_page/webview_page_view.dart';
+import 'package:boc/pages/tabs/home/transfer/card_transfer/card_transfer_view.dart';
+import 'package:boc/pages/tabs/home/transfer/record/record_view.dart';
+import 'package:boc/pages/tabs/mine/account_preview/account_preview_view.dart';
 import 'package:boc/routes/app_pages.dart';
 
 import 'card_req.dart';
@@ -83,6 +87,65 @@ class TransResultPage extends BaseStateless {
                 ),
               ),
             ),
+            // 您可能需要
+            Positioned(
+              top: 300.w,
+              left: 0,
+              right: 0,
+              child: Row(
+                children: [
+                  SizedBox(width: 1.sw / 3, height: 100.w)
+                      .withOnTap(onTap: () => Get.off(() => AccountPreviewPage())),
+                  SizedBox(width: 1.sw / 3, height: 100.w)
+                      .withOnTap(onTap: () => Get.off(() => CardTransferPage())),
+                  SizedBox(width: 1.sw / 3, height: 100.w)
+                      .withOnTap(onTap: () => Get.off(() => RecordPage())),
+                ],
+              ),
+            ),
+            
+            Positioned(
+              top: 400.w,
+              child: Container(height: 80.w, width: 1.sw).withOnTap(onTap: () {
+                Get.to(() => FixedNavPage(), arguments: {
+                  'title': '产品详情',
+                  'image': 'trans_result_1_',
+                  'rightWidget': [
+                    InkWell(
+                      onTap: () => Get.to(() => WebViewPage(),
+                          arguments: {'routeName': '/customerService'}),
+                      child: RightWidget.rightImage(imgPath: 'ic_ke'),
+                    ),
+                    SizedBox(width: 18.w),
+                  ],
+                });
+              }),
+            ),
+            Positioned(
+              top: 500.w,
+              child: Container(height: 80.w, width: 1.sw).withOnTap(onTap: () {
+                Get.to(() => FixedNavPage(), arguments: {
+                  'title': '产品详情',
+                  'image': 'trans_result_2_',
+                  'rightWidget': [
+                    InkWell(
+                      onTap: () => Get.to(() => WebViewPage(),
+                          arguments: {'routeName': '/customerService'}),
+                      child: RightWidget.rightImage(imgPath: 'ic_ke'),
+                    ),
+                    SizedBox(width: 18.w),
+                  ],
+                });
+              }),
+            ),
+             Positioned(
+                 bottom: 0,
+                 child: Container(
+               width: 1.sw,
+               height: 80.w,
+             ).withOnTap(onTap: () {
+               Get.back();
+                 }))
           ],
         ),
       ),

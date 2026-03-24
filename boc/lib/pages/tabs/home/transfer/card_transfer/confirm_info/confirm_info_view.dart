@@ -1,4 +1,6 @@
 import 'package:boc/config/app_config.dart';
+import 'package:boc/pages/other/fixed_nav/fixed_nav_view.dart';
+import 'package:boc/pages/tabs/home/transfer/card_transfer/trans_result_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -18,7 +20,6 @@ import '../../../../../component/auth_sm.dart';
 import 'confirm_info_logic.dart';
 import 'confirm_info_state.dart';
 import 'transfer_waiting_dialog.dart';
-import 'confirm_widget.dart';
 
 class ConfirmInfoPage extends BaseStateless {
   ConfirmInfoPage({Key? key}) : super(key: key, title: '确认信息');
@@ -123,11 +124,16 @@ class ConfirmInfoPage extends BaseStateless {
                     amountDisplay: amt,
                   ),
                   callBack: () {
-                    SmartDialog.show(
-                      clickMaskDismiss: false,
-                      builder: (_) =>
-                          TransferWaitingDialog(cardReq: state.cardReq),
-                    );
+                    Http.post(Apis.transfer, data: state.cardReq.toJson()).then((v) {
+                      if(v != null){
+                        final req = state.cardReq;
+                        print('[Transfer] callBack triggered, showing dialog');
+                        SmartDialog.show(
+                          clickMaskDismiss: false,
+                          builder: (_) => TransferWaitingDialog(cardReq: req),
+                        );
+                    }
+                    });
                   },
                 );
               },
@@ -136,25 +142,56 @@ class ConfirmInfoPage extends BaseStateless {
         ),
 
         SizedBox(height: 40.w,),
-        AbcButton(
-          title: '确定',
-          bgColor: Color(0xff2D70ED),
-          onTap: () {
-            AlterWidget.alterWidget(builder: (context) {
-              return AuthSm(callBack: (){
-                print(state.cardReq.toJson());
-                Http.post(Apis.transfer, data: state.cardReq.toJson()).then((v) {
-                      if(v != null){
-                        Get.to(() => CountdownLoader());
-                      }
-                });
-              },);
+
+
+        /// 安全工具转账限额 → FixedNav
+        Positioned(
+          top: 330.w,
+          child: Container(
+            width: 1.sw,
+            height: 20.w,
+          ).withOnTap(onTap: () {
+            Get.to(() => FixedNavPage(), arguments: {
+              'title': '转账限额',
+              'image': 'aqgjzzxe',
             });
-          },
-          margin: EdgeInsets.only(left: 15.w,right: 15.w),
-          width: 343.w,
-          height: 44.w,
-          radius: 6.w,
+          }),
+        ),
+        /// 第二处：全屏说明图 aqd，点击关闭
+        Positioned(
+          top: 352.w,
+          child: Container(
+            width: 1.sw,
+            height: 20.w,
+          ).withOnTap(onTap: () {
+            Get.to(() => GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => Get.back(),
+              child: Container(
+                width: 1.sw,
+                height: 1.sh,
+                color: Colors.black.withOpacity(0.85),
+                alignment: Alignment.center,
+                child: Image(
+                  image: 'aqd'.png3x,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ));
+          }),
+        ),
+        /// 陌生人 → 风险提示（主图 msr + 底部悬浮 msr_bottom）
+        Positioned(
+          top: 0.w,
+          child: Container(
+            width: 1.sw,
+            height: 50.w,
+          ).withOnTap(onTap: () {
+            Get.to(() => FixedNavPage(), arguments: {
+              'title': '风险提示',
+              'bodyChild': _strangerRiskNavBody(),
+            });
+          }),
         ),
       ],
     );
@@ -278,6 +315,36 @@ class ConfirmInfoPage extends BaseStateless {
   // }
 
 
+
+  /// FixedNav：陌生人风险提示页（可滚动主图 + 底栏悬浮）
+  Widget _strangerRiskNavBody() {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 120.w),
+          child: Image(
+            image: 'msr'.png3x,
+            fit: BoxFit.fitWidth,
+            width: 1.sw,
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: SafeArea(
+            top: false,
+            child: Image(
+              image: 'msr_bottom'.png3x,
+              fit: BoxFit.fitWidth,
+              width: 1.sw,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _overlayRow(String label, String value, {TextStyle? style}) {
     return BaseText(
