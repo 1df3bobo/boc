@@ -16,7 +16,6 @@ class RecordDetailLogic extends GetxController {
 
 
   String valueStr(String name) {
-
     switch (name) {
       case '人行报文号':
       return state.model.postscriptno;
@@ -25,6 +24,7 @@ class RecordDetailLogic extends GetxController {
       case '收款人名称':
       return state.model.oppositeName;
       case '收款账号':
+        print(state.model.oppositeAccount);
         return state.model.oppositeAccount.maskBankCardNumber(
           fixStr: ' ',
           maskCharCount: 6,

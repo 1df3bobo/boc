@@ -1,6 +1,7 @@
 import 'package:boc/pages/tabs/mine/sz_records/req_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../../../config/model/pay_ment_model.dart';
@@ -19,8 +20,8 @@ class SzRecordsState {
   String selectPrice = '';
   List selectCategorys = [];
 
-
-
+  // 0 全部  1全选  2 某个  只有一个卡就一个
+  var selectCardIndex = 0.obs;
 
   DateTimePickerNotifier mPickerNotifier = DateTimePickerNotifier();
   DateTimePickerNotifier yPickerNotifier = DateTimePickerNotifier();

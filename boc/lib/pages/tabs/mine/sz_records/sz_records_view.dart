@@ -13,6 +13,8 @@ import 'package:wb_base_widget/text_widget/bank_text.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 import 'package:boc/pages/other/change_nav/change_nav_view.dart';
 import 'package:boc/pages/other/image_view_page.dart';
+import 'package:boc/config/app_config.dart';
+import 'package:boc/utils/stack_position.dart';
 
 import '../../../../config/model/pay_ment_model.dart';
 import '../../../../routes/app_pages.dart';
@@ -70,6 +72,115 @@ class SzRecordsPage extends BaseStateless {
           width: 15.w,
         ),
       ];
+  
+  void _showCardBottomSheet(BuildContext context) {
+    final accountNo =
+        AppConfig.config.abcLogic.cardFour();
+    StackPosition stackPosition = StackPosition(
+      designWidth: 1080,
+      designHeight: 931,
+      deviceWidth: 1.sw,
+    );
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) => Obx(() =>
+          Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Image(
+            image: 'select_card_bottom'.png3x,
+            width: 1.sw,
+            fit: BoxFit.fitWidth,
+          ),
+          Positioned(
+            left: stackPosition.getX(190),
+            top: stackPosition.getY(455),
+            child: BaseText(text: accountNo, fontSize: 13,)
+          ),
+          Positioned(
+              right: stackPosition.getX(30),
+              top: stackPosition.getY(30),
+              child: Container(
+                  width: 1.sw,
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 60.w,
+                        height: 30.w,
+                      ).withOnTap(onTap: (){
+                        Get.back();
+                      }),
+                      Container(
+                        width: 60.w,
+                        height: 30.w,
+                      ).withOnTap(onTap: (){
+                        state.controller.jumpTo(0);
+                        Get.back();
+                      })
+                    ],
+                  )
+              )
+          ),
+          Positioned(
+              right: stackPosition.getX(30),
+              top: stackPosition.getY(180),
+              child: Container(
+                width: 1.sw,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    state.selectCardIndex.value == 0 ? Image(image: 'select_card'.png3x, width: 20.w): Image(image: 'unselect_card'.png3x, width: 20.w),
+                  ],
+                )
+              ).withOnTap(onTap: (){
+                if(state.selectCardIndex.value != 0) {
+                  state.selectCardIndex.value = 0;
+                }
+              })
+          ),
+          Positioned(
+              right: stackPosition.getX(30),
+              top: stackPosition.getY(320),
+              child: Container(
+                  width: 1.sw,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      state.selectCardIndex.value == 1 ? Image(image: 'select_card'.png3x, width: 20.w): Image(image: 'unselect_card'.png3x, width: 20.w),
+                    ],
+                  )
+              ).withOnTap(onTap: (){
+                if(state.selectCardIndex.value != 1) {
+                  state.selectCardIndex.value = 1;
+                }
+              })
+          ),
+          Positioned(
+              right: stackPosition.getX(30),
+              top: stackPosition.getY(455),
+              child: Container(
+                  width: 1.sw,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      state.selectCardIndex.value == 1 || state.selectCardIndex.value == 2 ? Image(image: 'select_card'.png3x, width: 20.w): Image(image: 'unselect_card'.png3x, width: 20.w),
+                    ],
+                  )
+              ).withOnTap(onTap: (){
+                if(state.selectCardIndex.value != 2) {
+                  state.selectCardIndex.value = 2;
+                }
+              })
+          ),
+        ],
+      )
+      ),
+    );
+  }
 
   @override
   Widget initBody(BuildContext context) {
@@ -169,12 +280,12 @@ class SzRecordsPage extends BaseStateless {
                       ),
                       Row(
                         children: [
-                          BaseText(
-                            text: '全部账户',
+                          Obx(() => BaseText(
+                            text: state.selectCardIndex.value == 0 || state.selectCardIndex.value == 1 ? '全部账户':"工资卡(${AppConfig.config.abcLogic.cardFour()})",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff222222)),
-                          ),
+                          )),
                           SizedBox(
                             width: 5.w,
                           ),
@@ -184,7 +295,9 @@ class SzRecordsPage extends BaseStateless {
                             height: 8.w,
                           ),
                         ],
-                      ),
+                      ).withOnTap(onTap: () {
+                        _showCardBottomSheet(context);
+                      }),
                     ],
                   ),
                   GetBuilder<SzRecordsLogic>(

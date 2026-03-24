@@ -14,7 +14,6 @@ class RecordLogic extends GetxController {
     transferPage();
   }
 
-
   void transferPage() {
     Http.get(Apis.transferPage,
       queryParameters: state.recordData.toJson(),

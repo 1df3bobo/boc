@@ -61,7 +61,7 @@ class _TransferContactsWidgetState extends State<TransferContactsWidget>
                 BaseText(
                   text: "最近收款人",
                   style:
-                      TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
+                      TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
                 ),
                 BaseText(
                   text: "全部",
@@ -78,6 +78,7 @@ class _TransferContactsWidgetState extends State<TransferContactsWidget>
             padding: EdgeInsets.only(left: 15.w, right: 15.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
                   children: [
@@ -91,20 +92,17 @@ class _TransferContactsWidgetState extends State<TransferContactsWidget>
                     ),
                     BaseText(
                       text: AppConfig.config.abcLogic.memberInfo.realName,
-                      color: Color(0xff333333),
-                      fontSize: 17,
-                    ),
-                    SizedBox(
-                      width: 10.w,
+                      style:
+                      TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xff333333)),
                     ),
                     Container(
                       height: 22.w,
                       alignment: Alignment.center,
                       child: BaseText(
-                        text: '我的账户(1)',
+                        text: '(1)',
                         fontSize: 15,
-                        color: Color(0xff222222),
-                      ),
+                        color: Color(0xff666666),
+                      ).withPadding(top: 2.w),
                     ),
                     SizedBox(width: 10.w,),
                     Container(

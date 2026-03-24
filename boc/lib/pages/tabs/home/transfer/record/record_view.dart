@@ -80,11 +80,29 @@ class RecordPage extends BaseStateless {
                       controller: state.scController,
                       padding: EdgeInsets.only(top: 10.w),
                       itemBuilder: (context, index) {
-                        return RecordItemWidget(model: state.list[index],).withOnTap(onTap: (){
-                          Get.to(() => RecordDetailPage(),arguments: {
-                            'model':state.list[index].detail
-                          });
-                        });
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                RecordItemWidget(model: state.list[index],).withOnTap(onTap: () async {
+                                  final result = await Get.to(() => RecordDetailPage(),arguments: {
+                                    'model':state.list[index].detail
+                                  });
+                                  if (result != null && result is Map && result['oppositeAccount'] != null) {
+                                    state.recordData.oppositeAccount = result['oppositeAccount'] as String;
+                                    state.recordData.pageNum = 1;
+                                    logic.transferPage();
+                                  }
+                                })
+                              ],
+                            ),
+                            state.recordData.oppositeAccount.isNotEmpty && index == state.list.length - 1 ? Row(
+                              children: [
+                                Image(image: 'record_bottom'.png3x, width: 1.sw, fit: BoxFit.fitWidth),
+                              ],
+                            ).withPadding(top: 50.w): SizedBox.shrink()
+                          ],
+                        );
                       },
                       itemCount: state.list.length,
                       separatorBuilder: (BuildContext context, int index) {

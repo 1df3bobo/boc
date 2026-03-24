@@ -166,7 +166,10 @@ class RecordDetailPage extends BaseStateless {
                 child: Container(
                   width: 1.sw,
                   height: 70.w,
-                ))
+                ).withOnTap(onTap: (){
+                  Get.back(result: {'oppositeAccount': state.model.oppositeAccount});
+                })
+              )
           ],
         ),
         SizedBox(height: 45.w,),

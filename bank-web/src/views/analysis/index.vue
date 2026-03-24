@@ -142,7 +142,8 @@ export default {
       return this.incomeExpenseType === "2" ? "#2C70ED" : "#DD0035";
     },
     lineChartOption() {
-      let trendList = this.analysisDetails.trendList.reverse();
+      let trendList = this.analysisDetails.trendList;
+      console.log(this.analysisDetails.trendList);
       const incomeList = trendList.map(item => item.income).reverse(); // 收入
       const expensesList = trendList
         .map(item => Math.abs(item.expenses))
@@ -439,6 +440,7 @@ export default {
       }).then(res => {
         if (res.data.code === 200) {
           this.analysisDetails = res.data.data;
+          this.analysisDetails.trendList = this.analysisDetails.trendList.reverse()
           this.$nextTick(() => {
             let echartsDom = this.$refs.chartRef;
             this.chart = echarts.init(echartsDom);

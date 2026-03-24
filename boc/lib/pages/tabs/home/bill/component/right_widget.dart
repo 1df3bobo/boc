@@ -54,14 +54,14 @@ class _RightBillWidgetState extends State<RightBillWidget> {
         state.billData.maxAmount = '1000';
       }else{
         controller1.text = '';
-        controller2.text = '1000';
+        controller2.text = '1,000.00';
       }
     }
     if(state.selectPrice == '1000-5000'){
       if(confirm){
       }else{
-        controller1.text = '1000';
-        controller2.text = '5000';
+        controller1.text = '1,000.00';
+        controller2.text = '5,000.00';
       }
     }
     if(state.selectPrice == '5000以上'){
@@ -69,7 +69,7 @@ class _RightBillWidgetState extends State<RightBillWidget> {
         state.billData.minAmount = '5000';
         state.billData.maxAmount = '';
       }else{
-        controller1.text = '5000';
+        controller1.text = '5,000.00';
         controller2.text = '';
       }
     }

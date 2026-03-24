@@ -11,6 +11,19 @@ class MineLogic extends GetxController {
   var eyeOpen = true.obs;
   var currentTime = DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now()).obs;
 
+  String getGreeting() {
+    int hour = DateTime.now().hour;
+    if (hour >= 0 && hour < 12) {
+      return '上午好';
+    } else if (hour == 12) {
+      return '中午好';
+    } else if (hour > 12 && hour < 18) {
+      return '下午好';
+    } else {
+      return '晚上好';
+    }
+  }
+
   String maskName() {
     String name = AppConfig.config.abcLogic.memberInfo.realName;
     // 处理空值/空字符串

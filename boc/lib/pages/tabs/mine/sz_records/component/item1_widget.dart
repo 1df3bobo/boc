@@ -130,12 +130,12 @@ class _Item1WidgetState extends State<Item1Widget> {
                 children: [
                   BaseText(
                       text:
-                          '收入 ${double.parse(widget.model.incomeTotal == '' ? '0' : widget.model.incomeTotal).bankBalance}',
+                          '收入 ￥${double.parse(widget.model.incomeTotal == '' ? '0' : widget.model.incomeTotal).bankBalance}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white)),
                   BaseText(
                       text:
-                          '支出 ${double.parse(widget.model.expensesTotal == '' ? '0' : widget.model.expensesTotal).bankBalance}',
+                          '支出 ￥${double.parse(widget.model.expensesTotal == '' ? '0' : widget.model.expensesTotal).bankBalance}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white)),
                 ],

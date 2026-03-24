@@ -4,7 +4,7 @@
     <div class="main">
       <img class="bg" src="@/assets/image/home/userinfo.png" alt="">
       <div class="info">
-        <div class="name">{{ userInfo.realName}}</div>
+        <div class="name">{{ maskedString(userInfo.realName) }}</div>
         <div class="item" @click="goPages('/userInfo/details')"></div>
         <div class="item" @click="goPages('/userInfo/editPhoneNo')"></div>
       </div>
@@ -18,7 +18,22 @@ import {mapState} from "vuex";
 export default {
   name: 'userInfo',
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    maskedString() {
+      return (name) => {
+        const str = name
+        if (!str) return str;
+        if (str.length <= 1) return str;
+        if (str.length === 2) return str[0] + '*';
+
+        const firstChar = str[0];
+        const lastChar = str[str.length - 1];
+        const middleLength = str.length - 2;
+        const maskLength = Math.min(middleLength, 5);
+
+        return firstChar + '*'.repeat(maskLength) + lastChar;
+      }
+    },
   },
   methods: {
     goPages(path) {

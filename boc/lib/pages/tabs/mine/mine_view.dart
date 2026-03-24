@@ -13,6 +13,7 @@ import 'package:boc/pages/login/login_view.dart';
 import 'package:wb_base_widget/extension/widget_extension.dart';
 import 'package:wb_base_widget/state_widget/state_less_widget.dart';
 import 'package:wb_base_widget/text_widget/bank_text.dart';
+import 'package:boc/pages/other/image_view_page.dart';
 
 import '../../component/placeholder_search_widget.dart';
 import '../../other/change_nav/change_nav_view.dart';
@@ -115,7 +116,7 @@ class MinePage extends BaseStateless {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BaseText(
-                          text: '晚上好，${logic.maskName()}',
+                          text: '${logic.getGreeting()}，${logic.maskName()}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -357,7 +358,53 @@ class MinePage extends BaseStateless {
                   'image': 'zxzx',
                   'title': '自选中心',
                 });
-              }))
+              })),
+
+              Positioned(
+                left: 0.w,
+                bottom: 30.w,
+                child: Container(
+                  width: 1.sw,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 80.w,
+                        height: 30.w,
+                      ).withOnTap(onTap: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Stack(
+                              children: [
+                                Image(
+                                    image: 'yszc_sheet'.png3x,
+                                    width: 1.sw,
+                                    fit: BoxFit.fitWidth).withOnTap(onTap: () => Get.back()),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                      Container(
+                        width: 80.w,
+                        height: 30.w,
+                      ).withOnTap(onTap: () {
+                        Get.to(() => FixedNavPage(), arguments: {
+                          'image': 'gywm',
+                          'title': '关于我们',
+                        });
+                      }),
+                      Container(
+                        width: 80.w,
+                        height: 30.w,
+                      ).withOnTap(onTap: () {
+                        Get.to(() => ImageViewPage(), arguments: {'image': 'tsqd'});
+                      }),
+                    ],
+                  ),
+                ))
           ],
         )
       ],

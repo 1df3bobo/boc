@@ -24,6 +24,21 @@ class SzDetailPage extends BaseStateless {
   final SzDetailState state = Get.find<SzDetailLogic>().state;
 
   @override
+  List<Widget>? get rightAction => [
+        Image(
+          image: 'ic_ke'.png3x,
+          color: Colors.black,
+          width: 20.w,
+        ).withOnTap(onTap: () {
+          Get.to(() => WebViewPage(),
+              arguments: {'routeName': '/customerService'});
+        }),
+        SizedBox(
+          width: 15.w,
+        ),
+      ];
+
+  @override
   Widget initBody(BuildContext context) {
     return ListView(
       padding: EdgeInsets.zero,
@@ -41,7 +56,7 @@ class SzDetailPage extends BaseStateless {
             children: [
               BaseText(
                 text: '${state.model.type == '1' ? '收入' : '支出'}金额 (人民币元)',
-                style: const TextStyle(color: Color(0xff666666), fontSize: 14),
+                style: const TextStyle(fontSize: 14),
               ),
               SizedBox(height: 20.w),
               BaseText(
