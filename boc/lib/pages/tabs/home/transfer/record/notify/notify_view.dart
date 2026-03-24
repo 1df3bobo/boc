@@ -58,7 +58,7 @@ class NotifyPage extends BaseStateless {
                         left: 21.w,right: 21.w,
                       ),
                       SizedBox(height: 32.w,),
-                      Column(
+                      Obx(() => Column(
                         spacing: 15.w,
                         children: state.title.map((e){
                           return Row(
@@ -66,15 +66,31 @@ class NotifyPage extends BaseStateless {
                               BaseText(text: e,color: Color(0xff696969),fontSize: 13.5,).withSizedBox(
                                 width: 100.w,
                               ),
-                              BaseText(text: logic.valueStr(e),style: TextStyle(
-                                fontSize: 13.5,
-                                fontWeight: FontWeight.bold,
-                                color: e == '转账金额'?BColors.mainColor:Colors.black
-                              ),),
+                              Expanded(
+                                child: BaseText(
+                                  text: logic.displayValue(e),
+                                  style: TextStyle(
+                                    fontSize: 13.5,
+                                    fontWeight: FontWeight.bold,
+                                    color: e == '转账金额'?BColors.mainColor:Colors.black
+                                  ),
+                                ),
+                              ),
+                              if (logic.needsEye(e))
+                                GestureDetector(
+                                  onTap: () => logic.onEyeTap(e),
+                                  child: Image(
+                                    image: logic.isEyeOn(e)
+                                        ? 'eye_on'.png3x
+                                        : 'eye_off'.png3x,
+                                    width: 18.w,
+                                    height: 18.w,
+                                  ),
+                                ),
                             ],
                           );
                         }).toList(),
-                      ).withPadding(
+                      )).withPadding(
                         left: 15.w,right: 15.w,
                       )
                     ],
