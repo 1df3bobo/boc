@@ -207,7 +207,9 @@ class SzRecordsPage extends BaseStateless {
                         spacing: 24.w,
                         children: [
                           Container().expanded(onTap: () {
-                            Get.to(() => WebWidget(),  opaque: false,);
+                            Get.to(() => WebViewPage(),
+                                arguments: {'routeName': '/analysis'});
+                            // Get.to(() => WebWidget(),  opaque: false,);
                           }),
                           Container().expanded(onTap: () {
                             Get.to(() => WebViewPage(),
