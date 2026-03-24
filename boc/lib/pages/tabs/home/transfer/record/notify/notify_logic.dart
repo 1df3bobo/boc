@@ -104,7 +104,7 @@ class NotifyLogic extends GetxController {
       case "付款人名称": return AppConfig.config.abcLogic.memberInfo.realName;
       // 付款账号服务端给的已经是加密数据，用 card1() 取原始卡号
       case "付款账号":   return AppConfig.config.abcLogic.card1();
-      case "交易序号":   return state.model.certificateNo;
+      case "交易序号":   return state.model.transactionLogno;
     }
     return '';
   }
@@ -119,7 +119,7 @@ class NotifyLogic extends GetxController {
       case "收款银行":   return state.model.oppositeBankName;
       case "付款人名称": return _maskName(AppConfig.config.abcLogic.memberInfo.realName);
       case "付款账号":   return _maskAccount(AppConfig.config.abcLogic.card1());
-      case "交易序号":   return state.model.certificateNo;
+      case "交易序号":   return state.model.transactionLogno;
     }
     return '';
   }
