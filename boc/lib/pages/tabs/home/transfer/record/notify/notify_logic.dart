@@ -36,7 +36,7 @@ class NotifyLogic extends GetxController {
     case "付款账号":
       return AppConfig.config.abcLogic.card();
     case "交易序号":
-      return state.model.certificateNo;
+      return state.model.transactionLogno;
     }
     return '';
   }
