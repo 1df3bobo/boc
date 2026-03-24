@@ -21,6 +21,7 @@ class SzRecordsLogic extends GetxController {
     getData1();
   }
 
+
   void onListViewObserve(ListViewObserveModel observeModel) {
     if (state.beginTime != '' || state.endTime != '') return;
 
