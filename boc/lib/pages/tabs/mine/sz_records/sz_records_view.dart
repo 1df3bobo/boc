@@ -207,9 +207,12 @@ class SzRecordsPage extends BaseStateless {
                         spacing: 24.w,
                         children: [
                           Container().expanded(onTap: () {
-                            Get.to(() => WebViewPage(),
-                                arguments: {'routeName': '/analysis'});
-                            // Get.to(() => WebWidget(),  opaque: false,);
+                            // Get.to(() => WebViewPage(),
+                            //     arguments: {'routeName': '/analysis'});
+                          logic.isWebViewInStack.value = false;
+                            Get.to(() => WebWidget(),  opaque: false,)?.then((v){
+                              logic.isWebViewInStack.value = true;
+                            });
                           }),
                           Container().expanded(onTap: () {
                             Get.to(() => WebViewPage(),
@@ -455,13 +458,21 @@ class SzRecordsPage extends BaseStateless {
             )
           ],
         ),
-        Positioned(
-          left: -100,
-          top: -100,
-          width: 1,
-          height: 1,
-          child: logic.webWidget,
-        ),
+        // 在 SzRecordsPage 的 Stack 里
+        // SzRecordsPage.dart 里的 Stack 部分
+
+        Obx(() => logic.isWebViewInStack.value
+            ? Positioned(
+          left: 0,
+          top: -1000, // 放在屏幕外
+          child: SizedBox(
+            width: 1.sw,
+            height: 1.sh,
+            child: logic.webWidget, // 使用带有 GlobalKey 的实例
+          ),
+        )
+            : const SizedBox.shrink(), // 跳转时，从这里卸载
+        )
       ],
     );
     // return Column(

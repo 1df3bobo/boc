@@ -5,6 +5,8 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 import '../../../../config/dio/network.dart';
 import '../../../../config/model/pay_ment_model.dart';
 import '../../../../config/net_config/apis.dart';
+import '../../../other/webview_page1/web_widget.dart';
+import '../../../other/webview_page1/webview_page_logic.dart';
 import '../../../other/webview_page1/webview_page_view.dart';
 import 'sz_records_state.dart';
 
@@ -19,10 +21,26 @@ class SzRecordsLogic extends GetxController {
 
   Widget webWidget = WebViewPage1();
 
+
+  var isWebViewInStack = true.obs;
+
   @override
   void onInit() {
     super.onInit();
     getData1();
+
+    // 关键：在 SzRecords 初始化的同时也让 WebView 跑起来
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _preLoadWebView();
+    });
+  }
+  void _preLoadWebView() {
+    // 确保 WebViewLogic1 已经存在 (WebViewPage1 创建时会自动 put)
+    if (Get.isRegistered<WebViewLogic1>()) {
+      final webLogic = Get.find<WebViewLogic1>();
+      // 这里可以提前传数据，比如路由名或者初始化参数
+      webLogic.onEnterPage({'routeName': '/analysis'});
+    }
   }
 
 

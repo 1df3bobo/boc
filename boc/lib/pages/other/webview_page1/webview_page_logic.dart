@@ -15,6 +15,39 @@ class WebViewLogic1 extends GetxController {
   final WebViewState1 state = WebViewState1();
 
 
+  // 1. 增加一个“进入页面”的触发器
+  Future<void> onEnterPage(dynamic arguments) async {
+    debugPrint('WebView: 用户进入页面，尝试同步数据');
+
+    // 如果 WebView 还没创建好，直接返回
+    if (state.webViewController == null) return;
+
+    // 每次进入时，同步最新的 Token 和参数，但不要重载页面
+    await sendTokenToWeb();
+
+    if (arguments != null) {
+      await sendDataToWeb(arguments);
+    }
+
+    // 如果 H5 已经加载过数据，我们可以通过 JS 通知它局部刷新
+    // 如果 H5 还没加载过，这次 sendDataToWeb 应该会触发它的初始化
+    await state.webViewController!.evaluateJavascript(
+        source: 'if(window.FlutterBridge) window.FlutterBridge._dispatch("onPageShow", {});'
+    );
+  }
+
+  // 供外部（如 SzRecordsLogic）或内部生命周期调用
+  Future<void> startLoadProcess() async {
+    if (state.webViewController == null) return;
+
+    await injectBridge();
+    await sendTokenToWeb();
+    await initRouter();
+
+    debugPrint('WebView: 预加载流程启动完毕');
+  }
+
+
   bool _isRouterInitialized = false;
   Future<void> injectBridge() async {
     if (state.webViewController == null) return;
