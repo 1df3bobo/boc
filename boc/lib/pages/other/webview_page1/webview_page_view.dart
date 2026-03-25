@@ -43,7 +43,7 @@ class WebViewPage1 extends StatelessWidget {
           child: Scaffold(
             backgroundColor: Colors.transparent, // 页面背景透明，防止闪白
             body: InAppWebView(
-              // key: state.webViewKey,
+              key: state.webViewKey,
               initialFile: 'assets/dist/index.html',
               initialSettings: InAppWebViewSettings(
                 // 关键设置：透明背景
