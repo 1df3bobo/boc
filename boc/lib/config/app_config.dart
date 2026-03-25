@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sp_util/sp_util.dart';
 import 'dart:io' show Platform;
+import '../pages/other/webview_page1/webview_page_logic.dart';
 import '../utils/local_notifications.dart';
 import 'abc_config/boc_logic.dart';
 import 'net_config/net_config.dart';

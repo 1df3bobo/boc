@@ -1,3 +1,4 @@
+import 'package:boc/pages/other/webview_page1/web_widget.dart';
 import 'package:boc/pages/tabs/mine/sz_records/component/item1_widget.dart';
 import 'package:boc/utils/color_util.dart';
 import 'package:boc/utils/widget_util.dart';
@@ -19,6 +20,8 @@ import 'package:boc/utils/stack_position.dart';
 import '../../../../config/model/pay_ment_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../other/webview_page/webview_page_view.dart';
+import '../../../other/webview_page1/webview_page_logic.dart';
+import '../../../other/webview_page1/webview_page_view.dart';
 import 'component/item2_widget.dart';
 import 'component/right_widget.dart';
 import 'component/time_widget.dart';
@@ -184,77 +187,111 @@ class SzRecordsPage extends BaseStateless {
 
   @override
   Widget initBody(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Container(
-          width: 1.sw,
-          height: 120.w,
-          color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 12.w,
-              ),
-              Stack(
+        Column(
+          children: [
+            Container(
+              width: 1.sw,
+              height: 120.w,
+              color: Colors.white,
+              child: Column(
                 children: [
-                  Image(image: 'sz_jl_top'.png3x),
-                  Row(
-                    spacing: 24.w,
+                  SizedBox(
+                    height: 12.w,
+                  ),
+                  Stack(
                     children: [
-                      Container().expanded(onTap: () {
-                        Get.to(() => WebViewPage(),
-                            arguments: {'routeName': '/analysis'});
-                      }),
-                      Container().expanded(onTap: () {
-                        Get.to(() => WebViewPage(),
-                            arguments: {'routeName': '/monthlyBill'});
-                      }),
-                      Container().expanded(onTap: () {
-                        Get.to(() => ImageViewPage(), arguments: {'image': 'xzzb'});
-                        // Get.to(() => ChangeNavPage(), arguments: {
-                        //   'image': 'xzzb',
-                        //   'title': '选择账本',
-                        // });
-                      }),
+                      Image(image: 'sz_jl_top'.png3x),
+                      Row(
+                        spacing: 24.w,
+                        children: [
+                          Container().expanded(onTap: () {
+                            Get.to(() => WebViewPage(),
+                                arguments: {'routeName': '/analysis'});
+                            // Get.to(() => WebWidget(),  opaque: false,);
+                          }),
+                          Container().expanded(onTap: () {
+                            Get.to(() => WebViewPage(),
+                                arguments: {'routeName': '/monthlyBill'});
+                          }),
+                          Container().expanded(onTap: () {
+                            Get.to(() => ImageViewPage(), arguments: {'image': 'xzzb'});
+                            // Get.to(() => ChangeNavPage(), arguments: {
+                            //   'image': 'xzzb',
+                            //   'title': '选择账本',
+                            // });
+                          }),
+                        ],
+                      ).withContainer(
+                          width: 1.sw,
+                          height: 55.w,
+                          margin: EdgeInsets.only(left: 24.w, right: 24.w))
                     ],
-                  ).withContainer(
-                      width: 1.sw,
-                      height: 55.w,
-                      margin: EdgeInsets.only(left: 24.w, right: 24.w))
-                ],
-              ),
-              SizedBox(
-                height: 20.w,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                  ),
+                  SizedBox(
+                    height: 20.w,
+                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GetBuilder<SzRecordsLogic>(
-                        builder: (_) {
-                          DateTime now = DateTime.now();
-                          String time = DateFormat('yyyy.MM').format(now);
-                          if (state.selectTime != '') {
-                            time = state.selectTime;
-                          } else {
-                            if (state.szData.endTime != '') {
-                              time =
+                      Row(
+                        children: [
+                          GetBuilder<SzRecordsLogic>(
+                            builder: (_) {
+                              DateTime now = DateTime.now();
+                              String time = DateFormat('yyyy.MM').format(now);
+                              if (state.selectTime != '') {
+                                time = state.selectTime;
+                              } else {
+                                if (state.szData.endTime != '') {
+                                  time =
                                   '${state.szData.beginTime.replaceAll('-', '/')}-${state.szData.endTime.replaceAll('-', '/')}';
-                            } else {
-                              time = DateFormat('yyyy.MM').format(now);
-                            }
-                          }
+                                } else {
+                                  time = DateFormat('yyyy.MM').format(now);
+                                }
+                              }
 
-                          return Row(
+                              return Row(
+                                children: [
+                                  BaseText(
+                                    text: time,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        color: Color(0xff222222)),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Image(
+                                    image: 'xia_01'.png,
+                                    width: 8.w,
+                                    height: 8.w,
+                                  ),
+                                ],
+                              ).withOnTap(onTap: () {
+                                SmartDialog.show(
+                                  alignment: Alignment.centerRight,
+                                  builder: (context) {
+                                    return const TimeWidget();
+                                  },
+                                );
+                              });
+                            },
+                            id: 'updateTime',
+                          ),
+                          SizedBox(
+                            width: 15.w,
+                          ),
+                          Row(
                             children: [
-                              BaseText(
-                                text: time,
+                              Obx(() => BaseText(
+                                text: state.selectCardIndex.value == 0 || state.selectCardIndex.value == 1 ? '全部账户':"工资卡(${AppConfig.config.abcLogic.cardFour()})",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12,
                                     color: Color(0xff222222)),
-                              ),
+                              )),
                               SizedBox(
                                 width: 5.w,
                               ),
@@ -265,189 +302,434 @@ class SzRecordsPage extends BaseStateless {
                               ),
                             ],
                           ).withOnTap(onTap: () {
+                            _showCardBottomSheet(context);
+                          }),
+                        ],
+                      ),
+                      GetBuilder<SzRecordsLogic>(
+                        builder: (_) {
+                          bool sx = false;
+                          if (state.szData.maxAmount != '' ||
+                              state.szData.minAmount != '' ||
+                              state.szData.categorys != '') {
+                            sx = true;
+                          } else {
+                            sx = false;
+                          }
+                          return Row(
+                            children: [
+                              BaseText(
+                                text: '筛选',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: sx ? BColors.mainColor : Color(0xff222222),
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              Image(
+                                image: 'sx_ic'.png3x,
+                                width: 12.w,
+                                height: 12.w,
+                                color: sx ? BColors.mainColor : Color(0xff222222),
+                              )
+                            ],
+                          ).withOnTap(onTap: () {
                             SmartDialog.show(
                               alignment: Alignment.centerRight,
                               builder: (context) {
-                                return const TimeWidget();
+                                return const RightSzWidget();
                               },
                             );
                           });
                         },
-                        id: 'updateTime',
-                      ),
-                      SizedBox(
-                        width: 15.w,
-                      ),
-                      Row(
-                        children: [
-                          Obx(() => BaseText(
-                            text: state.selectCardIndex.value == 0 || state.selectCardIndex.value == 1 ? '全部账户':"工资卡(${AppConfig.config.abcLogic.cardFour()})",
-                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff222222)),
-                          )),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          Image(
-                            image: 'xia_01'.png,
-                            width: 8.w,
-                            height: 8.w,
-                          ),
-                        ],
-                      ).withOnTap(onTap: () {
-                        _showCardBottomSheet(context);
-                      }),
+                        id: 'updatesx',
+                      )
                     ],
-                  ),
-                  GetBuilder<SzRecordsLogic>(
-                    builder: (_) {
-                      bool sx = false;
-                      if (state.szData.maxAmount != '' ||
-                          state.szData.minAmount != '' ||
-                          state.szData.categorys != '') {
-                        sx = true;
-                      } else {
-                        sx = false;
-                      }
-                      return Row(
-                        children: [
-                          BaseText(
-                            text: '筛选',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: sx ? BColors.mainColor : Color(0xff222222),
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          Image(
-                            image: 'sx_ic'.png3x,
-                            width: 12.w,
-                            height: 12.w,
-                            color: sx ? BColors.mainColor : Color(0xff222222),
-                          )
-                        ],
-                      ).withOnTap(onTap: () {
-                        SmartDialog.show(
-                          alignment: Alignment.centerRight,
-                          builder: (context) {
-                            return const RightSzWidget();
-                          },
-                        );
-                      });
-                    },
-                    id: 'updatesx',
+                  ).withPadding(
+                    left: 16.w,
+                    right: 16.w,
                   )
                 ],
-              ).withPadding(
-                left: 16.w,
-                right: 16.w,
-              )
-            ],
-          ),
-        ),
-        GetBuilder<SzRecordsLogic>(
-          builder: (_) {
-            return ListViewObserver(
+              ),
+            ),
+            GetBuilder<SzRecordsLogic>(
+              builder: (_) {
+                return ListViewObserver(
                     controller: logic.observerController,
                     onObserve: logic.onListViewObserve,
                     child: refreshWidget(
                         child: (logic.showRange
                             ? ListView.separated(
-                                controller: state.rangeController,
-                                padding:
-                                    EdgeInsets.only(top: 10.w, bottom: 25.w),
-                                itemBuilder: (BuildContext context, int index) {
-                                  if (index == 0) {
-                                    return Stack(
-                                      children: [
-                                        Image(image: 'range_sz'.png)
-                                            .withContainer(
-                                                width: 1.sw,
-                                                height: 106.w,
-                                                margin: EdgeInsets.only(
-                                                    left: 15.w, right: 15.w)),
-                                        Positioned(
-                                            top: 12.w,
-                                            left: 32.w,
-                                            child: BaseText(
-                                              text:
-                                                  '共${state.rangeModel.total}笔交易',
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.white),
-                                            )),
-                                        Positioned(
-                                            left: 30.w,
-                                            bottom: 24.w,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                BaseText(
-                                                  text:
-                                                      '收入 ${state.rangeModel.incomeTotal.bankBalance}',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                BaseText(
-                                                  text:
-                                                      '支出 ${state.rangeModel.expensesTotal.bankBalance}',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ).withSizedBox(width: 1.sw - 60.w))
-                                      ],
-                                    );
-                                  }
-                                  PayMentList m = state.rangeList[index - 1];
-                                  return Item2Widget(
-                                    model: m,
-                                    expensesTotal:
-                                        state.expensesTotal.bankBalance,
-                                    incomeTotal: state.incomeTotal.bankBalance,
-                                    pages: state.rangeModel.total.toString(),
-                                  );
-                                },
-                                itemCount: state.rangeList.length + 1,
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return Container(
-                                    width: 1.sw,
-                                    height: 0.5.w,
-                                    color: Color(0xffF4F4F4),
-                                  );
-                                },
-                              )
+                          controller: state.rangeController,
+                          padding:
+                          EdgeInsets.only(top: 10.w, bottom: 25.w),
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index == 0) {
+                              return Stack(
+                                children: [
+                                  Image(image: 'range_sz'.png)
+                                      .withContainer(
+                                      width: 1.sw,
+                                      height: 106.w,
+                                      margin: EdgeInsets.only(
+                                          left: 15.w, right: 15.w)),
+                                  Positioned(
+                                      top: 12.w,
+                                      left: 32.w,
+                                      child: BaseText(
+                                        text:
+                                        '共${state.rangeModel.total}笔交易',
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.white),
+                                      )),
+                                  Positioned(
+                                      left: 30.w,
+                                      bottom: 24.w,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
+                                        children: [
+                                          BaseText(
+                                            text:
+                                            '收入 ${state.rangeModel.incomeTotal.bankBalance}',
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          BaseText(
+                                            text:
+                                            '支出 ${state.rangeModel.expensesTotal.bankBalance}',
+                                            style: TextStyle(
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ).withSizedBox(width: 1.sw - 60.w))
+                                ],
+                              );
+                            }
+                            PayMentList m = state.rangeList[index - 1];
+                            return Item2Widget(
+                              model: m,
+                              expensesTotal:
+                              state.expensesTotal.bankBalance,
+                              incomeTotal: state.incomeTotal.bankBalance,
+                              pages: state.rangeModel.total.toString(),
+                            );
+                          },
+                          itemCount: state.rangeList.length + 1,
+                          separatorBuilder:
+                              (BuildContext context, int index) {
+                            return Container(
+                              width: 1.sw,
+                              height: 0.5.w,
+                              color: Color(0xffF4F4F4),
+                            );
+                          },
+                        )
                             : ListView.separated(
-                                controller: state.controller,
-                                padding:
-                                    EdgeInsets.only(top: 10.w, bottom: 25.w),
-                                itemBuilder: (BuildContext context, int index) {
-                                  PayMentList m = state.list[index];
-                                  return Item1Widget(model: m);
-                                },
-                                itemCount: state.list.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                  return Container(
-                                    width: 1.sw,
-                                    height: 0.5.w,
-                                    color: Color(0xffF4F4F4),
-                                  );
-                                },
-                              ))))
-                .expanded();
-          },
-          id: 'updateUI',
-        )
+                          controller: state.controller,
+                          padding:
+                          EdgeInsets.only(top: 10.w, bottom: 25.w),
+                          itemBuilder: (BuildContext context, int index) {
+                            PayMentList m = state.list[index];
+                            return Item1Widget(model: m);
+                          },
+                          itemCount: state.list.length,
+                          separatorBuilder:
+                              (BuildContext context, int index) {
+                            return Container(
+                              width: 1.sw,
+                              height: 0.5.w,
+                              color: Color(0xffF4F4F4),
+                            );
+                          },
+                        ))))
+                    .expanded();
+              },
+              id: 'updateUI',
+            )
+          ],
+        ),
+        Positioned(
+          left: -100,
+          top: -100,
+          width: 1,
+          height: 1,
+          child: logic.webWidget,
+        ),
       ],
     );
+    // return Column(
+    //   children: [
+    //     Container(
+    //       width: 1.sw,
+    //       height: 120.w,
+    //       color: Colors.white,
+    //       child: Column(
+    //         children: [
+    //           SizedBox(
+    //             height: 12.w,
+    //           ),
+    //           Stack(
+    //             children: [
+    //               Image(image: 'sz_jl_top'.png3x),
+    //               Row(
+    //                 spacing: 24.w,
+    //                 children: [
+    //                   Container().expanded(onTap: () {
+    //                     // WebViewPage1()
+    //                     // Get.to(() => WebViewPage(),
+    //                     //     arguments: {'routeName': '/analysis'});
+    //                     Get.to(() => WebWidget(page: WebViewPage1()));
+    //                   }),
+    //                   Container().expanded(onTap: () {
+    //                     Get.to(() => WebViewPage(),
+    //                         arguments: {'routeName': '/monthlyBill'});
+    //                   }),
+    //                   Container().expanded(onTap: () {
+    //                     Get.to(() => ImageViewPage(), arguments: {'image': 'xzzb'});
+    //                     // Get.to(() => ChangeNavPage(), arguments: {
+    //                     //   'image': 'xzzb',
+    //                     //   'title': '选择账本',
+    //                     // });
+    //                   }),
+    //                 ],
+    //               ).withContainer(
+    //                   width: 1.sw,
+    //                   height: 55.w,
+    //                   margin: EdgeInsets.only(left: 24.w, right: 24.w))
+    //             ],
+    //           ),
+    //           SizedBox(
+    //             height: 20.w,
+    //           ),
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               Row(
+    //                 children: [
+    //                   GetBuilder<SzRecordsLogic>(
+    //                     builder: (_) {
+    //                       DateTime now = DateTime.now();
+    //                       String time = DateFormat('yyyy.MM').format(now);
+    //                       if (state.selectTime != '') {
+    //                         time = state.selectTime;
+    //                       } else {
+    //                         if (state.szData.endTime != '') {
+    //                           time =
+    //                               '${state.szData.beginTime.replaceAll('-', '/')}-${state.szData.endTime.replaceAll('-', '/')}';
+    //                         } else {
+    //                           time = DateFormat('yyyy.MM').format(now);
+    //                         }
+    //                       }
+    //
+    //                       return Row(
+    //                         children: [
+    //                           BaseText(
+    //                             text: time,
+    //                             style: TextStyle(
+    //                                 fontWeight: FontWeight.bold,
+    //                                 fontSize: 12,
+    //                                 color: Color(0xff222222)),
+    //                           ),
+    //                           SizedBox(
+    //                             width: 5.w,
+    //                           ),
+    //                           Image(
+    //                             image: 'xia_01'.png,
+    //                             width: 8.w,
+    //                             height: 8.w,
+    //                           ),
+    //                         ],
+    //                       ).withOnTap(onTap: () {
+    //                         SmartDialog.show(
+    //                           alignment: Alignment.centerRight,
+    //                           builder: (context) {
+    //                             return const TimeWidget();
+    //                           },
+    //                         );
+    //                       });
+    //                     },
+    //                     id: 'updateTime',
+    //                   ),
+    //                   SizedBox(
+    //                     width: 15.w,
+    //                   ),
+    //                   Row(
+    //                     children: [
+    //                       Obx(() => BaseText(
+    //                         text: state.selectCardIndex.value == 0 || state.selectCardIndex.value == 1 ? '全部账户':"工资卡(${AppConfig.config.abcLogic.cardFour()})",
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.bold,
+    //                             color: Color(0xff222222)),
+    //                       )),
+    //                       SizedBox(
+    //                         width: 5.w,
+    //                       ),
+    //                       Image(
+    //                         image: 'xia_01'.png,
+    //                         width: 8.w,
+    //                         height: 8.w,
+    //                       ),
+    //                     ],
+    //                   ).withOnTap(onTap: () {
+    //                     _showCardBottomSheet(context);
+    //                   }),
+    //                 ],
+    //               ),
+    //               GetBuilder<SzRecordsLogic>(
+    //                 builder: (_) {
+    //                   bool sx = false;
+    //                   if (state.szData.maxAmount != '' ||
+    //                       state.szData.minAmount != '' ||
+    //                       state.szData.categorys != '') {
+    //                     sx = true;
+    //                   } else {
+    //                     sx = false;
+    //                   }
+    //                   return Row(
+    //                     children: [
+    //                       BaseText(
+    //                         text: '筛选',
+    //                         style: TextStyle(
+    //                           fontSize: 13,
+    //                           color: sx ? BColors.mainColor : Color(0xff222222),
+    //                           fontWeight: FontWeight.bold
+    //                         ),
+    //                       ),
+    //                       Image(
+    //                         image: 'sx_ic'.png3x,
+    //                         width: 12.w,
+    //                         height: 12.w,
+    //                         color: sx ? BColors.mainColor : Color(0xff222222),
+    //                       )
+    //                     ],
+    //                   ).withOnTap(onTap: () {
+    //                     SmartDialog.show(
+    //                       alignment: Alignment.centerRight,
+    //                       builder: (context) {
+    //                         return const RightSzWidget();
+    //                       },
+    //                     );
+    //                   });
+    //                 },
+    //                 id: 'updatesx',
+    //               )
+    //             ],
+    //           ).withPadding(
+    //             left: 16.w,
+    //             right: 16.w,
+    //           )
+    //         ],
+    //       ),
+    //     ),
+    //     GetBuilder<SzRecordsLogic>(
+    //       builder: (_) {
+    //         return ListViewObserver(
+    //                 controller: logic.observerController,
+    //                 onObserve: logic.onListViewObserve,
+    //                 child: refreshWidget(
+    //                     child: (logic.showRange
+    //                         ? ListView.separated(
+    //                             controller: state.rangeController,
+    //                             padding:
+    //                                 EdgeInsets.only(top: 10.w, bottom: 25.w),
+    //                             itemBuilder: (BuildContext context, int index) {
+    //                               if (index == 0) {
+    //                                 return Stack(
+    //                                   children: [
+    //                                     Image(image: 'range_sz'.png)
+    //                                         .withContainer(
+    //                                             width: 1.sw,
+    //                                             height: 106.w,
+    //                                             margin: EdgeInsets.only(
+    //                                                 left: 15.w, right: 15.w)),
+    //                                     Positioned(
+    //                                         top: 12.w,
+    //                                         left: 32.w,
+    //                                         child: BaseText(
+    //                                           text:
+    //                                               '共${state.rangeModel.total}笔交易',
+    //                                           style: TextStyle(
+    //                                               fontSize: 13,
+    //                                               color: Colors.white),
+    //                                         )),
+    //                                     Positioned(
+    //                                         left: 30.w,
+    //                                         bottom: 24.w,
+    //                                         child: Row(
+    //                                           mainAxisAlignment:
+    //                                               MainAxisAlignment
+    //                                                   .spaceBetween,
+    //                                           children: [
+    //                                             BaseText(
+    //                                               text:
+    //                                                   '收入 ${state.rangeModel.incomeTotal.bankBalance}',
+    //                                               style: TextStyle(
+    //                                                   fontWeight:
+    //                                                       FontWeight.bold,
+    //                                                   color: Colors.white),
+    //                                             ),
+    //                                             BaseText(
+    //                                               text:
+    //                                                   '支出 ${state.rangeModel.expensesTotal.bankBalance}',
+    //                                               style: TextStyle(
+    //                                                   fontWeight:
+    //                                                       FontWeight.bold,
+    //                                                   color: Colors.white),
+    //                                             ),
+    //                                           ],
+    //                                         ).withSizedBox(width: 1.sw - 60.w))
+    //                                   ],
+    //                                 );
+    //                               }
+    //                               PayMentList m = state.rangeList[index - 1];
+    //                               return Item2Widget(
+    //                                 model: m,
+    //                                 expensesTotal:
+    //                                     state.expensesTotal.bankBalance,
+    //                                 incomeTotal: state.incomeTotal.bankBalance,
+    //                                 pages: state.rangeModel.total.toString(),
+    //                               );
+    //                             },
+    //                             itemCount: state.rangeList.length + 1,
+    //                             separatorBuilder:
+    //                                 (BuildContext context, int index) {
+    //                               return Container(
+    //                                 width: 1.sw,
+    //                                 height: 0.5.w,
+    //                                 color: Color(0xffF4F4F4),
+    //                               );
+    //                             },
+    //                           )
+    //                         : ListView.separated(
+    //                             controller: state.controller,
+    //                             padding:
+    //                                 EdgeInsets.only(top: 10.w, bottom: 25.w),
+    //                             itemBuilder: (BuildContext context, int index) {
+    //                               PayMentList m = state.list[index];
+    //                               return Item1Widget(model: m);
+    //                             },
+    //                             itemCount: state.list.length,
+    //                             separatorBuilder:
+    //                                 (BuildContext context, int index) {
+    //                               return Container(
+    //                                 width: 1.sw,
+    //                                 height: 0.5.w,
+    //                                 color: Color(0xffF4F4F4),
+    //                               );
+    //                             },
+    //                           ))))
+    //             .expanded();
+    //       },
+    //       id: 'updateUI',
+    //     )
+    //   ],
+    // );
   }
 }

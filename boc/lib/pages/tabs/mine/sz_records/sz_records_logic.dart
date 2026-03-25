@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../../../../config/dio/network.dart';
 import '../../../../config/model/pay_ment_model.dart';
 import '../../../../config/net_config/apis.dart';
+import '../../../other/webview_page1/webview_page_view.dart';
 import 'sz_records_state.dart';
 
 class SzRecordsLogic extends GetxController {
@@ -14,6 +16,8 @@ class SzRecordsLogic extends GetxController {
       ListObserverController(controller: state.controller);
 
   bool showRange = false;
+
+  Widget webWidget = WebViewPage1();
 
   @override
   void onInit() {

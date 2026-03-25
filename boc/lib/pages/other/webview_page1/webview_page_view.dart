@@ -5,15 +5,15 @@ import 'package:get/get.dart';
 import 'webview_page_logic.dart';
 import 'webview_page_state.dart';
 
-class WebViewPage extends StatelessWidget {
-  WebViewPage({Key? key}) : super(key: key);
+class WebViewPage1 extends StatelessWidget {
+  WebViewPage1({Key? key}) : super(key: key);
 
-  final WebViewLogic logic = Get.put(WebViewLogic());
-  final WebViewState state = Get.find<WebViewLogic>().state;
+  final WebViewLogic1 logic = Get.put(WebViewLogic1());
+  final WebViewState1 state = Get.find<WebViewLogic1>().state;
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<WebViewLogic>(
+    return GetBuilder<WebViewLogic1>(
       builder: (_) {
         return PopScope(
           canPop: state.isPop,
