@@ -282,7 +282,7 @@ class SzRecordsPage extends BaseStateless {
                         children: [
                           Obx(() => BaseText(
                             text: state.selectCardIndex.value == 0 || state.selectCardIndex.value == 1 ? '全部账户':"工资卡(${AppConfig.config.abcLogic.cardFour()})",
-                            style: TextStyle(
+                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff222222)),
                           )),

@@ -29,6 +29,22 @@ class TransferPage extends BaseStateless {
   Color? get background => Colors.white;
 
   @override
+  List<Widget>? get rightAction => [
+    Image(
+      image: 'service-icon-black'.png,
+      width: 22.w,
+      height: 22.w,
+    ),
+    SizedBox(width: 15.w,),
+    Image(
+      image: 'aa_icon'.png,
+      width: 22.w,
+      height: 22.w,
+    ),
+    SizedBox(width: 15.w,)
+  ];
+
+  @override
   Widget initBody(BuildContext context) {
     StackPosition position1 = StackPosition(
         designWidth: 1080, designHeight: 246, deviceWidth: 1.sw);

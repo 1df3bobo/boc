@@ -25,6 +25,16 @@ class _RecordRightWidgetState extends State<RecordRightWidget> {
   final RecordLogic logic = Get.put(RecordLogic());
   final RecordState state = Get.put(RecordLogic()).state;
 
+  /// 上溯 [monthsAgo] 个自然月的「同日」：目标月没有该日则取该月最后一天（如 3.31 → 2.28/2.29）。
+  static DateTime _sameDayMonthsAgo(DateTime from, int monthsAgo) {
+    final totalMonths = from.year * 12 + (from.month - 1) - monthsAgo;
+    final y = totalMonths ~/ 12;
+    final m = totalMonths % 12 + 1;
+    final lastDay = DateTime(y, m + 1, 0).day;
+    final day = from.day > lastDay ? lastDay : from.day;
+    return DateTime(y, m, day);
+  }
+
   List title1 = [
     '近1周',
     '近1月',
@@ -48,14 +58,22 @@ class _RecordRightWidgetState extends State<RecordRightWidget> {
       case '本年':
         startDate = DateTime(now.year, 1, 1);
         break;
+      case '近1周':
+        // 真是的是 前开后闭 所以-6  不是 -7
+        startDate = now.subtract(const Duration(days: 6));
+        break;
       case '近1月':
-        startDate = now.subtract(const Duration(days: 30));
+        // 开始 = 上一个月「同日」（无则月末）+ 1 天
+        startDate =
+            _sameDayMonthsAgo(now, 1).add(const Duration(days: 1));
         break;
       case '近3月':
-        startDate = now.subtract(const Duration(days: 90));
+        startDate =
+            _sameDayMonthsAgo(now, 3).add(const Duration(days: 1));
         break;
       case '近1年':
-        startDate = now.subtract(const Duration(days: 365));
+        startDate =
+            _sameDayMonthsAgo(now, 12).add(const Duration(days: 1));
         break;
       default:
         startDate = now;
@@ -225,6 +243,7 @@ class _RecordRightWidgetState extends State<RecordRightWidget> {
       SizedBox(height: 15.w),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           BaseText(
             text: state.beginTime != ''
@@ -234,7 +253,6 @@ class _RecordRightWidgetState extends State<RecordRightWidget> {
             color: Color(0xff666666),
           )
               .withSizedBox(
-            height: 32.w,
             width: (1.sw * 0.88 - 40.w) / 2,
           )
               .withOnTap(onTap: () {
@@ -278,7 +296,6 @@ class _RecordRightWidgetState extends State<RecordRightWidget> {
             color: Color(0xff666666),
           )
               .withSizedBox(
-            height: 32.w,
             width: (1.sw * 0.88 - 40.w) / 2,
           ).withOnTap(onTap: () {
             SmartDialog.show(
