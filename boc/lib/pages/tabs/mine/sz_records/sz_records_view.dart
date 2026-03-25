@@ -210,7 +210,7 @@ class SzRecordsPage extends BaseStateless {
                             // Get.to(() => WebViewPage(),
                             //     arguments: {'routeName': '/analysis'});
                           logic.isWebViewInStack.value = false;
-                            Get.to(() => WebWidget(),  opaque: false,)?.then((v){
+                            Get.to(() => WebWidget())?.then((v){
                               logic.isWebViewInStack.value = true;
                             });
                           }),
