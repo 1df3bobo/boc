@@ -10,6 +10,9 @@ class DateTimePicker extends StatefulWidget {
   final bool showDay;
   final bool showMonth;
   final int lastYear;
+  /// 可选：精确最小日期（优先级高于 lastYear）。
+  /// 同时限制年/月/日的下边界，不再只按年截断。
+  final DateTime? minimumDate;
   const DateTimePicker({
     super.key,
     this.initialDateTime,
@@ -19,6 +22,7 @@ class DateTimePicker extends StatefulWidget {
     this.showDay = true,
     this.showMonth = true,
     this.lastYear = 1,
+    this.minimumDate,
   });
 
   @override
@@ -49,13 +53,21 @@ class _DateTimePickerState extends State<DateTimePicker> {
     _selectedMonth = initialDate.month;
     _selectedDay = initialDate.day;
 
-    _startYear = _currentDate.year - widget.lastYear;
+    _startYear = widget.minimumDate != null
+        ? widget.minimumDate!.year
+        : _currentDate.year - widget.lastYear;
+
+    final initMonths = _buildMonthList(_selectedYear);
+    final initDays = _buildDayList(_selectedYear, _selectedMonth);
+    final initMonthIdx =
+        initMonths.contains(_selectedMonth) ? initMonths.indexOf(_selectedMonth) : 0;
+    final initDayIdx =
+        initDays.contains(_selectedDay) ? initDays.indexOf(_selectedDay) : 0;
 
     _yearController =
         FixedExtentScrollController(initialItem: _selectedYear - _startYear);
-    _monthController =
-        FixedExtentScrollController(initialItem: _selectedMonth - 1);
-    _dayController = FixedExtentScrollController(initialItem: _selectedDay - 1);
+    _monthController = FixedExtentScrollController(initialItem: initMonthIdx);
+    _dayController = FixedExtentScrollController(initialItem: initDayIdx);
 
     widget.dateTimePickerNotifier?.addListener(_onController);
 
@@ -115,61 +127,98 @@ class _DateTimePickerState extends State<DateTimePicker> {
         _currentDate.year - _startYear + 1, (index) => _startYear + index);
   }
 
-  List<int> getMonths() {
-    int maxMonth = 12;
-    if (_selectedYear == _currentDate.year) {
-      maxMonth = _currentDate.month;
-    }
-    return List.generate(maxMonth, (index) => index + 1);
+  List<int> _buildMonthList(int year) {
+    final minMonth =
+        (widget.minimumDate != null && year == widget.minimumDate!.year)
+            ? widget.minimumDate!.month
+            : 1;
+    final maxMonth = year == _currentDate.year ? _currentDate.month : 12;
+    return List.generate(maxMonth - minMonth + 1, (i) => minMonth + i);
   }
 
-  List<int> getDays() {
-    int maxDay;
-    if (_selectedYear == _currentDate.year &&
-        _selectedMonth == _currentDate.month) {
-      maxDay = _currentDate.day;
-    } else {
-      maxDay = DateTime(_selectedYear, _selectedMonth + 1, 0).day;
-    }
-    return List.generate(maxDay, (index) => index + 1);
+  List<int> _buildDayList(int year, int month) {
+    final minDay = (widget.minimumDate != null &&
+            year == widget.minimumDate!.year &&
+            month == widget.minimumDate!.month)
+        ? widget.minimumDate!.day
+        : 1;
+    final maxDay = (year == _currentDate.year && month == _currentDate.month)
+        ? _currentDate.day
+        : DateTime(year, month + 1, 0).day;
+    return List.generate(maxDay - minDay + 1, (i) => minDay + i);
+  }
+
+  List<int> getMonths() => _buildMonthList(_selectedYear);
+  List<int> getDays() => _buildDayList(_selectedYear, _selectedMonth);
+
+  /// index 为当前 getMonths()/getDays() 列表内的位置（非固定 1 起步偏移）。
+  int _monthControllerIndex() {
+    final months = getMonths();
+    final idx = months.indexOf(_selectedMonth);
+    return idx < 0 ? 0 : idx;
+  }
+
+  int _dayControllerIndex() {
+    final days = getDays();
+    final idx = days.indexOf(_selectedDay);
+    return idx < 0 ? 0 : idx;
+  }
+
+  void _jumpMonthController() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_monthController.hasClients) {
+        _monthController.jumpToItem(_monthControllerIndex());
+      }
+    });
+  }
+
+  void _jumpDayController() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_dayController.hasClients) {
+        _dayController.jumpToItem(_dayControllerIndex());
+      }
+    });
   }
 
   void _onYearSelected(int index) {
-    final years = getYears();
     setState(() {
-      _selectedYear = years[index];
-      // 检查月份是否超出范围
+      _selectedYear = getYears()[index];
+
+      // 月份修正：不在新列表内则跳到最近边界
       final months = getMonths();
-      if (_selectedMonth > months.length) {
-        _selectedMonth = months.last;
-        _monthController.jumpToItem(_selectedMonth - 1);
+      if (!months.contains(_selectedMonth)) {
+        _selectedMonth =
+            _selectedMonth < months.first ? months.first : months.last;
       }
-      // 检查日期是否超出范围
+      _jumpMonthController();
+
+      // 日期修正：不在新列表内则跳到最近边界
       final days = getDays();
-      if (_selectedDay > days.length) {
-        _selectedDay = days.last;
-        _dayController.jumpToItem(_selectedDay - 1);
+      if (!days.contains(_selectedDay)) {
+        _selectedDay = _selectedDay < days.first ? days.first : days.last;
       }
+      _jumpDayController();
     });
     _notifyDateTimeChanged();
   }
 
   void _onMonthSelected(int index) {
     setState(() {
-      _selectedMonth = index + 1;
-      // 检查日期是否超出范围
+      _selectedMonth = getMonths()[index];
+
+      // 日期修正
       final days = getDays();
-      if (_selectedDay > days.length) {
-        _selectedDay = days.last;
-        _dayController.jumpToItem(_selectedDay - 1);
+      if (!days.contains(_selectedDay)) {
+        _selectedDay = _selectedDay < days.first ? days.first : days.last;
       }
+      _jumpDayController();
     });
     _notifyDateTimeChanged();
   }
 
   void _onDaySelected(int index) {
     setState(() {
-      _selectedDay = index + 1;
+      _selectedDay = getDays()[index];
     });
     _notifyDateTimeChanged();
   }

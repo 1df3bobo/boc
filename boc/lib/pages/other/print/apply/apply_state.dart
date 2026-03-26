@@ -45,13 +45,13 @@ class ApplyState {
 
     switch (selectedTitle) {
       case '近3月':
-        startDate = DateTime(now.year, now.month - 3, now.day);
+        startDate = DateTime(now.year, now.month - 3, now.day + 1);
         break;
       case '近6月':
-        startDate = DateTime(now.year, now.month - 6, now.day);
+        startDate = DateTime(now.year, now.month - 6, now.day + 1);
         break;
       case '近1年':
-        startDate = DateTime(now.year - 1, now.month, now.day);
+        startDate = DateTime(now.year - 1, now.month, now.day + 1);
         break;
       default:
         startDate = now;

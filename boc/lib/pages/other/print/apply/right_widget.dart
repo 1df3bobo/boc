@@ -303,7 +303,12 @@ class _RightWidgetState extends State<RightWidget> {
               dateTimePickerNotifier: dateTimePickerNotifier,
               showDay: showDya,
               showMonth: showMonth,
-              lastYear: 8,
+              // minimumDate 精确限制到日，今天往前整 10 年再加 1 天
+              // 例：今天 2026-03-26 → 最早可选 2016-03-27
+              minimumDate: () {
+                final now = DateTime.now();
+                return DateTime(now.year - 10, now.month, now.day + 1);
+              }(),
               initialDateTime: DateTime.tryParse(time),
               onDateTimeChanged: (DateTime date) {
                 onDateTimeChanged?.call(date);
