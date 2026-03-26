@@ -39,10 +39,6 @@ class PrintRecordsPage extends BaseStateless {
   }
 
   Widget _item0(ApplyRecordList model) {
-    // 将字符串解析为 DateTime 对象
-    DateTime dateTime = DateTime.parse(model.beginTime);
-    // 将日期加一天
-    DateTime newDate = dateTime.add(Duration(days: 1));
     return Container(
       width: 1.sw,
       height: 185.w,
@@ -92,7 +88,7 @@ class PrintRecordsPage extends BaseStateless {
           ),
           _itemWidget(
               '日期区间',
-              '${newDate.toString().substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}',
+              '${model.beginTime.substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}',
               model),
           SizedBox(
             height: 15.w,
@@ -114,10 +110,6 @@ class PrintRecordsPage extends BaseStateless {
   }
 
   Widget _item1(ApplyRecordList model) {
-    // 将字符串解析为 DateTime 对象
-    DateTime dateTime = DateTime.parse(model.beginTime);
-    // 将日期加一天
-    DateTime newDate = dateTime.add(Duration(days: 1));
     return Container(
       width: 1.sw,
       height: 155.w,
@@ -167,7 +159,7 @@ class PrintRecordsPage extends BaseStateless {
           ),
           _itemWidget(
               '日期区间',
-              '${newDate.toString().substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}',
+              '${model.beginTime.substring(0, 10).replaceAll('-', '/')}至${model.endTime.substring(0, 10).replaceAll('-', '/')}',
               model),
           SizedBox(
             height: 15.w,
