@@ -246,7 +246,11 @@ export default {
         this.incomeExpenseType === "2"
           ? this.analysisDetails.expensesCateogryList
           : this.analysisDetails.incomeCateogryList;
-      let upTotalAmount = 110.0;
+      let upTotalAmount = this.incomeExpenseType === "2" ? Math.abs(this.analysisDetails.upExpenses) : Math.abs(this.analysisDetails.upIncome);
+      let image = require("@/assets/image/home/down.png");
+      if((this.incomeExpenseType === "2" && this.analysisDetails.upExpenses > 0) || this.incomeExpenseType === "1" && this.analysisDetails.upIncome > 0) {
+        image = require("@/assets/image/home/up.png");
+      }
       cateogryList.forEach(item => {
         const obj = {
           name: item.name,
@@ -276,12 +280,12 @@ export default {
             {
               type: "image",
               style: {
-                image: require("@/assets/image/home/decline.png"),
-                width: remToPx(0.3),
-                height: remToPx(0.3)
+                image: image,
+                width: remToPx(0.28),
+                height: remToPx(0.25)
               },
-              left: "54%", // 定位到适合的位置
-              top: remToPx(2.14) // 定位到适合的位置
+              left: "55%", // 定位到适合的位置
+              top: remToPx(2.19) // 定位到适合的位置
             }
           ]
         },
