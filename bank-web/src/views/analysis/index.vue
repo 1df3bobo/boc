@@ -72,7 +72,7 @@
         :formatter="formatter" @cancel="yearMonthShow = false" @confirm="yearMonthConfirm" />
     </van-popup>
     <van-popup v-model="yearShow" round position="bottom">
-      <van-picker show-toolbar :columns="columns" @cancel="yearShow = false" @confirm="yearConfirm" />
+      <van-picker show-toolbar :default-index="9" :columns="columns" @cancel="yearShow = false" @confirm="yearConfirm" />
     </van-popup>
   </div>
 </template>
@@ -85,6 +85,7 @@ export default {
   name: "analysis",
   data() {
     return {
+      pickerValue: ['2025年'],
       formatAmount: formatAmount,
       yearMonthShow: false,
       dateTime: "",
@@ -96,6 +97,7 @@ export default {
       yearShow: false,
       analysisDetails: null,
       selectBankShow: false,
+      currentClickedIndex: null,
       bankName: "全部账户",
       incomeExpenseType: "2", // 1收入 2支出
       expenseColorList: [
@@ -136,14 +138,13 @@ export default {
       for (let i = 0; i < 9; i++) {
         lastEightYears.push(`${currentYear - i}年`);
       }
-      return lastEightYears;
+      return lastEightYears.reverse();
     },
     tooltipBgColor() {
       return this.incomeExpenseType === "2" ? "#2C70ED" : "#DD0035";
     },
     lineChartOption() {
       let trendList = this.analysisDetails.trendList;
-      console.log(this.analysisDetails.trendList);
       const incomeList = trendList.map(item => item.income).reverse(); // 收入
       const expensesList = trendList
         .map(item => Math.abs(item.expenses))
@@ -321,20 +322,62 @@ export default {
             radius: [50, 70],
             center: ["50%", "45%"],
             data: list,
-            labelLine: {
-              show: false
-            },
+            // labelLine: {
+            //   show: false
+            // },
+            // label: {
+            //   show: false // 关键：设置为false
+            // },
             label: {
-              show: false // 关键：设置为false
-            },
-
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
+              show: false,
+              emphasis: {
+                show: true
+              },
+              position: 'outside',  // 关键：必须为 'outside'
+              formatter: '{b}\n{d}%',  // 换行显示
+              fontSize: remToPx(0.24),
+              fontWeight: 'normal',
+              color: '#333',
+              lineHeight: remToPx(0.32),
+              padding: [0, -60, 35, -60],
+              rich: {
+                icon: {
+                  fontSize: 16
+                },
+                name: {
+                  fontSize: 14,
+                  padding: [0, 10, 0, 4],
+                  color: '#666666'
+                },
+                value: {
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  color: '#333333'
+                }
               }
-            }
+            },
+            labelLine: {
+              show: false,
+              emphasis: {
+                show: true
+              },
+              length: 20,
+              length2: 100,
+              smooth: 0.2,
+              distance: 10,   // 标签距离图形边缘的距离，值越大线越长
+              lineStyle: {
+                color: '#666',
+                width: 1.5,
+                type: 'solid'
+              }
+            },
+            // emphasis: {
+            //   itemStyle: {
+            //     shadowBlur: 10,
+            //     shadowOffsetX: 0,
+            //     shadowColor: "rgba(0, 0, 0, 0.5)"
+            //   }
+            // }
           }
         ]
       };
@@ -388,6 +431,7 @@ export default {
           let year = date.getFullYear();
           let month = String(date.getMonth() + 1).padStart(2, "0");
           this.dateTime = `${year}.${month}`;
+          this.currentYear = `${year}年`;
         }
       } else {
         this.dateTime = `${this.currentDate.getFullYear()}`;
@@ -460,17 +504,96 @@ export default {
             setTimeout(() => {
               const dataLength = this.lineChartOption.series[0].data.length;
               const lastIndex = dataLength - 1;
-
               this.chart.dispatchAction({
                 type: "showTip",
                 seriesIndex: 0, // 系列索引
                 dataIndex: lastIndex // 数据索引（最后一个）
               });
+              // 绑定点击事件
+              // this.pieChart.on('click', (params) => {
+              //   if (params.componentType === 'series') {
+              //     this.handlePieClick(params);
+              //   }
+              // });
             }, 100);
           });
         }
       });
-    }
+    },
+    handlePieClick(params) {
+      // 获取原始数据
+      const originalData = this.incomeExpenseType === "2"
+        ? this.analysisDetails.expensesCateogryList
+        : this.analysisDetails.incomeCateogryList;
+
+      // 构建新数据
+      const newData = originalData.map((item, index) => {
+        const baseItem = {
+          name: item.name,
+          value: Math.abs(item.totalAmount)
+        };
+
+        if (index === params.dataIndex) {
+          return {
+            ...baseItem,
+            label: {
+              show: true,
+              position: 'outside',  // 关键：必须为 'outside'
+              formatter: '{b}\n{d}%',  // 换行显示
+              fontSize: remToPx(0.24),
+              fontWeight: 'normal',
+              color: '#333',
+              lineHeight: remToPx(0.32),
+              padding: [0, -60, 35, -60],
+              rich: {
+                icon: {
+                  fontSize: 16
+                },
+                name: {
+                  fontSize: 14,
+                  padding: [0, 10, 0, 4],
+                  color: '#666666'
+                },
+                value: {
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  color: '#333333'
+                }
+              }
+            },
+            labelLine: {
+              show: true,
+              length: 20,
+              length2: 120,
+              smooth: 0.2,
+              lineStyle: {
+                color: '#666',
+                width: 1.5,
+                type: 'solid'
+              }
+            }
+          };
+        }
+
+        return baseItem;
+      });
+
+      // 更新图表
+      this.pieChart.setOption({
+        series: [{
+          data: newData,
+          label: { show: false },
+          labelLine: { show: false },
+          // 确保饼图的配置
+          avoidLabelOverlap: true,  // 避免标签重叠
+          labelLayout: {
+            hideOverlap: true
+          }
+        }]
+      });
+
+      this.currentClickedIndex = params.dataIndex;
+    },
   }
 };
 </script>
