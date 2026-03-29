@@ -132,7 +132,7 @@ class AccountInfoPage extends BaseStateless {
                     id: 'updateCardNo',
                     builder: (_) {
                       final displayCard = state.showFullCard
-                          ? AppConfig.config.abcLogic.card1().formatBankCardNumber()
+                          ? AppConfig.config.abcLogic.card1().formatBankCardNumber().removeAllWhitespace
                           : AppConfig.config.abcLogic.card();
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
